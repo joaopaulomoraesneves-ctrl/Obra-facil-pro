@@ -1,1 +1,1961 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#111827" />
+  <title>Obra Fácil Pro — Pacote 01</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --card: #0b1224;
+      --border: rgba(148, 163, 184, .22);
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --soft: #cbd5e1;
+      --accent: #22c55e;
+      --accent-2: #38bdf8;
+      --danger: #fb7185;
+      --warning: #f59e0b;
+      --ok: #34d399;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius-sm: 12px;
+    }
 
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,.16), transparent 36%),
+        radial-gradient(circle at top right, rgba(34,197,94,.12), transparent 34%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    .app {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 14px;
+      padding-bottom: 94px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px;
+      margin: -14px -14px 14px;
+      background: rgba(15, 23, 42, .82);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, rgba(34,197,94,.95), rgba(56,189,248,.92));
+      display: grid;
+      place-items: center;
+      color: #06111f;
+      font-weight: 900;
+      box-shadow: 0 10px 30px rgba(34,197,94,.2);
+    }
+
+    .brand h1 {
+      font-size: 1.02rem;
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-size: .74rem;
+      margin-top: 2px;
+    }
+
+    .version-pill {
+      display: none;
+      color: var(--soft);
+      border: 1px solid var(--border);
+      background: rgba(17,24,39,.75);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: .78rem;
+      white-space: nowrap;
+    }
+
+    .hero {
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, rgba(17,24,39,.88), rgba(15,23,42,.74));
+      box-shadow: var(--shadow);
+      border-radius: 24px;
+      padding: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero:after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      background: rgba(34,197,94,.10);
+      right: -90px;
+      top: -110px;
+      filter: blur(2px);
+    }
+
+    .hero h2 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+      letter-spacing: -.03em;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .engine-rule {
+      margin-top: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .rule-line {
+      padding: 10px 12px;
+      border: 1px solid rgba(56,189,248,.22);
+      background: rgba(56,189,248,.06);
+      color: var(--soft);
+      border-radius: 14px;
+      font-size: .92rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid-2 {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid-3 {
+      display: grid;
+      gap: 14px;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, .78);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: 0 12px 38px rgba(0,0,0,.18);
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      letter-spacing: -.01em;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.45;
+      margin: 8px 0 0;
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn .18s ease-out;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: .4; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    label {
+      display: block;
+      color: var(--soft);
+      font-size: .82rem;
+      margin: 10px 0 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: rgba(2, 6, 23, .58);
+      color: var(--text);
+      border-radius: 13px;
+      padding: 12px 12px;
+      outline: none;
+      min-height: 45px;
+    }
+
+    textarea { min-height: 82px; resize: vertical; }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(56,189,248,.7);
+      box-shadow: 0 0 0 3px rgba(56,189,248,.1);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: #04111d;
+      background: var(--accent);
+      font-weight: 800;
+      cursor: pointer;
+      min-height: 45px;
+      transition: transform .12s ease, opacity .12s ease, box-shadow .12s ease;
+      box-shadow: 0 10px 24px rgba(34,197,94,.18);
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); opacity: .88; }
+
+    .btn.secondary {
+      color: var(--text);
+      background: rgba(31,41,55,.95);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .btn.ghost {
+      color: var(--soft);
+      background: transparent;
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .btn.danger {
+      color: #fff;
+      background: rgba(251,113,133,.85);
+      box-shadow: 0 10px 24px rgba(251,113,133,.15);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .stat {
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: rgba(2,6,23,.42);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.25rem;
+      letter-spacing: -.03em;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: .77rem;
+    }
+
+    .tabs {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      background: rgba(15, 23, 42, .92);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      padding: 7px;
+      gap: 6px;
+    }
+
+    .tab {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 13px;
+      padding: 8px 4px;
+      min-height: 58px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      gap: 2px;
+      font-size: .68rem;
+    }
+
+    .tab span {
+      font-size: 1.05rem;
+      line-height: 1;
+    }
+
+    .tab.active {
+      color: var(--text);
+      border-color: rgba(34,197,94,.3);
+      background: rgba(34,197,94,.11);
+    }
+
+    .room-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .room-item {
+      border: 1px solid var(--border);
+      background: rgba(2,6,23,.36);
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .room-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .room-head strong { font-size: .95rem; }
+    .room-head small { color: var(--muted); display: block; margin-top: 3px; }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .mini {
+      border: 1px solid rgba(148,163,184,.16);
+      background: rgba(15,23,42,.55);
+      padding: 8px;
+      border-radius: 12px;
+    }
+
+    .mini span {
+      display: block;
+      color: var(--muted);
+      font-size: .72rem;
+    }
+
+    .mini b {
+      font-size: .92rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+
+    th, td {
+      border-bottom: 1px solid rgba(148,163,184,.14);
+      text-align: left;
+      padding: 11px 10px;
+      font-size: .86rem;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--soft);
+      background: rgba(31,41,55,.65);
+      font-size: .76rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    td { color: var(--text); }
+    tr:last-child td { border-bottom: 0; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: .72rem;
+      border: 1px solid var(--border);
+      color: var(--soft);
+      background: rgba(15,23,42,.5);
+      white-space: nowrap;
+    }
+
+    .badge.high { border-color: rgba(52,211,153,.35); color: #a7f3d0; background: rgba(52,211,153,.08); }
+    .badge.medium { border-color: rgba(245,158,11,.35); color: #fde68a; background: rgba(245,158,11,.08); }
+    .badge.technical { border-color: rgba(251,113,133,.35); color: #fecdd3; background: rgba(251,113,133,.08); }
+
+    .audit-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .audit-item {
+      border: 1px solid var(--border);
+      background: rgba(2,6,23,.35);
+      border-radius: 15px;
+      padding: 12px;
+    }
+
+    .audit-item h4 {
+      margin: 0 0 6px;
+      font-size: .9rem;
+    }
+
+    .audit-item code {
+      display: block;
+      white-space: pre-wrap;
+      color: #bae6fd;
+      background: rgba(2,6,23,.62);
+      border: 1px solid rgba(56,189,248,.16);
+      border-radius: 12px;
+      padding: 9px;
+      margin-top: 8px;
+      font-size: .78rem;
+      line-height: 1.45;
+    }
+
+    .warnings {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .warning {
+      border: 1px solid rgba(245,158,11,.35);
+      background: rgba(245,158,11,.08);
+      color: #fde68a;
+      border-radius: 13px;
+      padding: 10px;
+      font-size: .84rem;
+    }
+
+    .warning.danger {
+      border-color: rgba(251,113,133,.35);
+      background: rgba(251,113,133,.08);
+      color: #fecdd3;
+    }
+
+    .svg-wrap {
+      width: 100%;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background:
+        linear-gradient(rgba(148,163,184,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,.045) 1px, transparent 1px),
+        rgba(2,6,23,.42);
+      background-size: 22px 22px;
+      min-height: 320px;
+    }
+
+    svg {
+      display: block;
+      min-width: 700px;
+      min-height: 430px;
+    }
+
+    .empty {
+      color: var(--muted);
+      border: 1px dashed rgba(148,163,184,.28);
+      border-radius: 16px;
+      padding: 18px;
+      text-align: center;
+      background: rgba(2,6,23,.25);
+    }
+
+    .toast {
+      position: fixed;
+      left: 14px;
+      right: 14px;
+      bottom: 84px;
+      z-index: 40;
+      display: none;
+      background: rgba(17,24,39,.98);
+      border: 1px solid rgba(34,197,94,.35);
+      color: var(--text);
+      border-radius: 15px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .toast.show { display: block; }
+
+    .module-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .module {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      border: 1px solid var(--border);
+      background: rgba(2,6,23,.28);
+      border-radius: 14px;
+      padding: 11px;
+    }
+
+    .module .icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: rgba(34,197,94,.1);
+      border: 1px solid rgba(34,197,94,.2);
+    }
+
+    .module strong {
+      display: block;
+      font-size: .88rem;
+    }
+
+    .module small {
+      color: var(--muted);
+      line-height: 1.35;
+      display: block;
+      margin-top: 3px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: .8rem;
+      line-height: 1.45;
+      margin-top: 12px;
+    }
+
+    .kbd {
+      display:inline-block;
+      border:1px solid var(--border);
+      border-radius:8px;
+      padding:2px 6px;
+      background:rgba(2,6,23,.55);
+      color:var(--soft);
+      font-size:.76rem;
+    }
+
+    @media (min-width: 760px) {
+      .app { padding: 22px; padding-bottom: 104px; }
+      .topbar { margin: -22px -22px 18px; padding: 18px 22px; }
+      .version-pill { display: inline-flex; }
+      .hero { padding: 24px; }
+      .hero h2 { font-size: 1.8rem; }
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+      .stats { grid-template-columns: repeat(4, 1fr); }
+      .mini-grid { grid-template-columns: repeat(4, 1fr); }
+      .tabs {
+        width: min(760px, calc(100% - 24px));
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 12px;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+      }
+      .toast {
+        width: min(520px, calc(100% - 28px));
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">OF</div>
+        <div>
+          <h1>Obra Fácil Pro</h1>
+          <small>Pacote 01 — Fundação Matemática</small>
+        </div>
+      </div>
+      <div class="version-pill">ObraCalc Engine v1.0.0</div>
+    </header>
+
+    <main>
+      <section id="dashboard" class="section active">
+        <div class="hero">
+          <h2>Motor matemático primeiro. Interface depois.</h2>
+          <p>Esta primeira versão já nasce com núcleo de cálculo, validação, auditoria, níveis de confiança e salvamento local. É a fundação para evoluir depois para planta 2D avançada, orçamento completo, cronograma, PDF, backend e SaaS.</p>
+          <div class="engine-rule">
+            <div class="rule-line">🧮 A matriz matemática calcula.</div>
+            <div class="rule-line">📱 A interface exibe.</div>
+            <div class="rule-line">🤖 A IA futuramente explica e sugere, mas não manda nos cálculos.</div>
+          </div>
+        </div>
+
+        <div class="stats" id="dashboardStats"></div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Base do Pacote 01</h3>
+            <div class="module-list">
+              <div class="module"><div class="icon">📐</div><div><strong>Motor geométrico</strong><small>Área, perímetro, volume, parede, teto, aberturas e rodapé.</small></div></div>
+              <div class="module"><div class="icon">🧱</div><div><strong>Motor de materiais</strong><small>Piso, tinta, blocos e quantidades iniciais com perdas.</small></div></div>
+              <div class="module"><div class="icon">✅</div><div><strong>Validação técnica</strong><small>Alertas para medidas inválidas, dados incompletos e incoerências.</small></div></div>
+              <div class="module"><div class="icon">🔍</div><div><strong>Auditoria de cálculo</strong><small>Mostra de onde saiu cada número, fórmula usada e confiança.</small></div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Próxima evolução natural</h3>
+            <p>Depois deste pacote, o caminho ideal é evoluir em cima da mesma base: orçamento com preços reais, cronograma, PDF, fotos da obra e editor de planta baixa 2D mais avançado.</p>
+            <div class="btn-row">
+              <button class="btn" onclick="UI.go('obra')">Cadastrar obra</button>
+              <button class="btn secondary" onclick="UI.go('comodos')">Adicionar cômodos</button>
+            </div>
+            <p class="footer-note">Aviso: cálculos estruturais como fundação, pilares, vigas e lajes devem ser tratados como apoio inicial e exigem validação técnica profissional.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="obra" class="section">
+        <div class="grid-2">
+          <div class="card">
+            <h3>Cadastro da obra</h3>
+            <label>Nome da obra</label>
+            <input id="projectName" placeholder="Ex: Casa do cliente João" />
+
+            <label>Cliente</label>
+            <input id="clientName" placeholder="Ex: Maria Silva" />
+
+            <div class="grid-2">
+              <div>
+                <label>Largura do terreno (m)</label>
+                <input id="lotWidth" type="number" step="0.01" min="0" placeholder="Ex: 6" />
+              </div>
+              <div>
+                <label>Comprimento do terreno (m)</label>
+                <input id="lotLength" type="number" step="0.01" min="0" placeholder="Ex: 20" />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <label>Altura padrão das paredes (m)</label>
+                <input id="defaultHeight" type="number" step="0.01" min="0" placeholder="Ex: 2.80" />
+              </div>
+              <div>
+                <label>Perfil de perda padrão</label>
+                <select id="lossProfile">
+                  <option value="low">Baixa</option>
+                  <option value="medium" selected>Média</option>
+                  <option value="high">Alta</option>
+                </select>
+              </div>
+            </div>
+
+            <label>Observações</label>
+            <textarea id="projectNotes" placeholder="Ex: obra da base ao acabamento, padrão médio, cliente quer orçamento por etapas..."></textarea>
+
+            <div class="btn-row">
+              <button class="btn" onclick="UI.saveProject()">Salvar obra</button>
+              <button class="btn ghost" onclick="Storage.exportJSON()">Exportar JSON</button>
+              <label class="btn secondary" style="display:inline-flex;align-items:center;justify-content:center;cursor:pointer;margin:0;">
+                Importar JSON
+                <input type="file" accept="application/json" style="display:none" onchange="Storage.importJSON(event)">
+              </label>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Resumo da obra</h3>
+            <div id="projectSummary"></div>
+            <div id="projectWarnings" class="warnings"></div>
+            <p class="footer-note">O terreno e as medidas dos cômodos serão usados pela planta baixa 2D e pela matriz de cálculos.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="comodos" class="section">
+        <div class="grid-2">
+          <div class="card">
+            <h3>Novo cômodo</h3>
+            <label>Nome do cômodo</label>
+            <input id="roomName" placeholder="Ex: Sala, Cozinha, Quarto 1" />
+
+            <div class="grid-2">
+              <div>
+                <label>Largura (m)</label>
+                <input id="roomWidth" type="number" step="0.01" min="0" placeholder="Ex: 3.50" />
+              </div>
+              <div>
+                <label>Comprimento (m)</label>
+                <input id="roomLength" type="number" step="0.01" min="0" placeholder="Ex: 4.00" />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <label>Altura da parede (m)</label>
+                <input id="roomHeight" type="number" step="0.01" min="0" placeholder="Ex: 2.80" />
+              </div>
+              <div>
+                <label>Tipo de uso</label>
+                <select id="roomType">
+                  <option value="social">Sala / Social</option>
+                  <option value="bedroom">Quarto</option>
+                  <option value="kitchen">Cozinha</option>
+                  <option value="bathroom">Banheiro</option>
+                  <option value="service">Área de serviço</option>
+                  <option value="external">Área externa</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <label>Quantidade de portas</label>
+                <input id="doorCount" type="number" step="1" min="0" value="1" />
+              </div>
+              <div>
+                <label>Quantidade de janelas</label>
+                <input id="windowCount" type="number" step="1" min="0" value="1" />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <label>Largura padrão da porta (m)</label>
+                <input id="doorWidth" type="number" step="0.01" min="0" value="0.80" />
+              </div>
+              <div>
+                <label>Altura padrão da porta (m)</label>
+                <input id="doorHeight" type="number" step="0.01" min="0" value="2.10" />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <label>Largura padrão da janela (m)</label>
+                <input id="windowWidth" type="number" step="0.01" min="0" value="1.20" />
+              </div>
+              <div>
+                <label>Altura padrão da janela (m)</label>
+                <input id="windowHeight" type="number" step="0.01" min="0" value="1.00" />
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn" onclick="UI.addRoom()">Adicionar cômodo</button>
+              <button class="btn secondary" onclick="UI.fillSampleRooms()">Adicionar exemplo</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Cômodos cadastrados</h3>
+            <div id="roomsList" class="room-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="calculos" class="section">
+        <div class="grid-2">
+          <div class="card">
+            <h3>Configurações de materiais</h3>
+
+            <div class="grid-2">
+              <div>
+                <label>Rendimento da caixa de piso (m²/caixa)</label>
+                <input id="floorBoxYield" type="number" step="0.01" min="0" value="2.50" />
+              </div>
+              <div>
+                <label>Blocos por m² de parede</label>
+                <input id="blocksPerM2" type="number" step="0.01" min="0" value="12.50" />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <label>Rendimento da tinta (m²/L por demão)</label>
+                <input id="paintYield" type="number" step="0.01" min="0" value="12" />
+              </div>
+              <div>
+                <label>Quantidade de demãos</label>
+                <input id="paintCoats" type="number" step="1" min="1" value="2" />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <label>Perda personalizada de piso (%)</label>
+                <input id="customFloorLoss" type="number" step="1" min="0" placeholder="Opcional" />
+              </div>
+              <div>
+                <label>Perda personalizada de blocos (%)</label>
+                <input id="customBlockLoss" type="number" step="1" min="0" placeholder="Opcional" />
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn" onclick="UI.saveMaterialSettings()">Salvar configurações</button>
+              <button class="btn secondary" onclick="UI.recalculate()">Recalcular</button>
+            </div>
+
+            <p class="footer-note">Esses rendimentos são configuráveis. A matriz foi preparada para trocar fórmulas e consumos sem quebrar a interface.</p>
+          </div>
+
+          <div class="card">
+            <h3>Totais principais</h3>
+            <div id="calculationTotals" class="stats"></div>
+            <div id="calculationWarnings" class="warnings"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Levantamento inicial por cômodo</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Cômodo</th>
+                  <th>Piso</th>
+                  <th>Paredes úteis</th>
+                  <th>Caixas piso</th>
+                  <th>Tinta</th>
+                  <th>Blocos</th>
+                  <th>Confiança</th>
+                </tr>
+              </thead>
+              <tbody id="materialsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="planta" class="section">
+        <div class="grid-2">
+          <div class="card">
+            <h3>Planta baixa 2D inicial</h3>
+            <p>Esta planta ainda é automática e simples. Ela usa os dados reais dos cômodos para desenhar uma base 2D e já prepara o sistema para um editor visual mais avançado.</p>
+            <div class="btn-row">
+              <button class="btn" onclick="UI.renderFloorplan()">Atualizar planta</button>
+              <button class="btn secondary" onclick="UI.go('comodos')">Editar cômodos</button>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Validações da planta</h3>
+            <div id="floorplanWarnings" class="warnings"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="svg-wrap">
+            <svg id="floorplanSvg" viewBox="0 0 900 520" role="img" aria-label="Planta baixa 2D"></svg>
+          </div>
+        </div>
+      </section>
+
+      <section id="auditoria" class="section">
+        <div class="grid-2">
+          <div class="card">
+            <h3>Auditoria dos cálculos</h3>
+            <p>Aqui aparece o rastro dos cálculos feitos pelo ObraCalc Engine: fórmula, valores usados, resultado e nível de confiança.</p>
+            <div class="btn-row">
+              <button class="btn" onclick="UI.recalculate()">Atualizar auditoria</button>
+              <button class="btn secondary" onclick="Audit.clear()">Limpar auditoria</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Registro de fórmulas</h3>
+            <div id="formulaRegistry"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Log de cálculo</h3>
+          <div id="auditList" class="audit-list"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="tabs" aria-label="Navegação principal">
+    <button class="tab active" data-tab="dashboard" onclick="UI.go('dashboard')"><span>🏠</span>Início</button>
+    <button class="tab" data-tab="obra" onclick="UI.go('obra')"><span>🏗️</span>Obra</button>
+    <button class="tab" data-tab="comodos" onclick="UI.go('comodos')"><span>🚪</span>Cômodos</button>
+    <button class="tab" data-tab="calculos" onclick="UI.go('calculos')"><span>🧮</span>Cálculos</button>
+    <button class="tab" data-tab="planta" onclick="UI.go('planta')"><span>📐</span>Planta</button>
+    <button class="tab" data-tab="auditoria" onclick="UI.go('auditoria')"><span>🔍</span>Auditoria</button>
+  </nav>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    /**
+     * ==========================================================
+     * OBRA FÁCIL PRO — PACOTE 01
+     * ObraCalc Engine v1.0.0
+     *
+     * Regra principal:
+     * A matriz matemática calcula.
+     * A interface exibe.
+     * A IA futuramente explica e sugere.
+     * O usuário decide.
+     * ==========================================================
+     */
+
+    const AppInfo = {
+      name: "Obra Fácil Pro",
+      package: "Pacote 01",
+      engine: "ObraCalc Engine",
+      version: "1.0.0"
+    };
+
+    const Confidence = {
+      HIGH: { key: "high", label: "Alta confiança" },
+      MEDIUM: { key: "medium", label: "Média confiança" },
+      TECHNICAL: { key: "technical", label: "Requer validação técnica" }
+    };
+
+    const FormulaRegistry = {
+      formulas: [
+        {
+          id: "geometry.room.area",
+          version: "1.0.0",
+          name: "Área de piso do cômodo",
+          expression: "largura × comprimento",
+          confidence: Confidence.HIGH
+        },
+        {
+          id: "geometry.room.perimeter",
+          version: "1.0.0",
+          name: "Perímetro do cômodo",
+          expression: "2 × (largura + comprimento)",
+          confidence: Confidence.HIGH
+        },
+        {
+          id: "geometry.wall.grossArea",
+          version: "1.0.0",
+          name: "Área bruta de paredes",
+          expression: "perímetro × altura",
+          confidence: Confidence.HIGH
+        },
+        {
+          id: "geometry.wall.netArea",
+          version: "1.0.0",
+          name: "Área útil de paredes",
+          expression: "área bruta de paredes - portas - janelas",
+          confidence: Confidence.HIGH
+        },
+        {
+          id: "materials.floor.boxes",
+          version: "1.0.0",
+          name: "Caixas de piso",
+          expression: "arredondar_para_cima((área × (1 + perda)) ÷ rendimento_da_caixa)",
+          confidence: Confidence.HIGH
+        },
+        {
+          id: "materials.paint.liters",
+          version: "1.0.0",
+          name: "Litros de tinta",
+          expression: "(área útil de paredes × demãos) ÷ rendimento_por_litro",
+          confidence: Confidence.MEDIUM
+        },
+        {
+          id: "materials.blocks.quantity",
+          version: "1.0.0",
+          name: "Quantidade de blocos",
+          expression: "arredondar_para_cima(área útil de paredes × blocos_por_m² × (1 + perda))",
+          confidence: Confidence.MEDIUM
+        }
+      ],
+      get(id) {
+        return this.formulas.find(f => f.id === id);
+      }
+    };
+
+    const State = {
+      project: {
+        name: "",
+        client: "",
+        lotWidth: 6,
+        lotLength: 20,
+        defaultHeight: 2.8,
+        lossProfile: "medium",
+        notes: ""
+      },
+      rooms: [],
+      materialSettings: {
+        floorBoxYield: 2.5,
+        blocksPerM2: 12.5,
+        paintYield: 12,
+        paintCoats: 2,
+        customFloorLoss: null,
+        customBlockLoss: null
+      },
+      audit: []
+    };
+
+    const Round = {
+      to(value, decimals = 2) {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return 0;
+        const factor = Math.pow(10, decimals);
+        return Math.round((n + Number.EPSILON) * factor) / factor;
+      },
+      ceil(value) {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return 0;
+        return Math.ceil(n);
+      }
+    };
+
+    const Units = {
+      percentToFactor(percent) {
+        const n = Number(percent);
+        if (!Number.isFinite(n)) return 0;
+        return n / 100;
+      },
+      m2(value) {
+        return `${Round.to(value, 2)} m²`;
+      },
+      m(value) {
+        return `${Round.to(value, 2)} m`;
+      },
+      m3(value) {
+        return `${Round.to(value, 2)} m³`;
+      },
+      liters(value) {
+        return `${Round.to(value, 1)} L`;
+      },
+      units(value, label = "un.") {
+        return `${Round.to(value, 0)} ${label}`;
+      },
+      money(value) {
+        const n = Number(value) || 0;
+        return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      }
+    };
+
+    const Losses = {
+      profiles: {
+        low: {
+          label: "Baixa",
+          floor: 0.05,
+          paint: 0.05,
+          blocks: 0.05
+        },
+        medium: {
+          label: "Média",
+          floor: 0.10,
+          paint: 0.08,
+          blocks: 0.08
+        },
+        high: {
+          label: "Alta",
+          floor: 0.15,
+          paint: 0.10,
+          blocks: 0.12
+        }
+      },
+      getProfile() {
+        return this.profiles[State.project.lossProfile] || this.profiles.medium;
+      },
+      floorLoss() {
+        const custom = State.materialSettings.customFloorLoss;
+        if (Number.isFinite(custom) && custom >= 0) return custom / 100;
+        return this.getProfile().floor;
+      },
+      blockLoss() {
+        const custom = State.materialSettings.customBlockLoss;
+        if (Number.isFinite(custom) && custom >= 0) return custom / 100;
+        return this.getProfile().blocks;
+      },
+      paintLoss() {
+        return this.getProfile().paint;
+      }
+    };
+
+    const Audit = {
+      add(entry) {
+        const formula = FormulaRegistry.get(entry.formulaId);
+        State.audit.unshift({
+          at: new Date().toISOString(),
+          formulaId: entry.formulaId,
+          formulaName: formula ? formula.name : entry.formulaId,
+          version: formula ? formula.version : "sem versão",
+          expression: formula ? formula.expression : "",
+          confidence: formula ? formula.confidence : Confidence.MEDIUM,
+          context: entry.context || "",
+          steps: entry.steps || "",
+          result: entry.result
+        });
+        State.audit = State.audit.slice(0, 120);
+      },
+      clear() {
+        State.audit = [];
+        Storage.save();
+        UI.renderAll();
+        UI.toast("Auditoria limpa.");
+      }
+    };
+
+    const Validation = {
+      positive(n) {
+        return Number.isFinite(Number(n)) && Number(n) > 0;
+      },
+      nonNegative(n) {
+        return Number.isFinite(Number(n)) && Number(n) >= 0;
+      },
+      projectWarnings() {
+        const warnings = [];
+        const p = State.project;
+
+        if (!p.name) warnings.push({ type: "warning", text: "A obra ainda não tem nome." });
+        if (!this.positive(p.lotWidth) || !this.positive(p.lotLength)) {
+          warnings.push({ type: "danger", text: "As medidas do terreno precisam ser maiores que zero." });
+        }
+        if (!this.positive(p.defaultHeight)) {
+          warnings.push({ type: "danger", text: "A altura padrão das paredes precisa ser maior que zero." });
+        }
+
+        const lotArea = Geometry.area(p.lotWidth, p.lotLength, false);
+        const totalRoomArea = Calculator.totals(false).floorArea;
+        if (lotArea > 0 && totalRoomArea > lotArea) {
+          warnings.push({ type: "danger", text: `A soma das áreas dos cômodos (${Units.m2(totalRoomArea)}) ultrapassa a área do terreno (${Units.m2(lotArea)}).` });
+        }
+
+        return warnings;
+      },
+      roomWarnings(room) {
+        const warnings = [];
+        if (!room.name) warnings.push("Cômodo sem nome.");
+        if (!this.positive(room.width)) warnings.push(`Cômodo "${room.name || "sem nome"}" está sem largura válida.`);
+        if (!this.positive(room.length)) warnings.push(`Cômodo "${room.name || "sem nome"}" está sem comprimento válido.`);
+        if (!this.positive(room.height)) warnings.push(`Cômodo "${room.name || "sem nome"}" está sem altura válida.`);
+
+        const wallArea = Geometry.wallGrossArea(room, false);
+        const openingsArea = Geometry.openingsArea(room, false);
+        if (openingsArea > wallArea && wallArea > 0) {
+          warnings.push(`As portas e janelas de "${room.name}" ocupam área maior que as paredes.`);
+        }
+
+        const shortestWall = Math.min(Number(room.width) || 0, Number(room.length) || 0);
+        if ((Number(room.doorWidth) || 0) > shortestWall && shortestWall > 0) {
+          warnings.push(`A largura da porta de "${room.name}" pode ser maior que uma das paredes.`);
+        }
+
+        if ((Number(room.windowWidth) || 0) > shortestWall && shortestWall > 0) {
+          warnings.push(`A largura da janela de "${room.name}" pode ser maior que uma das paredes.`);
+        }
+
+        return warnings;
+      },
+      allWarnings() {
+        const list = [];
+        State.rooms.forEach(room => {
+          this.roomWarnings(room).forEach(text => list.push({ type: "warning", text }));
+        });
+        return list;
+      }
+    };
+
+    const Geometry = {
+      area(width, length, log = true, context = "Área") {
+        const w = Number(width) || 0;
+        const l = Number(length) || 0;
+        const result = Round.to(w * l, 4);
+
+        if (log) {
+          Audit.add({
+            formulaId: "geometry.room.area",
+            context,
+            steps: `${w} m × ${l} m = ${Round.to(result, 2)} m²`,
+            result: Units.m2(result)
+          });
+        }
+
+        return result;
+      },
+      perimeter(width, length, log = true, context = "Perímetro") {
+        const w = Number(width) || 0;
+        const l = Number(length) || 0;
+        const result = Round.to(2 * (w + l), 4);
+
+        if (log) {
+          Audit.add({
+            formulaId: "geometry.room.perimeter",
+            context,
+            steps: `2 × (${w} m + ${l} m) = ${Round.to(result, 2)} m`,
+            result: Units.m(result)
+          });
+        }
+
+        return result;
+      },
+      wallGrossArea(room, log = true) {
+        const perimeter = this.perimeter(room.width, room.length, false);
+        const height = Number(room.height) || 0;
+        const result = Round.to(perimeter * height, 4);
+
+        if (log) {
+          Audit.add({
+            formulaId: "geometry.wall.grossArea",
+            context: `Cômodo: ${room.name}`,
+            steps: `${Round.to(perimeter, 2)} m de perímetro × ${height} m de altura = ${Round.to(result, 2)} m²`,
+            result: Units.m2(result)
+          });
+        }
+
+        return result;
+      },
+      openingsArea(room, log = false) {
+        const doors = (Number(room.doorCount) || 0) * (Number(room.doorWidth) || 0) * (Number(room.doorHeight) || 0);
+        const windows = (Number(room.windowCount) || 0) * (Number(room.windowWidth) || 0) * (Number(room.windowHeight) || 0);
+        return Round.to(doors + windows, 4);
+      },
+      wallNetArea(room, log = true) {
+        const gross = this.wallGrossArea(room, false);
+        const openings = this.openingsArea(room, false);
+        const result = Math.max(0, Round.to(gross - openings, 4));
+
+        if (log) {
+          Audit.add({
+            formulaId: "geometry.wall.netArea",
+            context: `Cômodo: ${room.name}`,
+            steps: `${Round.to(gross, 2)} m² de paredes - ${Round.to(openings, 2)} m² de portas/janelas = ${Round.to(result, 2)} m²`,
+            result: Units.m2(result)
+          });
+        }
+
+        return result;
+      },
+      volume(width, length, height) {
+        return Round.to((Number(width) || 0) * (Number(length) || 0) * (Number(height) || 0), 4);
+      },
+      baseboard(room) {
+        const p = this.perimeter(room.width, room.length, false);
+        const doorWidthTotal = (Number(room.doorCount) || 0) * (Number(room.doorWidth) || 0);
+        return Math.max(0, Round.to(p - doorWidthTotal, 4));
+      }
+    };
+
+    const Materials = {
+      floor(room) {
+        const area = Geometry.area(room.width, room.length, true, `Piso — ${room.name}`);
+        const loss = Losses.floorLoss();
+        const finalArea = Round.to(area * (1 + loss), 4);
+        const yieldPerBox = Number(State.materialSettings.floorBoxYield) || 1;
+        const boxesRaw = finalArea / yieldPerBox;
+        const boxes = Round.ceil(boxesRaw);
+
+        Audit.add({
+          formulaId: "materials.floor.boxes",
+          context: `Cômodo: ${room.name}`,
+          steps:
+            `Área: ${Round.to(area, 2)} m²\n` +
+            `Perda aplicada: ${Round.to(loss * 100, 1)}%\n` +
+            `Área final: ${Round.to(finalArea, 2)} m²\n` +
+            `Rendimento por caixa: ${yieldPerBox} m²\n` +
+            `Cálculo: ${Round.to(finalArea, 2)} ÷ ${yieldPerBox} = ${Round.to(boxesRaw, 2)}\n` +
+            `Arredondamento de compra: ${boxes} caixas`,
+          result: `${boxes} caixas`
+        });
+
+        return { area, loss, finalArea, yieldPerBox, boxes };
+      },
+      paint(room) {
+        const netWallArea = Geometry.wallNetArea(room, true);
+        const coats = Number(State.materialSettings.paintCoats) || 1;
+        const yieldPerLiter = Number(State.materialSettings.paintYield) || 1;
+        const paintLoss = Losses.paintLoss();
+
+        const paintArea = Round.to(netWallArea * coats, 4);
+        const litersRaw = (paintArea / yieldPerLiter) * (1 + paintLoss);
+        const liters = Round.to(litersRaw, 1);
+
+        Audit.add({
+          formulaId: "materials.paint.liters",
+          context: `Cômodo: ${room.name}`,
+          steps:
+            `Área útil de paredes: ${Round.to(netWallArea, 2)} m²\n` +
+            `Demãos: ${coats}\n` +
+            `Área de pintura considerada: ${Round.to(paintArea, 2)} m²\n` +
+            `Rendimento: ${yieldPerLiter} m²/L por demão\n` +
+            `Perda aplicada: ${Round.to(paintLoss * 100, 1)}%\n` +
+            `Litros: (${Round.to(paintArea, 2)} ÷ ${yieldPerLiter}) × ${Round.to(1 + paintLoss, 2)} = ${liters} L`,
+          result: `${liters} litros`
+        });
+
+        return { netWallArea, paintArea, yieldPerLiter, coats, loss: paintLoss, liters };
+      },
+      blocks(room) {
+        const netWallArea = Geometry.wallNetArea(room, false);
+        const blocksPerM2 = Number(State.materialSettings.blocksPerM2) || 0;
+        const loss = Losses.blockLoss();
+        const raw = netWallArea * blocksPerM2 * (1 + loss);
+        const quantity = Round.ceil(raw);
+
+        Audit.add({
+          formulaId: "materials.blocks.quantity",
+          context: `Cômodo: ${room.name}`,
+          steps:
+            `Área útil de alvenaria: ${Round.to(netWallArea, 2)} m²\n` +
+            `Blocos por m²: ${blocksPerM2}\n` +
+            `Perda aplicada: ${Round.to(loss * 100, 1)}%\n` +
+            `Cálculo: ${Round.to(netWallArea, 2)} × ${blocksPerM2} × ${Round.to(1 + loss, 2)} = ${Round.to(raw, 2)}\n` +
+            `Arredondamento: ${quantity} blocos`,
+          result: `${quantity} blocos`
+        });
+
+        return { netWallArea, blocksPerM2, loss, raw, quantity };
+      }
+    };
+
+    const Calculator = {
+      room(room, log = true) {
+        const floorArea = Geometry.area(room.width, room.length, log, `Área — ${room.name}`);
+        const perimeter = Geometry.perimeter(room.width, room.length, log, `Perímetro — ${room.name}`);
+        const grossWallArea = Geometry.wallGrossArea(room, log);
+        const openingsArea = Geometry.openingsArea(room);
+        const netWallArea = Geometry.wallNetArea(room, log);
+        const ceilingArea = floorArea;
+        const volume = Geometry.volume(room.width, room.length, room.height);
+        const baseboard = Geometry.baseboard(room);
+
+        let floor = null;
+        let paint = null;
+        let blocks = null;
+
+        if (log) {
+          floor = Materials.floor(room);
+          paint = Materials.paint(room);
+          blocks = Materials.blocks(room);
+        } else {
+          const lossFloor = Losses.floorLoss();
+          const floorFinalArea = Round.to(floorArea * (1 + lossFloor), 4);
+          floor = {
+            area: floorArea,
+            loss: lossFloor,
+            finalArea: floorFinalArea,
+            boxes: Round.ceil(floorFinalArea / (Number(State.materialSettings.floorBoxYield) || 1))
+          };
+
+          const paintLoss = Losses.paintLoss();
+          const paintArea = Round.to(netWallArea * (Number(State.materialSettings.paintCoats) || 1), 4);
+          paint = {
+            netWallArea,
+            paintArea,
+            liters: Round.to((paintArea / (Number(State.materialSettings.paintYield) || 1)) * (1 + paintLoss), 1)
+          };
+
+          const blockLoss = Losses.blockLoss();
+          blocks = {
+            quantity: Round.ceil(netWallArea * (Number(State.materialSettings.blocksPerM2) || 0) * (1 + blockLoss))
+          };
+        }
+
+        return {
+          room,
+          floorArea,
+          perimeter,
+          grossWallArea,
+          openingsArea,
+          netWallArea,
+          ceilingArea,
+          volume,
+          baseboard,
+          floor,
+          paint,
+          blocks
+        };
+      },
+      allRooms(log = false) {
+        if (log) State.audit = [];
+        return State.rooms.map(room => this.room(room, log));
+      },
+      totals(log = false) {
+        const rows = this.allRooms(log);
+        return rows.reduce((acc, item) => {
+          acc.floorArea += item.floorArea;
+          acc.netWallArea += item.netWallArea;
+          acc.grossWallArea += item.grossWallArea;
+          acc.openingsArea += item.openingsArea;
+          acc.ceilingArea += item.ceilingArea;
+          acc.volume += item.volume;
+          acc.baseboard += item.baseboard;
+          acc.floorBoxes += item.floor.boxes;
+          acc.paintLiters += item.paint.liters;
+          acc.blocks += item.blocks.quantity;
+          return acc;
+        }, {
+          floorArea: 0,
+          netWallArea: 0,
+          grossWallArea: 0,
+          openingsArea: 0,
+          ceilingArea: 0,
+          volume: 0,
+          baseboard: 0,
+          floorBoxes: 0,
+          paintLiters: 0,
+          blocks: 0
+        });
+      }
+    };
+
+    const Storage = {
+      key: "obra_facil_pro_pacote_01",
+      save() {
+        localStorage.setItem(this.key, JSON.stringify({
+          project: State.project,
+          rooms: State.rooms,
+          materialSettings: State.materialSettings,
+          audit: State.audit
+        }));
+      },
+      load() {
+        try {
+          const raw = localStorage.getItem(this.key);
+          if (!raw) return;
+          const data = JSON.parse(raw);
+          State.project = { ...State.project, ...(data.project || {}) };
+          State.rooms = Array.isArray(data.rooms) ? data.rooms : [];
+          State.materialSettings = { ...State.materialSettings, ...(data.materialSettings || {}) };
+          State.audit = Array.isArray(data.audit) ? data.audit : [];
+        } catch (error) {
+          console.warn("Falha ao carregar dados locais:", error);
+        }
+      },
+      exportJSON() {
+        const data = {
+          app: AppInfo,
+          exportedAt: new Date().toISOString(),
+          project: State.project,
+          rooms: State.rooms,
+          materialSettings: State.materialSettings
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        const safeName = (State.project.name || "obra-facil-pro").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+        a.href = url;
+        a.download = `${safeName || "obra-facil-pro"}-dados.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        UI.toast("Arquivo JSON exportado.");
+      },
+      importJSON(event) {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const data = JSON.parse(reader.result);
+            if (data.project) State.project = { ...State.project, ...data.project };
+            if (Array.isArray(data.rooms)) State.rooms = data.rooms;
+            if (data.materialSettings) State.materialSettings = { ...State.materialSettings, ...data.materialSettings };
+            State.audit = [];
+            this.save();
+            UI.fillForms();
+            UI.renderAll();
+            UI.toast("Dados importados com sucesso.");
+          } catch (error) {
+            UI.toast("Não foi possível importar o arquivo.");
+          }
+        };
+        reader.readAsText(file);
+        event.target.value = "";
+      }
+    };
+
+    const Floorplan = {
+      layout() {
+        const lotW = Number(State.project.lotWidth) || 6;
+        const lotL = Number(State.project.lotLength) || 20;
+
+        const margin = 46;
+        const canvasW = 900;
+        const canvasH = 520;
+        const usableW = canvasW - margin * 2;
+        const usableH = canvasH - margin * 2;
+
+        const scale = Math.min(usableW / lotW, usableH / lotL, 50);
+        const lotPxW = lotW * scale;
+        const lotPxH = lotL * scale;
+        const lotX = (canvasW - lotPxW) / 2;
+        const lotY = (canvasH - lotPxH) / 2;
+
+        const rooms = [];
+        let cursorX = lotX;
+        let cursorY = lotY;
+        let rowHeight = 0;
+
+        State.rooms.forEach(room => {
+          const w = Math.max(1, Number(room.width) || 1) * scale;
+          const h = Math.max(1, Number(room.length) || 1) * scale;
+
+          if (cursorX + w > lotX + lotPxW + 0.01) {
+            cursorX = lotX;
+            cursorY += rowHeight;
+            rowHeight = 0;
+          }
+
+          rooms.push({
+            id: room.id,
+            name: room.name,
+            x: cursorX,
+            y: cursorY,
+            width: w,
+            height: h,
+            realWidth: Number(room.width) || 0,
+            realLength: Number(room.length) || 0,
+            area: Geometry.area(room.width, room.length, false)
+          });
+
+          cursorX += w;
+          rowHeight = Math.max(rowHeight, h);
+        });
+
+        return { canvasW, canvasH, lotX, lotY, lotPxW, lotPxH, lotW, lotL, scale, rooms };
+      },
+      warnings(layout) {
+        const warnings = [];
+        const totalArea = Calculator.totals(false).floorArea;
+        const lotArea = Geometry.area(State.project.lotWidth, State.project.lotLength, false);
+
+        if (!State.rooms.length) {
+          warnings.push({ type: "warning", text: "Adicione cômodos para gerar a planta baixa." });
+        }
+
+        if (lotArea > 0 && totalArea > lotArea) {
+          warnings.push({ type: "danger", text: "A soma das áreas dos cômodos ultrapassa a área do terreno." });
+        }
+
+        const maxBottom = Math.max(0, ...layout.rooms.map(r => r.y + r.height));
+        if (maxBottom > layout.lotY + layout.lotPxH + 0.01) {
+          warnings.push({ type: "danger", text: "A distribuição automática não coube no terreno. No futuro, o editor manual permitirá reposicionar ambientes." });
+        }
+
+        return warnings;
+      }
+    };
+
+    const UI = {
+      qs(id) {
+        return document.getElementById(id);
+      },
+      value(id) {
+        return this.qs(id).value;
+      },
+      number(id, fallback = 0) {
+        const value = Number(this.value(id));
+        return Number.isFinite(value) ? value : fallback;
+      },
+      go(tabId) {
+        document.querySelectorAll(".section").forEach(el => el.classList.remove("active"));
+        document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
+
+        this.qs(tabId).classList.add("active");
+        const tab = document.querySelector(`.tab[data-tab="${tabId}"]`);
+        if (tab) tab.classList.add("active");
+
+        if (tabId === "planta") this.renderFloorplan();
+        if (tabId === "auditoria") this.renderAudit();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      },
+      toast(message) {
+        const el = this.qs("toast");
+        el.textContent = message;
+        el.classList.add("show");
+        clearTimeout(this.toastTimer);
+        this.toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+      },
+      fillForms() {
+        const p = State.project;
+        this.qs("projectName").value = p.name || "";
+        this.qs("clientName").value = p.client || "";
+        this.qs("lotWidth").value = p.lotWidth || "";
+        this.qs("lotLength").value = p.lotLength || "";
+        this.qs("defaultHeight").value = p.defaultHeight || "";
+        this.qs("lossProfile").value = p.lossProfile || "medium";
+        this.qs("projectNotes").value = p.notes || "";
+
+        const m = State.materialSettings;
+        this.qs("floorBoxYield").value = m.floorBoxYield ?? 2.5;
+        this.qs("blocksPerM2").value = m.blocksPerM2 ?? 12.5;
+        this.qs("paintYield").value = m.paintYield ?? 12;
+        this.qs("paintCoats").value = m.paintCoats ?? 2;
+        this.qs("customFloorLoss").value = Number.isFinite(m.customFloorLoss) ? m.customFloorLoss : "";
+        this.qs("customBlockLoss").value = Number.isFinite(m.customBlockLoss) ? m.customBlockLoss : "";
+
+        this.qs("roomHeight").value = p.defaultHeight || 2.8;
+      },
+      saveProject() {
+        State.project = {
+          ...State.project,
+          name: this.value("projectName").trim(),
+          client: this.value("clientName").trim(),
+          lotWidth: this.number("lotWidth", 0),
+          lotLength: this.number("lotLength", 0),
+          defaultHeight: this.number("defaultHeight", 2.8),
+          lossProfile: this.value("lossProfile"),
+          notes: this.value("projectNotes").trim()
+        };
+
+        Storage.save();
+        this.renderAll();
+        this.toast("Obra salva com sucesso.");
+      },
+      saveMaterialSettings() {
+        State.materialSettings = {
+          floorBoxYield: this.number("floorBoxYield", 2.5),
+          blocksPerM2: this.number("blocksPerM2", 12.5),
+          paintYield: this.number("paintYield", 12),
+          paintCoats: this.number("paintCoats", 2),
+          customFloorLoss: this.value("customFloorLoss") === "" ? null : this.number("customFloorLoss", null),
+          customBlockLoss: this.value("customBlockLoss") === "" ? null : this.number("customBlockLoss", null)
+        };
+
+        Storage.save();
+        this.recalculate();
+        this.toast("Configurações salvas.");
+      },
+      addRoom() {
+        const room = {
+          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+          name: this.value("roomName").trim() || `Cômodo ${State.rooms.length + 1}`,
+          type: this.value("roomType"),
+          width: this.number("roomWidth", 0),
+          length: this.number("roomLength", 0),
+          height: this.number("roomHeight", State.project.defaultHeight || 2.8),
+          doorCount: this.number("doorCount", 0),
+          windowCount: this.number("windowCount", 0),
+          doorWidth: this.number("doorWidth", 0.8),
+          doorHeight: this.number("doorHeight", 2.1),
+          windowWidth: this.number("windowWidth", 1.2),
+          windowHeight: this.number("windowHeight", 1)
+        };
+
+        const warnings = Validation.roomWarnings(room);
+        if (warnings.some(w => w.includes("sem largura") || w.includes("sem comprimento") || w.includes("sem altura"))) {
+          this.toast("Verifique largura, comprimento e altura do cômodo.");
+          return;
+        }
+
+        State.rooms.push(room);
+        Storage.save();
+        this.clearRoomForm();
+        this.renderAll();
+        this.toast("Cômodo adicionado.");
+      },
+      clearRoomForm() {
+        this.qs("roomName").value = "";
+        this.qs("roomWidth").value = "";
+        this.qs("roomLength").value = "";
+        this.qs("roomHeight").value = State.project.defaultHeight || 2.8;
+        this.qs("doorCount").value = 1;
+        this.qs("windowCount").value = 1;
+        this.qs("doorWidth").value = 0.8;
+        this.qs("doorHeight").value = 2.1;
+        this.qs("windowWidth").value = 1.2;
+        this.qs("windowHeight").value = 1;
+      },
+      removeRoom(id) {
+        State.rooms = State.rooms.filter(room => room.id !== id);
+        Storage.save();
+        this.renderAll();
+        this.toast("Cômodo removido.");
+      },
+      fillSampleRooms() {
+        const h = State.project.defaultHeight || 2.8;
+        const samples = [
+          { name: "Sala", type: "social", width: 3.5, length: 4.0, height: h, doorCount: 1, windowCount: 1, doorWidth: 0.8, doorHeight: 2.1, windowWidth: 1.5, windowHeight: 1.1 },
+          { name: "Cozinha", type: "kitchen", width: 3.0, length: 3.0, height: h, doorCount: 1, windowCount: 1, doorWidth: 0.8, doorHeight: 2.1, windowWidth: 1.2, windowHeight: 1.0 },
+          { name: "Quarto 1", type: "bedroom", width: 3.0, length: 3.2, height: h, doorCount: 1, windowCount: 1, doorWidth: 0.8, doorHeight: 2.1, windowWidth: 1.2, windowHeight: 1.0 },
+          { name: "Banheiro", type: "bathroom", width: 1.5, length: 2.4, height: h, doorCount: 1, windowCount: 1, doorWidth: 0.7, doorHeight: 2.1, windowWidth: 0.6, windowHeight: 0.6 }
+        ];
+
+        samples.forEach(sample => {
+          State.rooms.push({
+            id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
+            ...sample
+          });
+        });
+
+        Storage.save();
+        this.renderAll();
+        this.toast("Cômodos de exemplo adicionados.");
+      },
+      recalculate() {
+        State.audit = [];
+        Calculator.totals(true);
+        Storage.save();
+        this.renderAll();
+        this.toast("Cálculos atualizados pelo ObraCalc Engine.");
+      },
+      renderAll() {
+        this.renderDashboard();
+        this.renderProject();
+        this.renderRooms();
+        this.renderCalculations();
+        this.renderFloorplan();
+        this.renderAudit();
+      },
+      renderDashboard() {
+        const totals = Calculator.totals(false);
+        const lotArea = Geometry.area(State.project.lotWidth, State.project.lotLength, false);
+
+        this.qs("dashboardStats").innerHTML = `
+          <div class="stat"><strong>${State.rooms.length}</strong><span>Cômodos</span></div>
+          <div class="stat"><strong>${Units.m2(totals.floorArea)}</strong><span>Área cadastrada</span></div>
+          <div class="stat"><strong>${Units.m2(lotArea)}</strong><span>Área do terreno</span></div>
+          <div class="stat"><strong>${Units.units(totals.blocks, "blocos")}</strong><span>Blocos estimados</span></div>
+        `;
+      },
+      renderProject() {
+        const p = State.project;
+        const lotArea = Geometry.area(p.lotWidth, p.lotLength, false);
+        const totals = Calculator.totals(false);
+
+        this.qs("projectSummary").innerHTML = `
+          <div class="stats">
+            <div class="stat"><strong>${p.name || "Sem nome"}</strong><span>Obra</span></div>
+            <div class="stat"><strong>${p.client || "Não informado"}</strong><span>Cliente</span></div>
+            <div class="stat"><strong>${Units.m2(lotArea)}</strong><span>Terreno</span></div>
+            <div class="stat"><strong>${Units.m2(totals.floorArea)}</strong><span>Cômodos</span></div>
+          </div>
+          <p><b>Perfil de perda:</b> ${Losses.getProfile().label}</p>
+          <p><b>Altura padrão:</b> ${Units.m(p.defaultHeight || 0)}</p>
+          <p><b>Observações:</b> ${p.notes ? this.escape(p.notes) : "Nenhuma observação cadastrada."}</p>
+        `;
+
+        this.renderWarnings("projectWarnings", Validation.projectWarnings());
+      },
+      renderRooms() {
+        const list = this.qs("roomsList");
+
+        if (!State.rooms.length) {
+          list.innerHTML = `<div class="empty">Nenhum cômodo cadastrado ainda.</div>`;
+          return;
+        }
+
+        list.innerHTML = State.rooms.map(room => {
+          const calc = Calculator.room(room, false);
+          return `
+            <div class="room-item">
+              <div class="room-head">
+                <div>
+                  <strong>${this.escape(room.name)}</strong>
+                  <small>${Units.m(room.width)} × ${Units.m(room.length)} × ${Units.m(room.height)} altura</small>
+                </div>
+                <button class="btn danger" style="padding:8px 10px; min-height:auto;" onclick="UI.removeRoom('${room.id}')">Remover</button>
+              </div>
+              <div class="mini-grid">
+                <div class="mini"><span>Área</span><b>${Units.m2(calc.floorArea)}</b></div>
+                <div class="mini"><span>Perímetro</span><b>${Units.m(calc.perimeter)}</b></div>
+                <div class="mini"><span>Paredes úteis</span><b>${Units.m2(calc.netWallArea)}</b></div>
+                <div class="mini"><span>Rodapé</span><b>${Units.m(calc.baseboard)}</b></div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      },
+      renderCalculations() {
+        const totals = Calculator.totals(false);
+
+        this.qs("calculationTotals").innerHTML = `
+          <div class="stat"><strong>${Units.m2(totals.floorArea)}</strong><span>Área de piso</span></div>
+          <div class="stat"><strong>${Units.m2(totals.netWallArea)}</strong><span>Paredes úteis</span></div>
+          <div class="stat"><strong>${Units.units(totals.floorBoxes, "caixas")}</strong><span>Piso estimado</span></div>
+          <div class="stat"><strong>${Units.liters(totals.paintLiters)}</strong><span>Tinta estimada</span></div>
+          <div class="stat"><strong>${Units.units(totals.blocks, "blocos")}</strong><span>Blocos</span></div>
+          <div class="stat"><strong>${Units.m(totals.baseboard)}</strong><span>Rodapé</span></div>
+          <div class="stat"><strong>${Units.m2(totals.ceilingArea)}</strong><span>Teto</span></div>
+          <div class="stat"><strong>${Units.m3(totals.volume)}</strong><span>Volume interno</span></div>
+        `;
+
+        const rows = State.rooms.map(room => Calculator.room(room, false));
+        this.qs("materialsTable").innerHTML = rows.length ? rows.map(item => `
+          <tr>
+            <td><b>${this.escape(item.room.name)}</b><br><small>${Units.m(item.room.width)} × ${Units.m(item.room.length)}</small></td>
+            <td>${Units.m2(item.floorArea)}</td>
+            <td>${Units.m2(item.netWallArea)}<br><small>Desconta portas/janelas</small></td>
+            <td>${item.floor.boxes} caixas<br><small>Perda: ${Round.to(item.floor.loss * 100, 1)}%</small></td>
+            <td>${Units.liters(item.paint.liters)}<br><small>${State.materialSettings.paintCoats} demãos</small></td>
+            <td>${item.blocks.quantity} blocos</td>
+            <td>
+              <span class="badge high">Área: alta</span><br><br>
+              <span class="badge medium">Materiais: média</span>
+            </td>
+          </tr>
+        `).join("") : `
+          <tr><td colspan="7">Cadastre cômodos para gerar o levantamento inicial.</td></tr>
+        `;
+
+        this.renderWarnings("calculationWarnings", [
+          ...Validation.projectWarnings(),
+          ...Validation.allWarnings()
+        ]);
+      },
+      renderFloorplan() {
+        const svg = this.qs("floorplanSvg");
+        const layout = Floorplan.layout();
+
+        const roomColors = {
+          social: "#38bdf8",
+          bedroom: "#a78bfa",
+          kitchen: "#f59e0b",
+          bathroom: "#22c55e",
+          service: "#14b8a6",
+          external: "#94a3b8"
+        };
+
+        let html = `
+          <defs>
+            <filter id="roomShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity=".28"/>
+            </filter>
+          </defs>
+          <rect x="0" y="0" width="900" height="520" fill="transparent"/>
+          <rect x="${layout.lotX}" y="${layout.lotY}" width="${layout.lotPxW}" height="${layout.lotPxH}" fill="rgba(15,23,42,.72)" stroke="rgba(34,197,94,.75)" stroke-width="3" rx="8"/>
+          <text x="${layout.lotX + 10}" y="${layout.lotY - 12}" fill="#cbd5e1" font-size="15" font-weight="700">Terreno: ${Round.to(layout.lotW, 2)}m × ${Round.to(layout.lotL, 2)}m</text>
+        `;
+
+        if (!State.rooms.length) {
+          html += `<text x="450" y="270" text-anchor="middle" fill="#94a3b8" font-size="18">Adicione cômodos para gerar a planta baixa</text>`;
+        }
+
+        layout.rooms.forEach(item => {
+          const room = State.rooms.find(r => r.id === item.id);
+          const color = roomColors[room?.type] || "#38bdf8";
+          const outOfLot = item.y + item.height > layout.lotY + layout.lotPxH + 0.01;
+          const fill = outOfLot ? "rgba(251,113,133,.20)" : "rgba(56,189,248,.13)";
+          const stroke = outOfLot ? "rgba(251,113,133,.85)" : color;
+          const labelX = item.x + item.width / 2;
+          const labelY = item.y + item.height / 2;
+
+          html += `
+            <rect x="${item.x}" y="${item.y}" width="${item.width}" height="${item.height}" fill="${fill}" stroke="${stroke}" stroke-width="2" rx="5" filter="url(#roomShadow)"/>
+            <text x="${labelX}" y="${labelY - 10}" text-anchor="middle" fill="#e5e7eb" font-size="13" font-weight="800">${this.escapeSvg(item.name)}</text>
+            <text x="${labelX}" y="${labelY + 8}" text-anchor="middle" fill="#cbd5e1" font-size="11">${Round.to(item.realWidth, 2)}m × ${Round.to(item.realLength, 2)}m</text>
+            <text x="${labelX}" y="${labelY + 24}" text-anchor="middle" fill="#94a3b8" font-size="10">${Round.to(item.area, 2)}m²</text>
+          `;
+        });
+
+        svg.innerHTML = html;
+        this.renderWarnings("floorplanWarnings", Floorplan.warnings(layout));
+      },
+      renderAudit() {
+        this.qs("formulaRegistry").innerHTML = FormulaRegistry.formulas.map(formula => `
+          <div class="module">
+            <div class="icon">ƒ</div>
+            <div>
+              <strong>${formula.name} <span class="kbd">v${formula.version}</span></strong>
+              <small>${formula.expression}</small>
+              <br><br><span class="badge ${formula.confidence.key}">${formula.confidence.label}</span>
+            </div>
+          </div>
+        `).join("");
+
+        const list = this.qs("auditList");
+        if (!State.audit.length) {
+          list.innerHTML = `<div class="empty">Clique em “Atualizar auditoria” para registrar os cálculos detalhados.</div>`;
+          return;
+        }
+
+        list.innerHTML = State.audit.map(item => `
+          <div class="audit-item">
+            <h4>${this.escape(item.formulaName)} <span class="kbd">v${this.escape(item.version)}</span></h4>
+            <span class="badge ${item.confidence.key}">${item.confidence.label}</span>
+            <p><b>Contexto:</b> ${this.escape(item.context)}</p>
+            <p><b>Resultado:</b> ${this.escape(String(item.result))}</p>
+            <code>${this.escape(item.steps)}</code>
+          </div>
+        `).join("");
+      },
+      renderWarnings(containerId, warnings) {
+        const el = this.qs(containerId);
+        if (!warnings || !warnings.length) {
+          el.innerHTML = `<div class="warning" style="border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.08);color:#a7f3d0;">Nenhum alerta importante encontrado.</div>`;
+          return;
+        }
+
+        el.innerHTML = warnings.map(w => `
+          <div class="warning ${w.type === "danger" ? "danger" : ""}">${this.escape(w.text)}</div>
+        `).join("");
+      },
+      escape(text) {
+        return String(text ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      },
+      escapeSvg(text) {
+        return this.escape(text).replace(/&quot;/g, "'");
+      }
+    };
+
+    function boot() {
+      Storage.load();
+      UI.fillForms();
+      UI.renderAll();
+    }
+
+    boot();
+
+    window.UI = UI;
+    window.Storage = Storage;
+    window.Audit = Audit;
+  </script>
+</body>
+</html>
