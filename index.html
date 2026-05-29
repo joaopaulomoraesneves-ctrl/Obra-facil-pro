@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Obra Fácil Pro — Pacote 04</title>
+<title>Obra Fácil Pro — Pacote 05</title>
 <style>
 :root{
   --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--line:rgba(148,163,184,.24);
@@ -35,7 +35,7 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 .row{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.btn,button{border:0;border-radius:13px;padding:11px 13px;min-height:43px;background:var(--ok);color:#04130b;font-weight:850;cursor:pointer}.sec{background:#1f2937;color:var(--txt);border:1px solid var(--line)}.ghost{background:transparent;color:var(--soft);border:1px solid var(--line)}.danger{background:var(--bad);color:white}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0}.stat{background:rgba(2,6,23,.42);border:1px solid var(--line);border-radius:14px;padding:11px}.stat b{font-size:1.08rem;display:block;letter-spacing:-.02em}.stat span{color:var(--mut);font-size:.76rem}
 .page{display:none;animation:f .18s ease-out}.page.on{display:block}@keyframes f{from{opacity:.45;transform:translateY(4px)}to{opacity:1;transform:none}}
-.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(7,1fr);gap:5px;padding:6px;background:rgba(15,23,42,.94);border-top:1px solid var(--line);backdrop-filter:blur(16px)}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(8,1fr);gap:5px;padding:6px;background:rgba(15,23,42,.94);border-top:1px solid var(--line);backdrop-filter:blur(16px)}
 .tabs button{background:transparent;color:var(--mut);border:1px solid transparent;border-radius:13px;min-height:56px;font-size:.66rem;padding:7px 3px}.tabs button span{font-size:1.02rem}.tabs button.on{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.36);color:var(--txt)}
 .room{border:1px solid var(--line);border-radius:15px;padding:11px;margin-top:9px;background:rgba(2,6,23,.34)}.roomHead{display:flex;justify-content:space-between;gap:8px}.mini{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}.mini div{border:1px solid rgba(148,163,184,.16);background:rgba(15,23,42,.5);border-radius:12px;padding:8px}.mini span{display:block;color:var(--mut);font-size:.72rem}
 .table{overflow:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:10px;border-bottom:1px solid rgba(148,163,184,.16);font-size:.86rem;text-align:left;vertical-align:top}th{background:rgba(31,41,55,.74);color:var(--soft);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}tr:last-child td{border-bottom:0}
@@ -45,6 +45,11 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 .empty{border:1px dashed rgba(148,163,184,.28);border-radius:14px;padding:16px;text-align:center;color:var(--mut);background:rgba(2,6,23,.25)}
 .toast{position:fixed;left:14px;right:14px;bottom:84px;display:none;z-index:40;background:#111827;border:1px solid rgba(34,197,94,.36);border-radius:14px;padding:12px;box-shadow:var(--shadow)}.toast.show{display:block}
 .progress{height:8px;border-radius:999px;background:#020617;border:1px solid var(--line);overflow:hidden;min-width:100px}.bar{height:100%;background:linear-gradient(90deg,var(--ok),var(--sky))}
+
+.trackCard{border:1px solid var(--line);border-radius:15px;padding:11px;margin-top:9px;background:rgba(2,6,23,.34)}
+.statusSelect{min-width:130px}.smallInput{min-width:95px}.logItem{border:1px solid var(--line);border-radius:14px;background:rgba(2,6,23,.35);padding:11px;margin-top:9px}.logItem h4{margin-bottom:4px}
+.compareBox{display:grid;grid-template-columns:1fr;gap:10px}.compareBox .stat{margin:0}
+
 
 .reportDoc{background:#f8fafc;color:#0f172a;border-radius:18px;padding:18px;border:1px solid #cbd5e1}
 .reportHead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;border-bottom:2px solid #0f172a;padding-bottom:12px;margin-bottom:14px}
@@ -66,14 +71,14 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 04 — Relatório e PDF</div></div></div>
-    <div class="pill">ObraCalc Engine v1.3.0</div>
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 05 — Acompanhamento da Obra</div></div></div>
+    <div class="pill">ObraCalc Engine v1.4.0</div>
   </header>
 
   <section id="inicio" class="page on">
     <div class="hero">
       <h2>Agora o sistema calcula custo e tempo.</h2>
-      <p class="mut">O Pacote 04 mantém materiais, orçamento e cronograma, adicionando um relatório profissional da obra com resumo técnico, composição de custos, etapas e opção de salvar como PDF pelo navegador.</p>
+      <p class="mut">O Pacote 05 mantém materiais, orçamento, cronograma e relatório, adicionando acompanhamento da execução: status por etapa, progresso geral, diário de obra e comparação entre planejado e realizado.</p>
       <div class="rules">
         <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
         <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
@@ -222,6 +227,56 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   </section>
 
 
+
+  <section id="acompanhamento" class="page">
+    <div class="grid two">
+      <div class="card">
+        <h2>Acompanhamento da execução</h2>
+        <p class="mut">Controle o que está pendente, em andamento ou concluído. Este módulo usa as mesmas etapas do cronograma para comparar plano e execução.</p>
+        <div id="trackingTotals" class="stats"></div>
+        <div id="trackingWarnings"></div>
+      </div>
+      <div class="card">
+        <h2>Diário de obra</h2>
+        <div class="grid two">
+          <div><label>Data</label><input id="logDate" type="date"></div>
+          <div><label>Etapa</label><select id="logStage"></select></div>
+        </div>
+        <label>Registro do dia</label><textarea id="logText" placeholder="Ex: alvenaria do quarto concluída, faltou bloco, cliente pediu alteração..."></textarea>
+        <div class="grid two">
+          <div><label>Custo extra do dia (R$)</label><input id="logExtraCost" type="number" step=".01" value="0"></div>
+          <div><label>Horas/equipe observadas</label><input id="logHours" type="number" step=".5" value="0"></div>
+        </div>
+        <button onclick="UI.addLog()">Adicionar registro</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Etapas da obra — planejado vs executado</h2>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Etapa</th>
+              <th>Planejado</th>
+              <th>Status</th>
+              <th>Progresso</th>
+              <th>Início real</th>
+              <th>Término real</th>
+              <th>Observação</th>
+            </tr>
+          </thead>
+          <tbody id="trackingRows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Registros do diário</h2>
+      <div id="logsList"></div>
+    </div>
+  </section>
+
   <section id="relatorio" class="page">
     <div class="card noPrint">
       <h2>Relatório profissional da obra</h2>
@@ -257,21 +312,23 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   <button data-tab="calculos" onclick="UI.go('calculos')"><span>🧮</span><br>Cálculos</button>
   <button data-tab="orcamento" onclick="UI.go('orcamento')"><span>💰</span><br>Orçamento</button>
   <button data-tab="cronograma" onclick="UI.go('cronograma')"><span>📅</span><br>Prazo</button>
+  <button data-tab="acompanhamento" onclick="UI.go('acompanhamento')"><span>✅</span><br>Execução</button>
   <button data-tab="relatorio" onclick="UI.go('relatorio')"><span>📄</span><br>Relatório</button>
 </nav>
 
 <div id="toast" class="toast"></div>
 
 <script>
-const App={name:"Obra Fácil Pro",package:"Pacote 04",engine:"ObraCalc Engine",version:"1.3.0"};
-const StoreKey="obra_facil_pro_pacote_04";
-const OldKeys=["obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
+const App={name:"Obra Fácil Pro",package:"Pacote 05",engine:"ObraCalc Engine",version:"1.4.0"};
+const StoreKey="obra_facil_pro_pacote_05";
+const OldKeys=["obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
 const State={
   project:{name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
   rooms:[],
   settings:{floorYield:2.5,blocksPerM2:12.5,paintYield:12,paintCoats:2},
   budget:{priceFloorBox:0,pricePaintLiter:0,priceBlock:0,laborPerM2:0,manualLabor:null,extraCosts:0,safetyMargin:10,profitMargin:20,discount:0},
   schedule:{startDate:"",workdaysPerWeek:6,masons:1,helpers:1,complexity:1,scheduleBuffer:10,notes:""},
+  tracking:{stages:{},logs:[]},
   audit:[]
 };
 const Formulas=[
@@ -282,7 +339,8 @@ const Formulas=[
   ["materials.blocks","1.0.0","Quantidade de blocos","parede útil × blocos/m² × perda","Média"],
   ["budget.total","1.1.0","Valor final","materiais + mão de obra + despesas + segurança + lucro - desconto","Média"],
   ["schedule.duration","1.2.0","Prazo por etapa","quantidade ÷ produtividade ajustada por equipe e complexidade","Média"],
-  ["report.summary","1.3.0","Relatório da obra","consolida dados técnicos, financeiros e cronograma","Alta"]
+  ["report.summary","1.3.0","Relatório da obra","consolida dados técnicos, financeiros e cronograma","Alta"],
+  ["tracking.progress","1.4.0","Progresso da obra","média ponderada do avanço informado por etapa","Média"]
 ];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -392,6 +450,58 @@ const Schedule={
   }
 };
 
+
+const Tracking={
+  ensure(){
+    const sc=Schedule.stages(false);
+    sc.rows.forEach(row=>{
+      if(!State.tracking.stages[row.name]){
+        State.tracking.stages[row.name]={status:"pendente",percent:0,actualStart:"",actualEnd:"",note:""};
+      }
+    });
+    Object.keys(State.tracking.stages).forEach(name=>{
+      if(!sc.rows.some(r=>r.name===name))delete State.tracking.stages[name];
+    });
+  },
+  summary(){
+    this.ensure();
+    const sc=Schedule.stages(false);
+    const stages=sc.rows;
+    const totalPlannedDays=sc.totalDays||1;
+    let weighted=0,done=0,inProgress=0,pending=0;
+    stages.forEach(row=>{
+      const data=State.tracking.stages[row.name]||{};
+      const percent=Math.max(0,Math.min(100,Number(data.percent)||0));
+      weighted+=percent*row.days;
+      if(data.status==="concluido")done++;
+      else if(data.status==="andamento")inProgress++;
+      else pending++;
+    });
+    const progress=round(weighted/totalPlannedDays,1);
+    const extraCosts=State.tracking.logs.reduce((a,l)=>a+(Number(l.extraCost)||0),0);
+    const hours=State.tracking.logs.reduce((a,l)=>a+(Number(l.hours)||0),0);
+    return{progress,done,inProgress,pending,total:stages.length,extraCosts,hours};
+  },
+  expectedProgress(){
+    const sc=Schedule.stages(false);
+    if(!sc.start||!sc.end)return 0;
+    const start=new Date(sc.start+"T12:00:00");
+    const now=new Date();
+    const total=Math.max(1,sc.totalDays||1);
+    const elapsed=Math.max(0,Math.ceil((now-start)/(1000*60*60*24)));
+    return Math.max(0,Math.min(100,round((elapsed/total)*100,1)));
+  },
+  warnings(){
+    const s=this.summary(),expected=this.expectedProgress(),w=[];
+    if(!State.rooms.length)w.push(["bad","Cadastre cômodos para acompanhar uma obra real."]);
+    if(s.progress+15<expected)w.push(["bad",`O progresso informado (${s.progress}%) está abaixo do esperado pelo cronograma (${expected}%).`]);
+    if(s.extraCosts>0)w.push(["warn",`Existem custos extras registrados no diário: ${money(s.extraCosts)}.`]);
+    if(!w.length)w.push(["ok","Acompanhamento sem alertas importantes."]);
+    return w;
+  }
+};
+
+
 const Storage={
   save(){localStorage.setItem(StoreKey,JSON.stringify(State))},
   load(){
@@ -433,10 +543,13 @@ const Storage={
       discount:Number(b.discount??b.dsct??State.budget.discount)
     };
     State.schedule={...State.schedule,...(d.schedule||{})};
+    State.tracking={...State.tracking,...(d.tracking||{})};
+    if(!State.tracking.stages)State.tracking.stages={};
+    if(!Array.isArray(State.tracking.logs))State.tracking.logs=[];
   },
   exportJSON(){
     const blob=new Blob([JSON.stringify({app:App,exportedAt:new Date().toISOString(),...State},null,2)],{type:"application/json"});
-    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-04.json";a.click();URL.revokeObjectURL(a.href);
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-05.json";a.click();URL.revokeObjectURL(a.href);
   },
   importJSON(e){
     const f=e.target.files[0];if(!f)return;const rd=new FileReader();
@@ -451,7 +564,7 @@ const UI={
     document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));
     document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
     $(id).classList.add("on");const b=document.querySelector(`[data-tab="${id}"]`);if(b)b.classList.add("on");
-    if(id==="planta")this.renderFloorplan();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
+    if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
     scrollTo({top:0,behavior:"smooth"});
   },
   toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(this.t);this.t=setTimeout(()=>el.classList.remove("show"),2500)},
@@ -481,7 +594,7 @@ const UI={
     [["Sala","social",3.5,4],["Cozinha","kitchen",3,3],["Quarto 1","bedroom",3,3.2],["Banheiro","bathroom",1.5,2.4],["Área serviço","service",1.8,2.2]].forEach(x=>State.rooms.push({id:cryptoRandom(),name:x[0],type:x[1],width:x[2],length:x[3],height:h,doorCount:1,windowCount:1,doorSize:"0.80x2.10",windowSize:"1.20x1.00"}));
     Storage.save();this.renderAll();this.toast("Exemplo adicionado.");
   },
-  renderAll(){this.renderHome();this.renderProject();this.renderRooms();this.renderCalculations();this.renderBudget();this.renderSchedule();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
+  renderAll(){this.renderHome();this.renderProject();this.renderRooms();this.renderCalculations();this.renderBudget();this.renderSchedule();this.renderTracking();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
   stat(items){return items.map(i=>`<div class="stat"><b>${i[0]}</b><span>${i[1]}</span></div>`).join("")},
   renderHome(){
     const t=Calc.totals(false),b=Calc.budget(false),s=Schedule.stages(false),lot=State.project.lotWidth*State.project.lotLength;
@@ -527,8 +640,80 @@ const UI={
     scheduleRows.innerHTML=sc.rows.map(r=>{const pct=Math.min(100,round(r.days/total*100,1));return`<tr><td><b>${r.name}</b></td><td>${r.metric}</td><td>${r.days}</td><td>${fmtDate(r.start)}</td><td>${fmtDate(r.end)}</td><td>${r.dep}</td><td><div class="progress"><div class="bar" style="width:${pct}%"></div></div><small>${pct}% do prazo</small></td></tr>`}).join("");
   },
 
+
+  renderTracking(){
+    Tracking.ensure();
+    const sc=Schedule.stages(false),sum=Tracking.summary(),expected=Tracking.expectedProgress();
+    trackingTotals.innerHTML=this.stat([[sum.progress+"%","Progresso real"],[expected+"%","Progresso esperado"],[sum.done+"/"+sum.total,"Etapas concluídas"],[money(sum.extraCosts),"Custos extras"],[round(sum.hours,1)+" h","Horas registradas"],[sum.inProgress,"Em andamento"]]);
+    trackingWarnings.innerHTML=this.warnings(Tracking.warnings());
+
+    logDate.value=logDate.value||todayISO();
+    logStage.innerHTML=sc.rows.map(r=>`<option value="${esc(r.name)}">${esc(r.name)}</option>`).join("");
+
+    trackingRows.innerHTML=sc.rows.map((row,i)=>{
+      const data=State.tracking.stages[row.name]||{status:"pendente",percent:0,actualStart:"",actualEnd:"",note:""};
+      return `<tr>
+        <td><b>${esc(row.name)}</b><br><span class="mut">${esc(row.metric)}</span></td>
+        <td>${fmtDate(row.start)} até ${fmtDate(row.end)}<br><span class="mut">${row.days} dia(s)</span></td>
+        <td>
+          <select class="statusSelect" onchange="UI.updateStage(${i},'status',this.value)">
+            <option value="pendente" ${data.status==="pendente"?"selected":""}>Pendente</option>
+            <option value="andamento" ${data.status==="andamento"?"selected":""}>Em andamento</option>
+            <option value="concluido" ${data.status==="concluido"?"selected":""}>Concluído</option>
+            <option value="pausado" ${data.status==="pausado"?"selected":""}>Pausado</option>
+          </select>
+        </td>
+        <td><input class="smallInput" type="number" min="0" max="100" step="1" value="${Number(data.percent)||0}" onchange="UI.updateStage(${i},'percent',this.value)">%</td>
+        <td><input class="smallInput" type="date" value="${esc(data.actualStart||"")}" onchange="UI.updateStage(${i},'actualStart',this.value)"></td>
+        <td><input class="smallInput" type="date" value="${esc(data.actualEnd||"")}" onchange="UI.updateStage(${i},'actualEnd',this.value)"></td>
+        <td><textarea style="min-width:180px;min-height:54px" onchange="UI.updateStage(${i},'note',this.value)">${esc(data.note||"")}</textarea></td>
+      </tr>`;
+    }).join("");
+
+    logsList.innerHTML=State.tracking.logs.length?State.tracking.logs.map((log,i)=>`<div class="logItem">
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <div><h4>${fmtDate(log.date)} — ${esc(log.stage)}</h4><div class="mut">Custo extra: ${money(log.extraCost)} | Horas: ${round(log.hours,1)}</div></div>
+        <button class="danger" onclick="UI.removeLog(${i})">Remover</button>
+      </div>
+      <p>${esc(log.text)}</p>
+    </div>`).join(""):`<div class="empty">Nenhum registro diário cadastrado.</div>`;
+  },
+  updateStage(index,field,value){
+    const sc=Schedule.stages(false),row=sc.rows[index];
+    if(!row)return;
+    Tracking.ensure();
+    if(field==="percent")value=Math.max(0,Math.min(100,Number(value)||0));
+    State.tracking.stages[row.name][field]=value;
+    if(field==="status"&&value==="concluido"){
+      State.tracking.stages[row.name].percent=100;
+      if(!State.tracking.stages[row.name].actualEnd)State.tracking.stages[row.name].actualEnd=todayISO();
+    }
+    if(field==="status"&&value==="andamento"&&!State.tracking.stages[row.name].actualStart){
+      State.tracking.stages[row.name].actualStart=todayISO();
+    }
+    Storage.save();
+    this.renderTracking();
+  },
+  addLog(){
+    if(!logText.value.trim()){this.toast("Escreva um registro do diário.");return}
+    State.tracking.logs.unshift({
+      id:cryptoRandom(),
+      date:logDate.value||todayISO(),
+      stage:logStage.value||"Geral",
+      text:logText.value.trim(),
+      extraCost:n("logExtraCost",0),
+      hours:n("logHours",0)
+    });
+    State.tracking.logs=State.tracking.logs.slice(0,120);
+    logText.value="";logExtraCost.value=0;logHours.value=0;
+    Storage.save();this.renderTracking();this.renderReport();this.toast("Registro adicionado ao diário.");
+  },
+  removeLog(index){
+    State.tracking.logs.splice(index,1);
+    Storage.save();this.renderTracking();this.renderReport();this.toast("Registro removido.");
+  },
   renderReport(){
-    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false);
+    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress();
     const areaTerreno=(p.lotWidth||0)*(p.lotLength||0);
     const rowsMaterials=[
       ["Área de piso",`${round(t.area)} m²`,"Base dos cômodos"],
@@ -602,18 +787,39 @@ const UI={
             <tr><td>Equipe</td><td>${State.schedule.masons} pedreiro(s) e ${State.schedule.helpers} ajudante(s)</td></tr>
           </table>
         </div>
+
+        <div class="reportBox">
+          <h3>5. Acompanhamento</h3>
+          <table class="reportTable">
+            <tr><th>Indicador</th><th>Resultado</th></tr>
+            <tr><td>Progresso informado</td><td>${track.progress}%</td></tr>
+            <tr><td>Progresso esperado</td><td>${expected}%</td></tr>
+            <tr><td>Etapas concluídas</td><td>${track.done} de ${track.total}</td></tr>
+            <tr><td>Custos extras registrados</td><td>${money(track.extraCosts)}</td></tr>
+            <tr><td>Horas registradas</td><td>${round(track.hours,1)} h</td></tr>
+          </table>
+        </div>
       </div>
 
       <div class="reportBox" style="margin-top:12px">
-        <h3>5. Etapas da obra</h3>
+        <h3>6. Etapas da obra</h3>
         <table class="reportTable">
           <tr><th>Etapa</th><th>Duração</th><th>Início</th><th>Término</th></tr>
           ${scheduleRows}
         </table>
       </div>
 
+
       <div class="reportBox" style="margin-top:12px">
-        <h3>6. Observações</h3>
+        <h3>7. Últimos registros do diário</h3>
+        <table class="reportTable">
+          <tr><th>Data</th><th>Etapa</th><th>Registro</th><th>Custo extra</th></tr>
+          ${State.tracking.logs.slice(0,6).map(l=>`<tr><td>${fmtDate(l.date)}</td><td>${esc(l.stage)}</td><td>${esc(l.text)}</td><td>${money(l.extraCost)}</td></tr>`).join("")||`<tr><td colspan="4">Nenhum registro diário cadastrado.</td></tr>`}
+        </table>
+      </div>
+
+      <div class="reportBox" style="margin-top:12px">
+        <h3>8. Observações</h3>
         <p>${esc(p.notes||"Nenhuma observação cadastrada.")}</p>
         <p>${esc(State.schedule.notes||"Nenhuma observação específica de cronograma cadastrada.")}</p>
         <div class="reportNote">
@@ -649,7 +855,7 @@ const UI={
     svg.innerHTML=html;
   },
   renderAudit(refresh){
-    if(refresh){Calc.totals(true);Calc.budget(true);Schedule.stages(true);Storage.save()}
+    if(refresh){Calc.totals(true);Calc.budget(true);Schedule.stages(true);Audit.add("tracking.progress","Acompanhamento",`Progresso informado ${Tracking.summary().progress}% versus esperado ${Tracking.expectedProgress()}%`,`${Tracking.summary().progress}%`);Storage.save()}
     formulaBox.innerHTML=Formulas.map(f=>`<div class="audit"><b>${f[2]} <span class="badge">v${f[1]}</span></b><p class="mut">${f[3]}</p><span class="badge ${f[4]==='Alta'?'high':f[4]==='Média'?'mid':'tech'}">${f[4]}</span></div>`).join("");
     auditList.innerHTML=State.audit.length?State.audit.map(a=>`<div class="audit"><h4>${esc(a.formula)}</h4><p><b>Contexto:</b> ${esc(a.context)}</p><p><b>Resultado:</b> ${esc(a.result)}</p><code>${esc(a.steps)}</code></div>`).join(""):`<div class="empty">Clique em “Atualizar auditoria” para gerar o log.</div>`;
   }
