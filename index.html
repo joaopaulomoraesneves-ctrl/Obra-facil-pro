@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Obra Fácil Pro — Pacote 03</title>
+<title>Obra Fácil Pro — Pacote 04</title>
 <style>
 :root{
   --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--line:rgba(148,163,184,.24);
@@ -35,7 +35,7 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 .row{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.btn,button{border:0;border-radius:13px;padding:11px 13px;min-height:43px;background:var(--ok);color:#04130b;font-weight:850;cursor:pointer}.sec{background:#1f2937;color:var(--txt);border:1px solid var(--line)}.ghost{background:transparent;color:var(--soft);border:1px solid var(--line)}.danger{background:var(--bad);color:white}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0}.stat{background:rgba(2,6,23,.42);border:1px solid var(--line);border-radius:14px;padding:11px}.stat b{font-size:1.08rem;display:block;letter-spacing:-.02em}.stat span{color:var(--mut);font-size:.76rem}
 .page{display:none;animation:f .18s ease-out}.page.on{display:block}@keyframes f{from{opacity:.45;transform:translateY(4px)}to{opacity:1;transform:none}}
-.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(6,1fr);gap:5px;padding:6px;background:rgba(15,23,42,.94);border-top:1px solid var(--line);backdrop-filter:blur(16px)}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(7,1fr);gap:5px;padding:6px;background:rgba(15,23,42,.94);border-top:1px solid var(--line);backdrop-filter:blur(16px)}
 .tabs button{background:transparent;color:var(--mut);border:1px solid transparent;border-radius:13px;min-height:56px;font-size:.66rem;padding:7px 3px}.tabs button span{font-size:1.02rem}.tabs button.on{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.36);color:var(--txt)}
 .room{border:1px solid var(--line);border-radius:15px;padding:11px;margin-top:9px;background:rgba(2,6,23,.34)}.roomHead{display:flex;justify-content:space-between;gap:8px}.mini{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}.mini div{border:1px solid rgba(148,163,184,.16);background:rgba(15,23,42,.5);border-radius:12px;padding:8px}.mini span{display:block;color:var(--mut);font-size:.72rem}
 .table{overflow:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:10px;border-bottom:1px solid rgba(148,163,184,.16);font-size:.86rem;text-align:left;vertical-align:top}th{background:rgba(31,41,55,.74);color:var(--soft);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}tr:last-child td{border-bottom:0}
@@ -45,20 +45,35 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 .empty{border:1px dashed rgba(148,163,184,.28);border-radius:14px;padding:16px;text-align:center;color:var(--mut);background:rgba(2,6,23,.25)}
 .toast{position:fixed;left:14px;right:14px;bottom:84px;display:none;z-index:40;background:#111827;border:1px solid rgba(34,197,94,.36);border-radius:14px;padding:12px;box-shadow:var(--shadow)}.toast.show{display:block}
 .progress{height:8px;border-radius:999px;background:#020617;border:1px solid var(--line);overflow:hidden;min-width:100px}.bar{height:100%;background:linear-gradient(90deg,var(--ok),var(--sky))}
-@media(min-width:760px){main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(840px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
+
+.reportDoc{background:#f8fafc;color:#0f172a;border-radius:18px;padding:18px;border:1px solid #cbd5e1}
+.reportHead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;border-bottom:2px solid #0f172a;padding-bottom:12px;margin-bottom:14px}
+.reportHead h2{color:#0f172a}.reportHead p,.reportDoc .mut{color:#475569}.reportGrid{display:grid;grid-template-columns:1fr;gap:12px}.reportBox{background:white;border:1px solid #cbd5e1;border-radius:14px;padding:12px}.reportBox h3{color:#0f172a;border-bottom:1px solid #e2e8f0;padding-bottom:6px}.reportTable{width:100%;border-collapse:collapse;min-width:0}.reportTable th,.reportTable td{color:#0f172a;border-bottom:1px solid #e2e8f0;padding:8px;text-align:left;font-size:.86rem}.reportTable th{background:#e2e8f0;color:#0f172a}.reportNote{border-left:4px solid #f59e0b;background:#fffbeb;color:#78350f;padding:10px;border-radius:10px;margin-top:10px}.signatureArea{display:grid;grid-template-columns:1fr;gap:24px;margin-top:28px}.signatureLine{border-top:1px solid #334155;padding-top:8px;text-align:center;color:#334155}
+@media print{
+  body{background:#fff!important;color:#000!important}
+  .top,.tabs,.noPrint,.toast,main>.page:not(#relatorio){display:none!important}
+  main{max-width:none!important;padding:0!important}
+  #relatorio{display:block!important}
+  #relatorio>.card:first-child{display:none!important}
+  .card{box-shadow:none!important;border:0!important;margin:0!important;padding:0!important;background:#fff!important}
+  .reportDoc{border:0!important;border-radius:0!important;padding:0!important;background:#fff!important;color:#000!important}
+  .reportBox{break-inside:avoid}
+}
+
+@media(min-width:760px){.reportGrid{grid-template-columns:1fr 1fr}.signatureArea{grid-template-columns:1fr 1fr}main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(840px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
 </style>
 </head>
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 03 — Cronograma básico</div></div></div>
-    <div class="pill">ObraCalc Engine v1.2.0</div>
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 04 — Relatório e PDF</div></div></div>
+    <div class="pill">ObraCalc Engine v1.3.0</div>
   </header>
 
   <section id="inicio" class="page on">
     <div class="hero">
       <h2>Agora o sistema calcula custo e tempo.</h2>
-      <p class="mut">O Pacote 03 mantém a matriz matemática e o orçamento do Pacote 02, adicionando o primeiro motor de cronograma com etapas, produtividade, equipe, datas previstas e dependências básicas.</p>
+      <p class="mut">O Pacote 04 mantém materiais, orçamento e cronograma, adicionando um relatório profissional da obra com resumo técnico, composição de custos, etapas e opção de salvar como PDF pelo navegador.</p>
       <div class="rules">
         <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
         <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
@@ -206,6 +221,22 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
     </div>
   </section>
 
+
+  <section id="relatorio" class="page">
+    <div class="card noPrint">
+      <h2>Relatório profissional da obra</h2>
+      <p class="mut">Gere uma visão apresentável para conferir com o cliente: dados da obra, materiais, custos, prazo estimado e observações. Para salvar em PDF, use o botão de imprimir e escolha “Salvar como PDF”.</p>
+      <div class="row">
+        <button onclick="UI.renderReport()">Atualizar relatório</button>
+        <button class="sec" onclick="UI.printReport()">Imprimir / Salvar PDF</button>
+        <button class="ghost" onclick="UI.exportReportHTML()">Exportar relatório HTML</button>
+      </div>
+    </div>
+    <div class="card">
+      <div id="reportDocument" class="reportDoc"></div>
+    </div>
+  </section>
+
   <section id="planta" class="page">
     <div class="card"><h2>Planta baixa 2D automática</h2><p class="mut">A planta ainda é simples, mas já usa os dados reais dos cômodos para alimentar cálculos, orçamento e cronograma.</p><div class="svgbox"><svg id="floorSvg" viewBox="0 0 900 520" role="img"></svg></div></div>
   </section>
@@ -226,14 +257,15 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   <button data-tab="calculos" onclick="UI.go('calculos')"><span>🧮</span><br>Cálculos</button>
   <button data-tab="orcamento" onclick="UI.go('orcamento')"><span>💰</span><br>Orçamento</button>
   <button data-tab="cronograma" onclick="UI.go('cronograma')"><span>📅</span><br>Prazo</button>
+  <button data-tab="relatorio" onclick="UI.go('relatorio')"><span>📄</span><br>Relatório</button>
 </nav>
 
 <div id="toast" class="toast"></div>
 
 <script>
-const App={name:"Obra Fácil Pro",package:"Pacote 03",engine:"ObraCalc Engine",version:"1.2.0"};
-const StoreKey="obra_facil_pro_pacote_03";
-const OldKeys=["obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
+const App={name:"Obra Fácil Pro",package:"Pacote 04",engine:"ObraCalc Engine",version:"1.3.0"};
+const StoreKey="obra_facil_pro_pacote_04";
+const OldKeys=["obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
 const State={
   project:{name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
   rooms:[],
@@ -249,7 +281,8 @@ const Formulas=[
   ["materials.paint","1.0.0","Litros de tinta","(parede útil × demãos ÷ rendimento) × perda","Média"],
   ["materials.blocks","1.0.0","Quantidade de blocos","parede útil × blocos/m² × perda","Média"],
   ["budget.total","1.1.0","Valor final","materiais + mão de obra + despesas + segurança + lucro - desconto","Média"],
-  ["schedule.duration","1.2.0","Prazo por etapa","quantidade ÷ produtividade ajustada por equipe e complexidade","Média"]
+  ["schedule.duration","1.2.0","Prazo por etapa","quantidade ÷ produtividade ajustada por equipe e complexidade","Média"],
+  ["report.summary","1.3.0","Relatório da obra","consolida dados técnicos, financeiros e cronograma","Alta"]
 ];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -403,7 +436,7 @@ const Storage={
   },
   exportJSON(){
     const blob=new Blob([JSON.stringify({app:App,exportedAt:new Date().toISOString(),...State},null,2)],{type:"application/json"});
-    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-03.json";a.click();URL.revokeObjectURL(a.href);
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-04.json";a.click();URL.revokeObjectURL(a.href);
   },
   importJSON(e){
     const f=e.target.files[0];if(!f)return;const rd=new FileReader();
@@ -418,7 +451,7 @@ const UI={
     document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));
     document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
     $(id).classList.add("on");const b=document.querySelector(`[data-tab="${id}"]`);if(b)b.classList.add("on");
-    if(id==="planta")this.renderFloorplan();if(id==="auditoria")this.renderAudit(false);
+    if(id==="planta")this.renderFloorplan();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
     scrollTo({top:0,behavior:"smooth"});
   },
   toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(this.t);this.t=setTimeout(()=>el.classList.remove("show"),2500)},
@@ -448,7 +481,7 @@ const UI={
     [["Sala","social",3.5,4],["Cozinha","kitchen",3,3],["Quarto 1","bedroom",3,3.2],["Banheiro","bathroom",1.5,2.4],["Área serviço","service",1.8,2.2]].forEach(x=>State.rooms.push({id:cryptoRandom(),name:x[0],type:x[1],width:x[2],length:x[3],height:h,doorCount:1,windowCount:1,doorSize:"0.80x2.10",windowSize:"1.20x1.00"}));
     Storage.save();this.renderAll();this.toast("Exemplo adicionado.");
   },
-  renderAll(){this.renderHome();this.renderProject();this.renderRooms();this.renderCalculations();this.renderBudget();this.renderSchedule();this.renderFloorplan();this.renderAudit(false)},
+  renderAll(){this.renderHome();this.renderProject();this.renderRooms();this.renderCalculations();this.renderBudget();this.renderSchedule();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
   stat(items){return items.map(i=>`<div class="stat"><b>${i[0]}</b><span>${i[1]}</span></div>`).join("")},
   renderHome(){
     const t=Calc.totals(false),b=Calc.budget(false),s=Schedule.stages(false),lot=State.project.lotWidth*State.project.lotLength;
@@ -492,6 +525,121 @@ const UI={
     scheduleWarnings.innerHTML=this.warnings(Schedule.warnings());
     const total=sc.totalDays||1,work=Number(State.schedule.workdaysPerWeek)||6;
     scheduleRows.innerHTML=sc.rows.map(r=>{const pct=Math.min(100,round(r.days/total*100,1));return`<tr><td><b>${r.name}</b></td><td>${r.metric}</td><td>${r.days}</td><td>${fmtDate(r.start)}</td><td>${fmtDate(r.end)}</td><td>${r.dep}</td><td><div class="progress"><div class="bar" style="width:${pct}%"></div></div><small>${pct}% do prazo</small></td></tr>`}).join("");
+  },
+
+  renderReport(){
+    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false);
+    const areaTerreno=(p.lotWidth||0)*(p.lotLength||0);
+    const rowsMaterials=[
+      ["Área de piso",`${round(t.area)} m²`,"Base dos cômodos"],
+      ["Paredes úteis",`${round(t.wallNet)} m²`,"Desconta portas e janelas"],
+      ["Caixas de piso",`${t.floorBoxes} caixas`,"Inclui perda configurada"],
+      ["Tinta",`${round(t.paintLiters,1)} L`,"Considera demãos e perda"],
+      ["Blocos/tijolos",`${Math.round(t.blocks)} un.`,"Estimativa inicial"],
+      ["Rodapé",`${round(t.baseboard)} m`,"Perímetro menos portas"]
+    ];
+    const rowsBudget=[
+      ["Materiais",money(b.materials)],
+      ["Mão de obra",money(b.labor)],
+      ["Outras despesas",money(State.budget.extraCosts)],
+      ["Margem de segurança",money(b.safety)],
+      ["Lucro estimado",money(b.profit)],
+      ["Desconto",`- ${money(State.budget.discount)}`],
+      ["Valor final sugerido",money(b.final)],
+      ["Preço por m²",money(b.pricePerM2)]
+    ];
+    const scheduleRows=sc.rows.map(r=>`<tr><td>${esc(r.name)}</td><td>${r.days} dia(s)</td><td>${fmtDate(r.start)}</td><td>${fmtDate(r.end)}</td></tr>`).join("");
+    const materialRows=rowsMaterials.map(r=>`<tr><td>${r[0]}</td><td><b>${r[1]}</b></td><td>${r[2]}</td></tr>`).join("");
+    const budgetRows=rowsBudget.map(r=>`<tr><td>${r[0]}</td><td><b>${r[1]}</b></td></tr>`).join("");
+    $("reportDocument").innerHTML=`
+      <div class="reportHead">
+        <div>
+          <h2>Relatório da Obra</h2>
+          <p>Gerado pelo ${App.name} — ${App.package} — ${new Date().toLocaleDateString("pt-BR")}</p>
+        </div>
+        <div style="text-align:right">
+          <b>${esc(p.name||"Obra sem nome")}</b><br>
+          <span class="mut">Cliente: ${esc(p.client||"Não informado")}</span>
+        </div>
+      </div>
+
+      <div class="reportGrid">
+        <div class="reportBox">
+          <h3>1. Dados gerais</h3>
+          <table class="reportTable">
+            <tr><th>Campo</th><th>Informação</th></tr>
+            <tr><td>Obra</td><td>${esc(p.name||"Não informado")}</td></tr>
+            <tr><td>Cliente</td><td>${esc(p.client||"Não informado")}</td></tr>
+            <tr><td>Terreno</td><td>${round(p.lotWidth)}m × ${round(p.lotLength)}m = ${round(areaTerreno)}m²</td></tr>
+            <tr><td>Área cadastrada</td><td>${round(t.area)}m²</td></tr>
+            <tr><td>Altura padrão</td><td>${round(p.defaultHeight)}m</td></tr>
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>2. Resumo financeiro</h3>
+          <table class="reportTable">
+            <tr><th>Item</th><th>Valor</th></tr>
+            ${budgetRows}
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>3. Levantamento de materiais</h3>
+          <table class="reportTable">
+            <tr><th>Item</th><th>Quantidade</th><th>Origem</th></tr>
+            ${materialRows}
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>4. Prazo estimado</h3>
+          <table class="reportTable">
+            <tr><th>Resumo</th><th>Informação</th></tr>
+            <tr><td>Início previsto</td><td>${fmtDate(sc.start)}</td></tr>
+            <tr><td>Término previsto</td><td>${fmtDate(sc.end)}</td></tr>
+            <tr><td>Duração estimada</td><td>${sc.totalDays} dia(s) úteis/trabalhados</td></tr>
+            <tr><td>Equipe</td><td>${State.schedule.masons} pedreiro(s) e ${State.schedule.helpers} ajudante(s)</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="reportBox" style="margin-top:12px">
+        <h3>5. Etapas da obra</h3>
+        <table class="reportTable">
+          <tr><th>Etapa</th><th>Duração</th><th>Início</th><th>Término</th></tr>
+          ${scheduleRows}
+        </table>
+      </div>
+
+      <div class="reportBox" style="margin-top:12px">
+        <h3>6. Observações</h3>
+        <p>${esc(p.notes||"Nenhuma observação cadastrada.")}</p>
+        <p>${esc(State.schedule.notes||"Nenhuma observação específica de cronograma cadastrada.")}</p>
+        <div class="reportNote">
+          Este relatório é uma estimativa de apoio para levantamento, orçamento e planejamento. Cálculos estruturais, fundação, vigas, pilares, lajes, regularização legal e responsabilidade técnica devem ser validados por profissional habilitado.
+        </div>
+      </div>
+
+      <div class="signatureArea">
+        <div class="signatureLine">Responsável pela obra</div>
+        <div class="signatureLine">Cliente</div>
+      </div>
+    `;
+  },
+  printReport(){
+    this.renderReport();
+    this.toast("Abrindo impressão. Escolha Salvar como PDF no navegador.");
+    setTimeout(()=>window.print(),250);
+  },
+  exportReportHTML(){
+    this.renderReport();
+    const content=$("reportDocument").innerHTML;
+    const file=`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Relatório Obra Fácil Pro</title><style>body{font-family:Arial,sans-serif;background:#f8fafc;color:#0f172a;padding:24px}.reportDoc{max-width:980px;margin:auto}.reportHead{display:flex;justify-content:space-between;border-bottom:2px solid #0f172a;padding-bottom:12px;margin-bottom:14px}.reportGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.reportBox{background:white;border:1px solid #cbd5e1;border-radius:14px;padding:12px;margin-bottom:12px}.reportTable{width:100%;border-collapse:collapse}.reportTable th,.reportTable td{border-bottom:1px solid #e2e8f0;padding:8px;text-align:left}.reportTable th{background:#e2e8f0}.reportNote{border-left:4px solid #f59e0b;background:#fffbeb;padding:10px;border-radius:10px}.signatureArea{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}.signatureLine{border-top:1px solid #334155;padding-top:8px;text-align:center}</style></head><body><div class="reportDoc">${content}</div></body></html>`;
+    const blob=new Blob([file],{type:"text/html"});
+    const a=document.createElement("a");
+    const safe=(State.project.name||"relatorio-obra-facil-pro").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
+    a.href=URL.createObjectURL(blob);a.download=`${safe||"relatorio-obra-facil-pro"}.html`;a.click();URL.revokeObjectURL(a.href);
   },
   renderFloorplan(){
     const svg=$("floorSvg"),lotW=State.project.lotWidth||6,lotL=State.project.lotLength||20,scale=Math.min(810/lotW,430/lotL,50),x0=45,y0=45,lotPxW=lotW*scale,lotPxH=lotL*scale;
