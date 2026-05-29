@@ -1,2294 +1,514 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#111827" />
-  <title>Obra Fácil Pro — Pacote 02</title>
-  <style>
-    :root {
-      --bg: #0f172a;
-      --panel: #111827;
-      --panel-2: #1f2937;
-      --card: #0b1224;
-      --border: rgba(148, 163, 184, .22);
-      --text: #e5e7eb;
-      --muted: #94a3b8;
-      --soft: #cbd5e1;
-      --accent: #22c55e;
-      --accent-2: #38bdf8;
-      --danger: #fb7185;
-      --warning: #f59e0b;
-      --ok: #34d399;
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
-      --radius: 18px;
-      --radius-sm: 12px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(56,189,248,.16), transparent 36%),
-        radial-gradient(circle at top right, rgba(34,197,94,.12), transparent 34%),
-        var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    button, input, select, textarea {
-      font: inherit;
-    }
-
-    .app {
-      width: min(1180px, 100%);
-      margin: 0 auto;
-      padding: 14px;
-      padding-bottom: 94px;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 14px;
-      margin: -14px -14px 14px;
-      background: rgba(15, 23, 42, .82);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background:
-        linear-gradient(135deg, rgba(34,197,94,.95), rgba(56,189,248,.92));
-      display: grid;
-      place-items: center;
-      color: #06111f;
-      font-weight: 900;
-      box-shadow: 0 10px 30px rgba(34,197,94,.2);
-    }
-
-    .brand h1 {
-      font-size: 1.02rem;
-      margin: 0;
-      line-height: 1.1;
-    }
-
-    .brand small {
-      display: block;
-      color: var(--muted);
-      font-size: .74rem;
-      margin-top: 2px;
-    }
-
-    .version-pill {
-      display: none;
-      color: var(--soft);
-      border: 1px solid var(--border);
-      background: rgba(17,24,39,.75);
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size: .78rem;
-      white-space: nowrap;
-    }
-
-    .hero {
-      border: 1px solid var(--border);
-      background: linear-gradient(145deg, rgba(17,24,39,.88), rgba(15,23,42,.74));
-      box-shadow: var(--shadow);
-      border-radius: 24px;
-      padding: 18px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero:after {
-      content: "";
-      position: absolute;
-      width: 220px;
-      height: 220px;
-      border-radius: 999px;
-      background: rgba(34,197,94,.10);
-      right: -90px;
-      top: -110px;
-      filter: blur(2px);
-    }
-
-    .hero h2 {
-      margin: 0 0 8px;
-      font-size: 1.35rem;
-      letter-spacing: -.03em;
-    }
-
-    .hero p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .engine-rule {
-      margin-top: 14px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .rule-line {
-      padding: 10px 12px;
-      border: 1px solid rgba(56,189,248,.22);
-      background: rgba(56,189,248,.06);
-      color: var(--soft);
-      border-radius: 14px;
-      font-size: .92rem;
-    }
-
-    .grid {
-      display: grid;
-      gap: 14px;
-    }
-
-    .grid-2 {
-      display: grid;
-      gap: 14px;
-    }
-
-    .grid-3 {
-      display: grid;
-      gap: 14px;
-    }
-
-    .card {
-      background: rgba(15, 23, 42, .78);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px;
-      box-shadow: 0 12px 38px rgba(0,0,0,.18);
-    }
-
-    .card h3 {
-      margin: 0 0 12px;
-      font-size: 1rem;
-      letter-spacing: -.01em;
-    }
-
-    .card p {
-      color: var(--muted);
-      line-height: 1.45;
-      margin: 8px 0 0;
-    }
-
-    .section {
-      display: none;
-      animation: fadeIn .18s ease-out;
-    }
-
-    .section.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: .4; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    label {
-      display: block;
-      color: var(--soft);
-      font-size: .82rem;
-      margin: 10px 0 6px;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: rgba(2, 6, 23, .58);
-      color: var(--text);
-      border-radius: 13px;
-      padding: 12px 12px;
-      outline: none;
-      min-height: 45px;
-    }
-
-    textarea { min-height: 82px; resize: vertical; }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: rgba(56,189,248,.7);
-      box-shadow: 0 0 0 3px rgba(56,189,248,.1);
-    }
-
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 14px;
-      padding: 12px 14px;
-      color: #04111d;
-      background: var(--accent);
-      font-weight: 800;
-      cursor: pointer;
-      min-height: 45px;
-      transition: transform .12s ease, opacity .12s ease, box-shadow .12s ease;
-      box-shadow: 0 10px 24px rgba(34,197,94,.18);
-    }
-
-    .btn:hover { transform: translateY(-1px); }
-    .btn:active { transform: translateY(0); opacity: .88; }
-
-    .btn.secondary {
-      color: var(--text);
-      background: rgba(31,41,55,.95);
-      border: 1px solid var(--border);
-      box-shadow: none;
-    }
-
-    .btn.ghost {
-      color: var(--soft);
-      background: transparent;
-      border: 1px solid var(--border);
-      box-shadow: none;
-    }
-
-    .btn.danger {
-      color: #fff;
-      background: rgba(251,113,133,.85);
-      box-shadow: 0 10px 24px rgba(251,113,133,.15);
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin: 14px 0;
-    }
-
-    .stat {
-      padding: 13px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: rgba(2,6,23,.42);
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 1.25rem;
-      letter-spacing: -.03em;
-    }
-
-    .stat span {
-      color: var(--muted);
-      font-size: .77rem;
-    }
-
-    .tabs {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 30;
-      background: rgba(15, 23, 42, .92);
-      border-top: 1px solid var(--border);
-      backdrop-filter: blur(18px);
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      padding: 7px;
-      gap: 6px;
-    }
-
-    .tab {
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--muted);
-      border-radius: 13px;
-      padding: 8px 4px;
-      min-height: 58px;
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      gap: 2px;
-      font-size: .68rem;
-    }
-
-    .tab span {
-      font-size: 1.05rem;
-      line-height: 1;
-    }
-
-    .tab.active {
-      color: var(--text);
-      border-color: rgba(34,197,94,.3);
-      background: rgba(34,197,94,.11);
-    }
-
-    .room-list {
-      display: grid;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .room-item {
-      border: 1px solid var(--border);
-      background: rgba(2,6,23,.36);
-      border-radius: 16px;
-      padding: 12px;
-    }
-
-    .room-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
-    }
-
-    .room-head strong { font-size: .95rem; }
-    .room-head small { color: var(--muted); display: block; margin-top: 3px; }
-
-    .mini-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .mini {
-      border: 1px solid rgba(148,163,184,.16);
-      background: rgba(15,23,42,.55);
-      padding: 8px;
-      border-radius: 12px;
-    }
-
-    .mini span {
-      display: block;
-      color: var(--muted);
-      font-size: .72rem;
-    }
-
-    .mini b {
-      font-size: .92rem;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 720px;
-    }
-
-    th, td {
-      border-bottom: 1px solid rgba(148,163,184,.14);
-      text-align: left;
-      padding: 11px 10px;
-      font-size: .86rem;
-      vertical-align: top;
-    }
-
-    th {
-      color: var(--soft);
-      background: rgba(31,41,55,.65);
-      font-size: .76rem;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-
-    td { color: var(--text); }
-    tr:last-child td { border-bottom: 0; }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 5px 8px;
-      border-radius: 999px;
-      font-size: .72rem;
-      border: 1px solid var(--border);
-      color: var(--soft);
-      background: rgba(15,23,42,.5);
-      white-space: nowrap;
-    }
-
-    .badge.high { border-color: rgba(52,211,153,.35); color: #a7f3d0; background: rgba(52,211,153,.08); }
-    .badge.medium { border-color: rgba(245,158,11,.35); color: #fde68a; background: rgba(245,158,11,.08); }
-    .badge.technical { border-color: rgba(251,113,133,.35); color: #fecdd3; background: rgba(251,113,133,.08); }
-
-    .audit-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .audit-item {
-      border: 1px solid var(--border);
-      background: rgba(2,6,23,.35);
-      border-radius: 15px;
-      padding: 12px;
-    }
-
-    .audit-item h4 {
-      margin: 0 0 6px;
-      font-size: .9rem;
-    }
-
-    .audit-item code {
-      display: block;
-      white-space: pre-wrap;
-      color: #bae6fd;
-      background: rgba(2,6,23,.62);
-      border: 1px solid rgba(56,189,248,.16);
-      border-radius: 12px;
-      padding: 9px;
-      margin-top: 8px;
-      font-size: .78rem;
-      line-height: 1.45;
-    }
-
-    .warnings {
-      display: grid;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .warning {
-      border: 1px solid rgba(245,158,11,.35);
-      background: rgba(245,158,11,.08);
-      color: #fde68a;
-      border-radius: 13px;
-      padding: 10px;
-      font-size: .84rem;
-    }
-
-    .warning.danger {
-      border-color: rgba(251,113,133,.35);
-      background: rgba(251,113,133,.08);
-      color: #fecdd3;
-    }
-
-    .svg-wrap {
-      width: 100%;
-      overflow: auto;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background:
-        linear-gradient(rgba(148,163,184,.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148,163,184,.045) 1px, transparent 1px),
-        rgba(2,6,23,.42);
-      background-size: 22px 22px;
-      min-height: 320px;
-    }
-
-    svg {
-      display: block;
-      min-width: 700px;
-      min-height: 430px;
-    }
-
-    .empty {
-      color: var(--muted);
-      border: 1px dashed rgba(148,163,184,.28);
-      border-radius: 16px;
-      padding: 18px;
-      text-align: center;
-      background: rgba(2,6,23,.25);
-    }
-
-    .toast {
-      position: fixed;
-      left: 14px;
-      right: 14px;
-      bottom: 84px;
-      z-index: 40;
-      display: none;
-      background: rgba(17,24,39,.98);
-      border: 1px solid rgba(34,197,94,.35);
-      color: var(--text);
-      border-radius: 15px;
-      padding: 12px 14px;
-      box-shadow: var(--shadow);
-    }
-
-    .toast.show { display: block; }
-
-    .module-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .module {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      border: 1px solid var(--border);
-      background: rgba(2,6,23,.28);
-      border-radius: 14px;
-      padding: 11px;
-    }
-
-    .module .icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 11px;
-      display: grid;
-      place-items: center;
-      background: rgba(34,197,94,.1);
-      border: 1px solid rgba(34,197,94,.2);
-    }
-
-    .module strong {
-      display: block;
-      font-size: .88rem;
-    }
-
-    .module small {
-      color: var(--muted);
-      line-height: 1.35;
-      display: block;
-      margin-top: 3px;
-    }
-
-    .footer-note {
-      color: var(--muted);
-      font-size: .8rem;
-      line-height: 1.45;
-      margin-top: 12px;
-    }
-
-    .kbd {
-      display:inline-block;
-      border:1px solid var(--border);
-      border-radius:8px;
-      padding:2px 6px;
-      background:rgba(2,6,23,.55);
-      color:var(--soft);
-      font-size:.76rem;
-    }
-
-    @media (min-width: 760px) {
-      .app { padding: 22px; padding-bottom: 104px; }
-      .topbar { margin: -22px -22px 18px; padding: 18px 22px; }
-      .version-pill { display: inline-flex; }
-      .hero { padding: 24px; }
-      .hero h2 { font-size: 1.8rem; }
-      .grid-2 { grid-template-columns: 1fr 1fr; }
-      .grid-3 { grid-template-columns: repeat(3, 1fr); }
-      .stats { grid-template-columns: repeat(4, 1fr); }
-      .mini-grid { grid-template-columns: repeat(4, 1fr); }
-      .tabs {
-        width: min(760px, calc(100% - 24px));
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 12px;
-        border: 1px solid var(--border);
-        border-radius: 24px;
-        box-shadow: var(--shadow);
-      }
-      .toast {
-        width: min(520px, calc(100% - 28px));
-        left: 50%;
-        right: auto;
-        transform: translateX(-50%);
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<title>Obra Fácil Pro — Pacote 03</title>
+<style>
+:root{
+  --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--line:rgba(148,163,184,.24);
+  --txt:#e5e7eb;--mut:#94a3b8;--soft:#cbd5e1;--ok:#22c55e;--sky:#38bdf8;
+  --bad:#fb7185;--warn:#f59e0b;--violet:#a78bfa;--shadow:0 18px 55px rgba(0,0,0,.34);
+  --radius:18px
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:radial-gradient(circle at 5% 0%,rgba(56,189,248,.16),transparent 34%),
+             radial-gradient(circle at 95% 0%,rgba(34,197,94,.13),transparent 34%),var(--bg);
+  color:var(--txt);min-height:100vh
+}
+button,input,select,textarea{font:inherit}
+main{max-width:1180px;margin:auto;padding:14px 14px 98px}
+.top{position:sticky;top:0;z-index:10;margin:-14px -14px 14px;padding:14px;background:rgba(15,23,42,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.brand{display:flex;gap:10px;align-items:center}
+.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--ok),var(--sky));color:#06111f;display:grid;place-items:center;font-weight:900;box-shadow:0 10px 28px rgba(34,197,94,.18)}
+h1,h2,h3,h4{margin:0 0 8px}h1{font-size:1.04rem}.mut{color:var(--mut);line-height:1.45}.pill{border:1px solid var(--line);background:#111827cc;border-radius:999px;padding:7px 10px;color:var(--soft);font-size:.78rem;white-space:nowrap;display:none}
+.card{background:rgba(17,24,39,.84);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin:0 0 14px;box-shadow:var(--shadow)}
+.hero{background:linear-gradient(145deg,rgba(17,24,39,.94),rgba(15,23,42,.74));border:1px solid var(--line);border-radius:24px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.hero h2{font-size:1.32rem;letter-spacing:-.03em}.rules{display:grid;gap:8px;margin-top:12px}.rule{border:1px solid rgba(56,189,248,.23);background:rgba(56,189,248,.07);border-radius:14px;padding:10px;color:var(--soft)}
+.grid{display:grid;gap:14px}.two{grid-template-columns:1fr}.three{grid-template-columns:1fr}
+label{display:block;color:var(--soft);font-size:.82rem;margin:10px 0 5px}
+input,select,textarea{width:100%;border:1px solid var(--line);background:rgba(2,6,23,.58);color:var(--txt);border-radius:13px;padding:11px;outline:none;min-height:44px}
+textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:rgba(56,189,248,.7);box-shadow:0 0 0 3px rgba(56,189,248,.1)}
+.row{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.btn,button{border:0;border-radius:13px;padding:11px 13px;min-height:43px;background:var(--ok);color:#04130b;font-weight:850;cursor:pointer}.sec{background:#1f2937;color:var(--txt);border:1px solid var(--line)}.ghost{background:transparent;color:var(--soft);border:1px solid var(--line)}.danger{background:var(--bad);color:white}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0}.stat{background:rgba(2,6,23,.42);border:1px solid var(--line);border-radius:14px;padding:11px}.stat b{font-size:1.08rem;display:block;letter-spacing:-.02em}.stat span{color:var(--mut);font-size:.76rem}
+.page{display:none;animation:f .18s ease-out}.page.on{display:block}@keyframes f{from{opacity:.45;transform:translateY(4px)}to{opacity:1;transform:none}}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(6,1fr);gap:5px;padding:6px;background:rgba(15,23,42,.94);border-top:1px solid var(--line);backdrop-filter:blur(16px)}
+.tabs button{background:transparent;color:var(--mut);border:1px solid transparent;border-radius:13px;min-height:56px;font-size:.66rem;padding:7px 3px}.tabs button span{font-size:1.02rem}.tabs button.on{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.36);color:var(--txt)}
+.room{border:1px solid var(--line);border-radius:15px;padding:11px;margin-top:9px;background:rgba(2,6,23,.34)}.roomHead{display:flex;justify-content:space-between;gap:8px}.mini{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}.mini div{border:1px solid rgba(148,163,184,.16);background:rgba(15,23,42,.5);border-radius:12px;padding:8px}.mini span{display:block;color:var(--mut);font-size:.72rem}
+.table{overflow:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:10px;border-bottom:1px solid rgba(148,163,184,.16);font-size:.86rem;text-align:left;vertical-align:top}th{background:rgba(31,41,55,.74);color:var(--soft);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}tr:last-child td{border-bottom:0}
+.warn{border:1px solid rgba(245,158,11,.38);background:rgba(245,158,11,.08);color:#fde68a;border-radius:13px;padding:9px;margin-top:8px;font-size:.84rem}.warn.bad{border-color:rgba(251,113,133,.35);background:rgba(251,113,133,.08);color:#fecdd3}.warn.ok{border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.08);color:#a7f3d0}
+.badge{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:.72rem;color:var(--soft);background:rgba(15,23,42,.55)}.high{border-color:rgba(52,211,153,.35);color:#a7f3d0;background:rgba(52,211,153,.08)}.mid{border-color:rgba(245,158,11,.35);color:#fde68a;background:rgba(245,158,11,.08)}.tech{border-color:rgba(251,113,133,.35);color:#fecdd3;background:rgba(251,113,133,.08)}
+.svgbox{overflow:auto;border:1px solid var(--line);border-radius:16px;background:linear-gradient(rgba(148,163,184,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.045) 1px,transparent 1px),rgba(2,6,23,.42);background-size:22px 22px}svg{display:block;min-width:720px}.audit{border:1px solid var(--line);border-radius:14px;background:rgba(2,6,23,.35);padding:11px;margin-top:9px}.audit code{display:block;white-space:pre-wrap;background:rgba(2,6,23,.7);border:1px solid rgba(56,189,248,.16);border-radius:12px;color:#bae6fd;padding:9px;font-size:.78rem;margin-top:8px}
+.empty{border:1px dashed rgba(148,163,184,.28);border-radius:14px;padding:16px;text-align:center;color:var(--mut);background:rgba(2,6,23,.25)}
+.toast{position:fixed;left:14px;right:14px;bottom:84px;display:none;z-index:40;background:#111827;border:1px solid rgba(34,197,94,.36);border-radius:14px;padding:12px;box-shadow:var(--shadow)}.toast.show{display:block}
+.progress{height:8px;border-radius:999px;background:#020617;border:1px solid var(--line);overflow:hidden;min-width:100px}.bar{height:100%;background:linear-gradient(90deg,var(--ok),var(--sky))}
+@media(min-width:760px){main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(840px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
+</style>
 </head>
 <body>
-  <div class="app">
-    <header class="topbar">
-      <div class="brand">
-        <div class="logo">OF</div>
-        <div>
-          <h1>Obra Fácil Pro</h1>
-          <small>Pacote 02 — Orçamento Inicial</small>
+<main>
+  <header class="top">
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 03 — Cronograma básico</div></div></div>
+    <div class="pill">ObraCalc Engine v1.2.0</div>
+  </header>
+
+  <section id="inicio" class="page on">
+    <div class="hero">
+      <h2>Agora o sistema calcula custo e tempo.</h2>
+      <p class="mut">O Pacote 03 mantém a matriz matemática e o orçamento do Pacote 02, adicionando o primeiro motor de cronograma com etapas, produtividade, equipe, datas previstas e dependências básicas.</p>
+      <div class="rules">
+        <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
+        <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
+        <div class="rule">⚠️ Fundação, vigas, pilares e lajes ainda exigem validação técnica profissional.</div>
+      </div>
+    </div>
+    <div class="card"><h3>Resumo geral</h3><div id="dash" class="stats"></div><div id="homeWarns"></div></div>
+  </section>
+
+  <section id="obra" class="page">
+    <div class="grid two">
+      <div class="card">
+        <h2>Cadastro da obra</h2>
+        <label>Nome da obra</label><input id="projectName" placeholder="Ex: Casa do cliente João">
+        <label>Cliente</label><input id="clientName" placeholder="Ex: Maria Silva">
+        <div class="grid two">
+          <div><label>Largura do terreno (m)</label><input id="lotWidth" type="number" step=".01"></div>
+          <div><label>Comprimento do terreno (m)</label><input id="lotLength" type="number" step=".01"></div>
+        </div>
+        <div class="grid two">
+          <div><label>Altura padrão (m)</label><input id="defaultHeight" type="number" step=".01"></div>
+          <div><label>Perfil de perda</label><select id="lossProfile"><option value="0.05">Baixa</option><option value="0.10">Média</option><option value="0.15">Alta</option></select></div>
+        </div>
+        <label>Observações</label><textarea id="projectNotes" placeholder="Detalhes da obra, padrão, restrições..."></textarea>
+        <div class="row">
+          <button onclick="UI.saveProject()">Salvar obra</button>
+          <button class="sec" onclick="Storage.exportJSON()">Exportar JSON</button>
+          <label class="btn sec">Importar JSON<input type="file" accept="application/json" hidden onchange="Storage.importJSON(event)"></label>
         </div>
       </div>
-      <div class="version-pill">ObraCalc Engine v1.0.0</div>
-    </header>
+      <div class="card"><h2>Validações</h2><div id="projectWarnings"></div></div>
+    </div>
+  </section>
 
-    <main>
-      <section id="dashboard" class="section active">
-        <div class="hero">
-          <h2>Motor matemático primeiro. Interface depois.</h2>
-          <p>Esta segunda versão mantém o núcleo matemático e adiciona orçamento inicial com preços, mão de obra, margem de segurança, lucro, desconto, custo por m² e auditoria financeira. É a fundação para evoluir depois para cronograma, PDF, backend e SaaS.</p>
-          <div class="engine-rule">
-            <div class="rule-line">🧮 A matriz matemática calcula.</div>
-            <div class="rule-line">📱 A interface exibe.</div>
-            <div class="rule-line">🤖 A IA futuramente explica e sugere, mas não manda nos cálculos.</div>
-          </div>
+  <section id="comodos" class="page">
+    <div class="grid two">
+      <div class="card">
+        <h2>Novo cômodo</h2>
+        <label>Nome</label><input id="roomName" placeholder="Ex: Sala">
+        <div class="grid two">
+          <div><label>Largura (m)</label><input id="roomWidth" type="number" step=".01"></div>
+          <div><label>Comprimento (m)</label><input id="roomLength" type="number" step=".01"></div>
         </div>
-
-        <div class="stats" id="dashboardStats"></div>
-
-        <div class="grid-2">
-          <div class="card">
-            <h3>Base do Pacote 01</h3>
-            <div class="module-list">
-              <div class="module"><div class="icon">📐</div><div><strong>Motor geométrico</strong><small>Área, perímetro, volume, parede, teto, aberturas e rodapé.</small></div></div>
-              <div class="module"><div class="icon">🧱</div><div><strong>Motor de materiais</strong><small>Piso, tinta, blocos e quantidades iniciais com perdas.</small></div></div>
-              <div class="module"><div class="icon">✅</div><div><strong>Validação técnica</strong><small>Alertas para medidas inválidas, dados incompletos e incoerências.</small></div></div>
-              <div class="module"><div class="icon">🔍</div><div><strong>Auditoria de cálculo</strong><small>Mostra de onde saiu cada número, fórmula usada e confiança.</small></div></div>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Próxima evolução natural</h3>
-            <p>Depois deste pacote, o caminho ideal é evoluir o cronograma básico, relatórios em PDF, fotos da obra e um editor de planta baixa 2D mais avançado.</p>
-            <div class="btn-row">
-              <button class="btn" onclick="UI.go('obra')">Cadastrar obra</button>
-              <button class="btn secondary" onclick="UI.go('comodos')">Adicionar cômodos</button>
-            </div>
-            <p class="footer-note">Aviso: cálculos estruturais como fundação, pilares, vigas e lajes devem ser tratados como apoio inicial e exigem validação técnica profissional.</p>
-          </div>
+        <div class="grid two">
+          <div><label>Altura (m)</label><input id="roomHeight" type="number" step=".01"></div>
+          <div><label>Tipo</label><select id="roomType"><option value="social">Sala/social</option><option value="bedroom">Quarto</option><option value="kitchen">Cozinha</option><option value="bathroom">Banheiro</option><option value="service">Serviço</option><option value="external">Externa</option></select></div>
         </div>
-      </section>
-
-      <section id="obra" class="section">
-        <div class="grid-2">
-          <div class="card">
-            <h3>Cadastro da obra</h3>
-            <label>Nome da obra</label>
-            <input id="projectName" placeholder="Ex: Casa do cliente João" />
-
-            <label>Cliente</label>
-            <input id="clientName" placeholder="Ex: Maria Silva" />
-
-            <div class="grid-2">
-              <div>
-                <label>Largura do terreno (m)</label>
-                <input id="lotWidth" type="number" step="0.01" min="0" placeholder="Ex: 6" />
-              </div>
-              <div>
-                <label>Comprimento do terreno (m)</label>
-                <input id="lotLength" type="number" step="0.01" min="0" placeholder="Ex: 20" />
-              </div>
-            </div>
-
-            <div class="grid-2">
-              <div>
-                <label>Altura padrão das paredes (m)</label>
-                <input id="defaultHeight" type="number" step="0.01" min="0" placeholder="Ex: 2.80" />
-              </div>
-              <div>
-                <label>Perfil de perda padrão</label>
-                <select id="lossProfile">
-                  <option value="low">Baixa</option>
-                  <option value="medium" selected>Média</option>
-                  <option value="high">Alta</option>
-                </select>
-              </div>
-            </div>
-
-            <label>Observações</label>
-            <textarea id="projectNotes" placeholder="Ex: obra da base ao acabamento, padrão médio, cliente quer orçamento por etapas..."></textarea>
-
-            <div class="btn-row">
-              <button class="btn" onclick="UI.saveProject()">Salvar obra</button>
-              <button class="btn ghost" onclick="Storage.exportJSON()">Exportar JSON</button>
-              <label class="btn secondary" style="display:inline-flex;align-items:center;justify-content:center;cursor:pointer;margin:0;">
-                Importar JSON
-                <input type="file" accept="application/json" style="display:none" onchange="Storage.importJSON(event)">
-              </label>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Resumo da obra</h3>
-            <div id="projectSummary"></div>
-            <div id="projectWarnings" class="warnings"></div>
-            <p class="footer-note">O terreno e as medidas dos cômodos serão usados pela planta baixa 2D e pela matriz de cálculos.</p>
-          </div>
+        <div class="grid two">
+          <div><label>Portas</label><input id="doorCount" type="number" step="1" min="0" value="1"></div>
+          <div><label>Janelas</label><input id="windowCount" type="number" step="1" min="0" value="1"></div>
         </div>
-      </section>
-
-      <section id="comodos" class="section">
-        <div class="grid-2">
-          <div class="card">
-            <h3>Novo cômodo</h3>
-            <label>Nome do cômodo</label>
-            <input id="roomName" placeholder="Ex: Sala, Cozinha, Quarto 1" />
-
-            <div class="grid-2">
-              <div>
-                <label>Largura (m)</label>
-                <input id="roomWidth" type="number" step="0.01" min="0" placeholder="Ex: 3.50" />
-              </div>
-              <div>
-                <label>Comprimento (m)</label>
-                <input id="roomLength" type="number" step="0.01" min="0" placeholder="Ex: 4.00" />
-              </div>
-            </div>
-
-            <div class="grid-2">
-              <div>
-                <label>Altura da parede (m)</label>
-                <input id="roomHeight" type="number" step="0.01" min="0" placeholder="Ex: 2.80" />
-              </div>
-              <div>
-                <label>Tipo de uso</label>
-                <select id="roomType">
-                  <option value="social">Sala / Social</option>
-                  <option value="bedroom">Quarto</option>
-                  <option value="kitchen">Cozinha</option>
-                  <option value="bathroom">Banheiro</option>
-                  <option value="service">Área de serviço</option>
-                  <option value="external">Área externa</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="grid-2">
-              <div>
-                <label>Quantidade de portas</label>
-                <input id="doorCount" type="number" step="1" min="0" value="1" />
-              </div>
-              <div>
-                <label>Quantidade de janelas</label>
-                <input id="windowCount" type="number" step="1" min="0" value="1" />
-              </div>
-            </div>
-
-            <div class="grid-2">
-              <div>
-                <label>Largura padrão da porta (m)</label>
-                <input id="doorWidth" type="number" step="0.01" min="0" value="0.80" />
-              </div>
-              <div>
-                <label>Altura padrão da porta (m)</label>
-                <input id="doorHeight" type="number" step="0.01" min="0" value="2.10" />
-              </div>
-            </div>
-
-            <div class="grid-2">
-              <div>
-                <label>Largura padrão da janela (m)</label>
-                <input id="windowWidth" type="number" step="0.01" min="0" value="1.20" />
-              </div>
-              <div>
-                <label>Altura padrão da janela (m)</label>
-                <input id="windowHeight" type="number" step="0.01" min="0" value="1.00" />
-              </div>
-            </div>
-
-            <div class="btn-row">
-              <button class="btn" onclick="UI.addRoom()">Adicionar cômodo</button>
-              <button class="btn secondary" onclick="UI.fillSampleRooms()">Adicionar exemplo</button>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Cômodos cadastrados</h3>
-            <div id="roomsList" class="room-list"></div>
-          </div>
+        <div class="grid two">
+          <div><label>Porta L×A</label><input id="doorSize" value="0.80x2.10"></div>
+          <div><label>Janela L×A</label><input id="windowSize" value="1.20x1.00"></div>
         </div>
-      </section>
+        <div class="row"><button onclick="UI.addRoom()">Adicionar</button><button class="sec" onclick="UI.addSamples()">Adicionar exemplo</button></div>
+      </div>
+      <div class="card"><h2>Cômodos cadastrados</h2><div id="roomsList"></div></div>
+    </div>
+  </section>
 
-      <section id="calculos" class="section">
-        <div class="grid-2">
-          <div class="card">
-            <h3>Configurações de materiais</h3>
-
-            <div class="grid-2">
-              <div>
-                <label>Rendimento da caixa de piso (m²/caixa)</label>
-                <input id="floorBoxYield" type="number" step="0.01" min="0" value="2.50" />
-              </div>
-              <div>
-                <label>Blocos por m² de parede</label>
-                <input id="blocksPerM2" type="number" step="0.01" min="0" value="12.50" />
-              </div>
-            </div>
-
-            <div class="grid-2">
-              <div>
-                <label>Rendimento da tinta (m²/L por demão)</label>
-                <input id="paintYield" type="number" step="0.01" min="0" value="12" />
-              </div>
-              <div>
-                <label>Quantidade de demãos</label>
-                <input id="paintCoats" type="number" step="1" min="1" value="2" />
-              </div>
-            </div>
-
-            <div class="grid-2">
-              <div>
-                <label>Perda personalizada de piso (%)</label>
-                <input id="customFloorLoss" type="number" step="1" min="0" placeholder="Opcional" />
-              </div>
-              <div>
-                <label>Perda personalizada de blocos (%)</label>
-                <input id="customBlockLoss" type="number" step="1" min="0" placeholder="Opcional" />
-              </div>
-            </div>
-
-            <div class="btn-row">
-              <button class="btn" onclick="UI.saveMaterialSettings()">Salvar configurações</button>
-              <button class="btn secondary" onclick="UI.recalculate()">Recalcular</button>
-            </div>
-
-            <p class="footer-note">Esses rendimentos são configuráveis. A matriz foi preparada para trocar fórmulas e consumos sem quebrar a interface.</p>
-          </div>
-
-          <div class="card">
-            <h3>Totais principais</h3>
-            <div id="calculationTotals" class="stats"></div>
-            <div id="calculationWarnings" class="warnings"></div>
-          </div>
+  <section id="calculos" class="page">
+    <div class="grid two">
+      <div class="card">
+        <h2>Configurações de materiais</h2>
+        <div class="grid two">
+          <div><label>Rendimento piso (m²/caixa)</label><input id="floorYield" type="number" step=".01"></div>
+          <div><label>Blocos por m²</label><input id="blocksPerM2" type="number" step=".01"></div>
         </div>
-
-        <div class="card">
-          <h3>Levantamento inicial por cômodo</h3>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Cômodo</th>
-                  <th>Piso</th>
-                  <th>Paredes úteis</th>
-                  <th>Caixas piso</th>
-                  <th>Tinta</th>
-                  <th>Blocos</th>
-                  <th>Confiança</th>
-                </tr>
-              </thead>
-              <tbody id="materialsTable"></tbody>
-            </table>
-          </div>
+        <div class="grid two">
+          <div><label>Rendimento tinta (m²/L/demão)</label><input id="paintYield" type="number" step=".01"></div>
+          <div><label>Demãos</label><input id="paintCoats" type="number" step="1"></div>
         </div>
-      </section>
+        <button onclick="UI.saveSettings()">Salvar e recalcular</button>
+      </div>
+      <div class="card"><h2>Totais técnicos</h2><div id="calcTotals" class="stats"></div></div>
+    </div>
+    <div class="card">
+      <h2>Levantamento por cômodo</h2>
+      <div class="table"><table><thead><tr><th>Cômodo</th><th>Piso</th><th>Paredes úteis</th><th>Caixas</th><th>Tinta</th><th>Blocos</th><th>Confiança</th></tr></thead><tbody id="materialsRows"></tbody></table></div>
+    </div>
+  </section>
 
-
-      <section id="orcamento" class="section">
-        <div class="grid-2">
-          <div class="card">
-            <h3>Orçamento inicial</h3>
-            <p>Informe os preços principais para o sistema transformar o levantamento de materiais em custo estimado. Esta ainda é uma base inicial, mas já separa material, mão de obra, despesas, margem de segurança, lucro e desconto.</p>
-
-            <div class="grid-2">
-              <div>
-                <label>Preço da caixa de piso (R$)</label>
-                <input id="priceFloorBox" type="number" step="0.01" min="0" value="55" />
-              </div>
-              <div>
-                <label>Preço da tinta por litro (R$)</label>
-                <input id="pricePaintLiter" type="number" step="0.01" min="0" value="18" />
-              </div>
-            </div>
-
-            <div class="grid-2">
-              <div>
-                <label>Preço do bloco/tijolo por unidade (R$)</label>
-                <input id="priceBlock" type="number" step="0.01" min="0" value="2.20" />
-              </div>
-              <div>
-                <label>Outras despesas (R$)</label>
-                <input id="extraCosts" type="number" step="0.01" min="0" value="0" />
-              </div>
-            </div>
-
-            <div class="grid-2">
-              <div>
-                <label>Modo de mão de obra</label>
-                <select id="laborMode">
-                  <option value="perM2" selected>Por m² construído</option>
-                  <option value="manual">Valor manual</option>
-                </select>
-              </div>
-              <div>
-                <label>Mão de obra por m² (R$)</label>
-                <input id="laborPerM2" type="number" step="0.01" min="0" value="450" />
-              </div>
-            </div>
-
-            <div class="grid-2">
-              <div>
-                <label>Mão de obra manual (R$)</label>
-                <input id="laborManual" type="number" step="0.01" min="0" value="0" />
-              </div>
-              <div>
-                <label>Margem de segurança (%)</label>
-                <input id="safetyMarginPercent" type="number" step="0.1" min="0" value="10" />
-              </div>
-            </div>
-
-            <div class="grid-2">
-              <div>
-                <label>Lucro desejado (%)</label>
-                <input id="profitPercent" type="number" step="0.1" min="0" value="20" />
-              </div>
-              <div>
-                <label>Desconto (%)</label>
-                <input id="discountPercent" type="number" step="0.1" min="0" value="0" />
-              </div>
-            </div>
-
-            <div class="btn-row">
-              <button class="btn" onclick="UI.saveBudgetSettings()">Salvar orçamento</button>
-              <button class="btn secondary" onclick="UI.recalculate()">Recalcular tudo</button>
-            </div>
-            <p class="footer-note">Atenção: os preços são exemplos. Para orçamento real, substitua pelos preços da sua cidade/fornecedor e revise com seu pai antes de passar ao cliente.</p>
-          </div>
-
-          <div class="card">
-            <h3>Resumo financeiro</h3>
-            <div id="budgetTotals" class="stats"></div>
-            <div id="budgetWarnings" class="warnings"></div>
-          </div>
+  <section id="orcamento" class="page">
+    <div class="grid two">
+      <div class="card">
+        <h2>Orçamento inicial</h2>
+        <div class="grid two">
+          <div><label>Preço caixa de piso (R$)</label><input id="priceFloorBox" type="number" step=".01"></div>
+          <div><label>Preço tinta por litro (R$)</label><input id="pricePaintLiter" type="number" step=".01"></div>
         </div>
-
-        <div class="card">
-          <h3>Custos por material</h3>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Item</th>
-                  <th>Quantidade</th>
-                  <th>Preço unitário</th>
-                  <th>Custo</th>
-                  <th>Confiança</th>
-                </tr>
-              </thead>
-              <tbody id="budgetItemsTable"></tbody>
-            </table>
-          </div>
+        <div class="grid two">
+          <div><label>Preço bloco/tijolo (R$)</label><input id="priceBlock" type="number" step=".01"></div>
+          <div><label>Mão de obra por m² (R$)</label><input id="laborPerM2" type="number" step=".01"></div>
         </div>
-      </section>
-
-      <section id="planta" class="section">
-        <div class="grid-2">
-          <div class="card">
-            <h3>Planta baixa 2D inicial</h3>
-            <p>Esta planta ainda é automática e simples. Ela usa os dados reais dos cômodos para desenhar uma base 2D e já prepara o sistema para um editor visual mais avançado.</p>
-            <div class="btn-row">
-              <button class="btn" onclick="UI.renderFloorplan()">Atualizar planta</button>
-              <button class="btn secondary" onclick="UI.go('comodos')">Editar cômodos</button>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Validações da planta</h3>
-            <div id="floorplanWarnings" class="warnings"></div>
-          </div>
+        <div class="grid two">
+          <div><label>Mão de obra manual opcional (R$)</label><input id="manualLabor" type="number" step=".01" placeholder="Se preencher, substitui m²"></div>
+          <div><label>Outras despesas (R$)</label><input id="extraCosts" type="number" step=".01"></div>
         </div>
-
-        <div class="card">
-          <div class="svg-wrap">
-            <svg id="floorplanSvg" viewBox="0 0 900 520" role="img" aria-label="Planta baixa 2D"></svg>
-          </div>
+        <div class="grid two">
+          <div><label>Margem de segurança (%)</label><input id="safetyMargin" type="number" step=".01"></div>
+          <div><label>Lucro desejado (%)</label><input id="profitMargin" type="number" step=".01"></div>
         </div>
-      </section>
+        <label>Desconto final (R$)</label><input id="discount" type="number" step=".01">
+        <button onclick="UI.saveBudget()">Salvar orçamento</button>
+      </div>
+      <div class="card"><h2>Resultado financeiro</h2><div id="budgetTotals" class="stats"></div></div>
+    </div>
+    <div class="card">
+      <h2>Composição do orçamento</h2>
+      <div class="table"><table><thead><tr><th>Item</th><th>Quantidade</th><th>Preço un.</th><th>Total</th><th>Origem</th></tr></thead><tbody id="budgetRows"></tbody></table></div>
+    </div>
+  </section>
 
-      <section id="auditoria" class="section">
-        <div class="grid-2">
-          <div class="card">
-            <h3>Auditoria dos cálculos</h3>
-            <p>Aqui aparece o rastro dos cálculos feitos pelo ObraCalc Engine: fórmula, valores usados, resultado e nível de confiança.</p>
-            <div class="btn-row">
-              <button class="btn" onclick="UI.recalculate()">Atualizar auditoria</button>
-              <button class="btn secondary" onclick="Audit.clear()">Limpar auditoria</button>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Registro de fórmulas</h3>
-            <div id="formulaRegistry"></div>
-          </div>
+  <section id="cronograma" class="page">
+    <div class="grid two">
+      <div class="card">
+        <h2>Motor de cronograma</h2>
+        <div class="grid two">
+          <div><label>Data de início</label><input id="startDate" type="date"></div>
+          <div><label>Dias trabalhados por semana</label><select id="workdaysPerWeek"><option value="5">5 dias</option><option value="6" selected>6 dias</option><option value="7">7 dias</option></select></div>
         </div>
-
-        <div class="card">
-          <h3>Log de cálculo</h3>
-          <div id="auditList" class="audit-list"></div>
+        <div class="grid two">
+          <div><label>Pedreiros</label><input id="masons" type="number" step="1" min="0"></div>
+          <div><label>Ajudantes</label><input id="helpers" type="number" step="1" min="0"></div>
         </div>
-      </section>
-    </main>
-  </div>
-
-  <nav class="tabs" aria-label="Navegação principal">
-    <button class="tab active" data-tab="dashboard" onclick="UI.go('dashboard')"><span>🏠</span>Início</button>
-    <button class="tab" data-tab="obra" onclick="UI.go('obra')"><span>🏗️</span>Obra</button>
-    <button class="tab" data-tab="comodos" onclick="UI.go('comodos')"><span>🚪</span>Cômodos</button>
-    <button class="tab" data-tab="calculos" onclick="UI.go('calculos')"><span>🧮</span>Cálculos</button>
-    <button class="tab" data-tab="orcamento" onclick="UI.go('orcamento')"><span>💰</span>Orçamento</button>
-    <button class="tab" data-tab="planta" onclick="UI.go('planta')"><span>📐</span>Planta</button>
-    <button class="tab" data-tab="auditoria" onclick="UI.go('auditoria')"><span>🔍</span>Auditoria</button>
-  </nav>
-
-  <div id="toast" class="toast"></div>
-
-  <script>
-    /**
-     * ==========================================================
-     * OBRA FÁCIL PRO — PACOTE 02
-     * ObraCalc Engine v1.0.0
-     *
-     * Regra principal:
-     * A matriz matemática calcula.
-     * A interface exibe.
-     * A IA futuramente explica e sugere.
-     * O usuário decide.
-     * ==========================================================
-     */
-
-    const AppInfo = {
-      name: "Obra Fácil Pro",
-      package: "Pacote 02",
-      engine: "ObraCalc Engine",
-      version: "1.0.0"
-    };
-
-    const Confidence = {
-      HIGH: { key: "high", label: "Alta confiança" },
-      MEDIUM: { key: "medium", label: "Média confiança" },
-      TECHNICAL: { key: "technical", label: "Requer validação técnica" }
-    };
-
-    const FormulaRegistry = {
-      formulas: [
-        {
-          id: "geometry.room.area",
-          version: "1.0.0",
-          name: "Área de piso do cômodo",
-          expression: "largura × comprimento",
-          confidence: Confidence.HIGH
-        },
-        {
-          id: "geometry.room.perimeter",
-          version: "1.0.0",
-          name: "Perímetro do cômodo",
-          expression: "2 × (largura + comprimento)",
-          confidence: Confidence.HIGH
-        },
-        {
-          id: "geometry.wall.grossArea",
-          version: "1.0.0",
-          name: "Área bruta de paredes",
-          expression: "perímetro × altura",
-          confidence: Confidence.HIGH
-        },
-        {
-          id: "geometry.wall.netArea",
-          version: "1.0.0",
-          name: "Área útil de paredes",
-          expression: "área bruta de paredes - portas - janelas",
-          confidence: Confidence.HIGH
-        },
-        {
-          id: "materials.floor.boxes",
-          version: "1.0.0",
-          name: "Caixas de piso",
-          expression: "arredondar_para_cima((área × (1 + perda)) ÷ rendimento_da_caixa)",
-          confidence: Confidence.HIGH
-        },
-        {
-          id: "materials.paint.liters",
-          version: "1.0.0",
-          name: "Litros de tinta",
-          expression: "(área útil de paredes × demãos) ÷ rendimento_por_litro",
-          confidence: Confidence.MEDIUM
-        },
-        {
-          id: "materials.blocks.quantity",
-          version: "1.0.0",
-          name: "Quantidade de blocos",
-          expression: "arredondar_para_cima(área útil de paredes × blocos_por_m² × (1 + perda))",
-          confidence: Confidence.MEDIUM
-        },
-        {
-          id: "budget.material.cost",
-          version: "1.0.0",
-          name: "Custo de material",
-          expression: "quantidade × preço_unitário",
-          confidence: Confidence.MEDIUM
-        },
-        {
-          id: "budget.labor.cost",
-          version: "1.0.0",
-          name: "Custo de mão de obra",
-          expression: "área_total × preço_por_m² ou valor_manual",
-          confidence: Confidence.MEDIUM
-        },
-        {
-          id: "budget.total.final",
-          version: "1.0.0",
-          name: "Valor final sugerido",
-          expression: "(materiais + mão_de_obra + despesas + margem_de_segurança) + lucro - desconto",
-          confidence: Confidence.MEDIUM
-        }
-      ],
-      get(id) {
-        return this.formulas.find(f => f.id === id);
-      }
-    };
-
-    const State = {
-      project: {
-        name: "",
-        client: "",
-        lotWidth: 6,
-        lotLength: 20,
-        defaultHeight: 2.8,
-        lossProfile: "medium",
-        notes: ""
-      },
-      rooms: [],
-      materialSettings: {
-        floorBoxYield: 2.5,
-        blocksPerM2: 12.5,
-        paintYield: 12,
-        paintCoats: 2,
-        customFloorLoss: null,
-        customBlockLoss: null
-      },
-      budgetSettings: {
-        priceFloorBox: 55,
-        pricePaintLiter: 18,
-        priceBlock: 2.20,
-        laborMode: "perM2",
-        laborPerM2: 450,
-        laborManual: 0,
-        extraCosts: 0,
-        safetyMarginPercent: 10,
-        profitPercent: 20,
-        discountPercent: 0
-      },
-      audit: []
-    };
-
-    const Round = {
-      to(value, decimals = 2) {
-        const n = Number(value);
-        if (!Number.isFinite(n)) return 0;
-        const factor = Math.pow(10, decimals);
-        return Math.round((n + Number.EPSILON) * factor) / factor;
-      },
-      ceil(value) {
-        const n = Number(value);
-        if (!Number.isFinite(n)) return 0;
-        return Math.ceil(n);
-      }
-    };
-
-    const Units = {
-      percentToFactor(percent) {
-        const n = Number(percent);
-        if (!Number.isFinite(n)) return 0;
-        return n / 100;
-      },
-      m2(value) {
-        return `${Round.to(value, 2)} m²`;
-      },
-      m(value) {
-        return `${Round.to(value, 2)} m`;
-      },
-      m3(value) {
-        return `${Round.to(value, 2)} m³`;
-      },
-      liters(value) {
-        return `${Round.to(value, 1)} L`;
-      },
-      units(value, label = "un.") {
-        return `${Round.to(value, 0)} ${label}`;
-      },
-      money(value) {
-        const n = Number(value) || 0;
-        return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-      }
-    };
-
-    const Losses = {
-      profiles: {
-        low: {
-          label: "Baixa",
-          floor: 0.05,
-          paint: 0.05,
-          blocks: 0.05
-        },
-        medium: {
-          label: "Média",
-          floor: 0.10,
-          paint: 0.08,
-          blocks: 0.08
-        },
-        high: {
-          label: "Alta",
-          floor: 0.15,
-          paint: 0.10,
-          blocks: 0.12
-        }
-      },
-      getProfile() {
-        return this.profiles[State.project.lossProfile] || this.profiles.medium;
-      },
-      floorLoss() {
-        const custom = State.materialSettings.customFloorLoss;
-        if (Number.isFinite(custom) && custom >= 0) return custom / 100;
-        return this.getProfile().floor;
-      },
-      blockLoss() {
-        const custom = State.materialSettings.customBlockLoss;
-        if (Number.isFinite(custom) && custom >= 0) return custom / 100;
-        return this.getProfile().blocks;
-      },
-      paintLoss() {
-        return this.getProfile().paint;
-      }
-    };
-
-    const Audit = {
-      add(entry) {
-        const formula = FormulaRegistry.get(entry.formulaId);
-        State.audit.unshift({
-          at: new Date().toISOString(),
-          formulaId: entry.formulaId,
-          formulaName: formula ? formula.name : entry.formulaId,
-          version: formula ? formula.version : "sem versão",
-          expression: formula ? formula.expression : "",
-          confidence: formula ? formula.confidence : Confidence.MEDIUM,
-          context: entry.context || "",
-          steps: entry.steps || "",
-          result: entry.result
-        });
-        State.audit = State.audit.slice(0, 120);
-      },
-      clear() {
-        State.audit = [];
-        Storage.save();
-        UI.renderAll();
-        UI.toast("Auditoria limpa.");
-      }
-    };
-
-    const Validation = {
-      positive(n) {
-        return Number.isFinite(Number(n)) && Number(n) > 0;
-      },
-      nonNegative(n) {
-        return Number.isFinite(Number(n)) && Number(n) >= 0;
-      },
-      projectWarnings() {
-        const warnings = [];
-        const p = State.project;
-
-        if (!p.name) warnings.push({ type: "warning", text: "A obra ainda não tem nome." });
-        if (!this.positive(p.lotWidth) || !this.positive(p.lotLength)) {
-          warnings.push({ type: "danger", text: "As medidas do terreno precisam ser maiores que zero." });
-        }
-        if (!this.positive(p.defaultHeight)) {
-          warnings.push({ type: "danger", text: "A altura padrão das paredes precisa ser maior que zero." });
-        }
-
-        const lotArea = Geometry.area(p.lotWidth, p.lotLength, false);
-        const totalRoomArea = Calculator.totals(false).floorArea;
-        if (lotArea > 0 && totalRoomArea > lotArea) {
-          warnings.push({ type: "danger", text: `A soma das áreas dos cômodos (${Units.m2(totalRoomArea)}) ultrapassa a área do terreno (${Units.m2(lotArea)}).` });
-        }
-
-        return warnings;
-      },
-      roomWarnings(room) {
-        const warnings = [];
-        if (!room.name) warnings.push("Cômodo sem nome.");
-        if (!this.positive(room.width)) warnings.push(`Cômodo "${room.name || "sem nome"}" está sem largura válida.`);
-        if (!this.positive(room.length)) warnings.push(`Cômodo "${room.name || "sem nome"}" está sem comprimento válido.`);
-        if (!this.positive(room.height)) warnings.push(`Cômodo "${room.name || "sem nome"}" está sem altura válida.`);
-
-        const wallArea = Geometry.wallGrossArea(room, false);
-        const openingsArea = Geometry.openingsArea(room, false);
-        if (openingsArea > wallArea && wallArea > 0) {
-          warnings.push(`As portas e janelas de "${room.name}" ocupam área maior que as paredes.`);
-        }
-
-        const shortestWall = Math.min(Number(room.width) || 0, Number(room.length) || 0);
-        if ((Number(room.doorWidth) || 0) > shortestWall && shortestWall > 0) {
-          warnings.push(`A largura da porta de "${room.name}" pode ser maior que uma das paredes.`);
-        }
-
-        if ((Number(room.windowWidth) || 0) > shortestWall && shortestWall > 0) {
-          warnings.push(`A largura da janela de "${room.name}" pode ser maior que uma das paredes.`);
-        }
-
-        return warnings;
-      },
-      allWarnings() {
-        const list = [];
-        State.rooms.forEach(room => {
-          this.roomWarnings(room).forEach(text => list.push({ type: "warning", text }));
-        });
-        return list;
-      }
-    };
-
-    const Geometry = {
-      area(width, length, log = true, context = "Área") {
-        const w = Number(width) || 0;
-        const l = Number(length) || 0;
-        const result = Round.to(w * l, 4);
-
-        if (log) {
-          Audit.add({
-            formulaId: "geometry.room.area",
-            context,
-            steps: `${w} m × ${l} m = ${Round.to(result, 2)} m²`,
-            result: Units.m2(result)
-          });
-        }
-
-        return result;
-      },
-      perimeter(width, length, log = true, context = "Perímetro") {
-        const w = Number(width) || 0;
-        const l = Number(length) || 0;
-        const result = Round.to(2 * (w + l), 4);
-
-        if (log) {
-          Audit.add({
-            formulaId: "geometry.room.perimeter",
-            context,
-            steps: `2 × (${w} m + ${l} m) = ${Round.to(result, 2)} m`,
-            result: Units.m(result)
-          });
-        }
-
-        return result;
-      },
-      wallGrossArea(room, log = true) {
-        const perimeter = this.perimeter(room.width, room.length, false);
-        const height = Number(room.height) || 0;
-        const result = Round.to(perimeter * height, 4);
-
-        if (log) {
-          Audit.add({
-            formulaId: "geometry.wall.grossArea",
-            context: `Cômodo: ${room.name}`,
-            steps: `${Round.to(perimeter, 2)} m de perímetro × ${height} m de altura = ${Round.to(result, 2)} m²`,
-            result: Units.m2(result)
-          });
-        }
-
-        return result;
-      },
-      openingsArea(room, log = false) {
-        const doors = (Number(room.doorCount) || 0) * (Number(room.doorWidth) || 0) * (Number(room.doorHeight) || 0);
-        const windows = (Number(room.windowCount) || 0) * (Number(room.windowWidth) || 0) * (Number(room.windowHeight) || 0);
-        return Round.to(doors + windows, 4);
-      },
-      wallNetArea(room, log = true) {
-        const gross = this.wallGrossArea(room, false);
-        const openings = this.openingsArea(room, false);
-        const result = Math.max(0, Round.to(gross - openings, 4));
-
-        if (log) {
-          Audit.add({
-            formulaId: "geometry.wall.netArea",
-            context: `Cômodo: ${room.name}`,
-            steps: `${Round.to(gross, 2)} m² de paredes - ${Round.to(openings, 2)} m² de portas/janelas = ${Round.to(result, 2)} m²`,
-            result: Units.m2(result)
-          });
-        }
-
-        return result;
-      },
-      volume(width, length, height) {
-        return Round.to((Number(width) || 0) * (Number(length) || 0) * (Number(height) || 0), 4);
-      },
-      baseboard(room) {
-        const p = this.perimeter(room.width, room.length, false);
-        const doorWidthTotal = (Number(room.doorCount) || 0) * (Number(room.doorWidth) || 0);
-        return Math.max(0, Round.to(p - doorWidthTotal, 4));
-      }
-    };
-
-    const Materials = {
-      floor(room) {
-        const area = Geometry.area(room.width, room.length, true, `Piso — ${room.name}`);
-        const loss = Losses.floorLoss();
-        const finalArea = Round.to(area * (1 + loss), 4);
-        const yieldPerBox = Number(State.materialSettings.floorBoxYield) || 1;
-        const boxesRaw = finalArea / yieldPerBox;
-        const boxes = Round.ceil(boxesRaw);
-
-        Audit.add({
-          formulaId: "materials.floor.boxes",
-          context: `Cômodo: ${room.name}`,
-          steps:
-            `Área: ${Round.to(area, 2)} m²\n` +
-            `Perda aplicada: ${Round.to(loss * 100, 1)}%\n` +
-            `Área final: ${Round.to(finalArea, 2)} m²\n` +
-            `Rendimento por caixa: ${yieldPerBox} m²\n` +
-            `Cálculo: ${Round.to(finalArea, 2)} ÷ ${yieldPerBox} = ${Round.to(boxesRaw, 2)}\n` +
-            `Arredondamento de compra: ${boxes} caixas`,
-          result: `${boxes} caixas`
-        });
-
-        return { area, loss, finalArea, yieldPerBox, boxes };
-      },
-      paint(room) {
-        const netWallArea = Geometry.wallNetArea(room, true);
-        const coats = Number(State.materialSettings.paintCoats) || 1;
-        const yieldPerLiter = Number(State.materialSettings.paintYield) || 1;
-        const paintLoss = Losses.paintLoss();
-
-        const paintArea = Round.to(netWallArea * coats, 4);
-        const litersRaw = (paintArea / yieldPerLiter) * (1 + paintLoss);
-        const liters = Round.to(litersRaw, 1);
-
-        Audit.add({
-          formulaId: "materials.paint.liters",
-          context: `Cômodo: ${room.name}`,
-          steps:
-            `Área útil de paredes: ${Round.to(netWallArea, 2)} m²\n` +
-            `Demãos: ${coats}\n` +
-            `Área de pintura considerada: ${Round.to(paintArea, 2)} m²\n` +
-            `Rendimento: ${yieldPerLiter} m²/L por demão\n` +
-            `Perda aplicada: ${Round.to(paintLoss * 100, 1)}%\n` +
-            `Litros: (${Round.to(paintArea, 2)} ÷ ${yieldPerLiter}) × ${Round.to(1 + paintLoss, 2)} = ${liters} L`,
-          result: `${liters} litros`
-        });
-
-        return { netWallArea, paintArea, yieldPerLiter, coats, loss: paintLoss, liters };
-      },
-      blocks(room) {
-        const netWallArea = Geometry.wallNetArea(room, false);
-        const blocksPerM2 = Number(State.materialSettings.blocksPerM2) || 0;
-        const loss = Losses.blockLoss();
-        const raw = netWallArea * blocksPerM2 * (1 + loss);
-        const quantity = Round.ceil(raw);
-
-        Audit.add({
-          formulaId: "materials.blocks.quantity",
-          context: `Cômodo: ${room.name}`,
-          steps:
-            `Área útil de alvenaria: ${Round.to(netWallArea, 2)} m²\n` +
-            `Blocos por m²: ${blocksPerM2}\n` +
-            `Perda aplicada: ${Round.to(loss * 100, 1)}%\n` +
-            `Cálculo: ${Round.to(netWallArea, 2)} × ${blocksPerM2} × ${Round.to(1 + loss, 2)} = ${Round.to(raw, 2)}\n` +
-            `Arredondamento: ${quantity} blocos`,
-          result: `${quantity} blocos`
-        });
-
-        return { netWallArea, blocksPerM2, loss, raw, quantity };
-      }
-    };
-
-
-    const Budget = {
-      materialItems(totals = Calculator.totals(false)) {
-        const b = State.budgetSettings;
-        return [
-          {
-            key: "floor",
-            name: "Piso",
-            quantity: totals.floorBoxes,
-            unit: "caixas",
-            unitPrice: Number(b.priceFloorBox) || 0,
-            confidence: Confidence.HIGH
-          },
-          {
-            key: "paint",
-            name: "Tinta",
-            quantity: totals.paintLiters,
-            unit: "litros",
-            unitPrice: Number(b.pricePaintLiter) || 0,
-            confidence: Confidence.MEDIUM
-          },
-          {
-            key: "blocks",
-            name: "Blocos/Tijolos",
-            quantity: totals.blocks,
-            unit: "unidades",
-            unitPrice: Number(b.priceBlock) || 0,
-            confidence: Confidence.MEDIUM
-          }
-        ].map(item => ({
-          ...item,
-          cost: Round.to(item.quantity * item.unitPrice, 2)
-        }));
-      },
-      calculate(log = false) {
-        const totals = Calculator.totals(false);
-        const b = State.budgetSettings;
-        const items = this.materialItems(totals);
-        const materialsTotal = Round.to(items.reduce((sum, item) => sum + item.cost, 0), 2);
-        const laborCost = b.laborMode === "manual"
-          ? Round.to(Number(b.laborManual) || 0, 2)
-          : Round.to((Number(totals.floorArea) || 0) * (Number(b.laborPerM2) || 0), 2);
-        const extraCosts = Round.to(Number(b.extraCosts) || 0, 2);
-        const baseCost = Round.to(materialsTotal + laborCost + extraCosts, 2);
-        const safetyMargin = Round.to(baseCost * ((Number(b.safetyMarginPercent) || 0) / 100), 2);
-        const costWithSafety = Round.to(baseCost + safetyMargin, 2);
-        const profit = Round.to(costWithSafety * ((Number(b.profitPercent) || 0) / 100), 2);
-        const grossFinal = Round.to(costWithSafety + profit, 2);
-        const discount = Round.to(grossFinal * ((Number(b.discountPercent) || 0) / 100), 2);
-        const finalPrice = Math.max(0, Round.to(grossFinal - discount, 2));
-        const pricePerM2 = totals.floorArea > 0 ? Round.to(finalPrice / totals.floorArea, 2) : 0;
-        const minimumRecommended = Round.to(baseCost + safetyMargin, 2);
-
-        if (log) {
-          items.forEach(item => {
-            Audit.add({
-              formulaId: "budget.material.cost",
-              context: `Material: ${item.name}`,
-              steps:
-                `Quantidade: ${Round.to(item.quantity, 2)} ${item.unit}\n` +
-                `Preço unitário: ${Units.money(item.unitPrice)}\n` +
-                `Cálculo: ${Round.to(item.quantity, 2)} × ${Units.money(item.unitPrice)} = ${Units.money(item.cost)}`,
-              result: Units.money(item.cost)
-            });
-          });
-
-          Audit.add({
-            formulaId: "budget.labor.cost",
-            context: "Mão de obra",
-            steps: b.laborMode === "manual"
-              ? `Modo manual: ${Units.money(laborCost)}`
-              : `Área cadastrada: ${Round.to(totals.floorArea, 2)} m²\nPreço por m²: ${Units.money(b.laborPerM2)}\nCálculo: ${Round.to(totals.floorArea, 2)} × ${Units.money(b.laborPerM2)} = ${Units.money(laborCost)}`,
-            result: Units.money(laborCost)
-          });
-
-          Audit.add({
-            formulaId: "budget.total.final",
-            context: "Orçamento final sugerido",
-            steps:
-              `Materiais: ${Units.money(materialsTotal)}\n` +
-              `Mão de obra: ${Units.money(laborCost)}\n` +
-              `Despesas extras: ${Units.money(extraCosts)}\n` +
-              `Custo base: ${Units.money(baseCost)}\n` +
-              `Margem de segurança (${Round.to(b.safetyMarginPercent, 1)}%): ${Units.money(safetyMargin)}\n` +
-              `Subtotal seguro: ${Units.money(costWithSafety)}\n` +
-              `Lucro (${Round.to(b.profitPercent, 1)}%): ${Units.money(profit)}\n` +
-              `Desconto (${Round.to(b.discountPercent, 1)}%): ${Units.money(discount)}\n` +
-              `Valor final: ${Units.money(finalPrice)}`,
-            result: Units.money(finalPrice)
-          });
-        }
-
-        return {
-          items,
-          materialsTotal,
-          laborCost,
-          extraCosts,
-          baseCost,
-          safetyMargin,
-          costWithSafety,
-          profit,
-          grossFinal,
-          discount,
-          finalPrice,
-          minimumRecommended,
-          pricePerM2
-        };
-      },
-      warnings(result = this.calculate(false)) {
-        const warnings = [];
-        if (!State.rooms.length) warnings.push({ type: "warning", text: "Cadastre cômodos para o orçamento ficar mais realista." });
-        result.items.forEach(item => {
-          if (item.quantity > 0 && item.unitPrice <= 0) {
-            warnings.push({ type: "warning", text: `O item ${item.name} tem quantidade, mas está sem preço unitário.` });
-          }
-        });
-        if (result.laborCost <= 0) warnings.push({ type: "warning", text: "A mão de obra está zerada. Revise antes de passar preço ao cliente." });
-        if (result.finalPrice < result.costWithSafety && result.costWithSafety > 0) {
-          warnings.push({ type: "danger", text: "O valor final está abaixo do custo com margem de segurança." });
-        }
-        if ((Number(State.budgetSettings.profitPercent) || 0) < 10) {
-          warnings.push({ type: "warning", text: "Lucro abaixo de 10%. Pode ser arriscado dependendo da obra." });
-        }
-        return warnings;
-      }
-    };
-
-    const Calculator = {
-      room(room, log = true) {
-        const floorArea = Geometry.area(room.width, room.length, log, `Área — ${room.name}`);
-        const perimeter = Geometry.perimeter(room.width, room.length, log, `Perímetro — ${room.name}`);
-        const grossWallArea = Geometry.wallGrossArea(room, log);
-        const openingsArea = Geometry.openingsArea(room);
-        const netWallArea = Geometry.wallNetArea(room, log);
-        const ceilingArea = floorArea;
-        const volume = Geometry.volume(room.width, room.length, room.height);
-        const baseboard = Geometry.baseboard(room);
-
-        let floor = null;
-        let paint = null;
-        let blocks = null;
-
-        if (log) {
-          floor = Materials.floor(room);
-          paint = Materials.paint(room);
-          blocks = Materials.blocks(room);
-        } else {
-          const lossFloor = Losses.floorLoss();
-          const floorFinalArea = Round.to(floorArea * (1 + lossFloor), 4);
-          floor = {
-            area: floorArea,
-            loss: lossFloor,
-            finalArea: floorFinalArea,
-            boxes: Round.ceil(floorFinalArea / (Number(State.materialSettings.floorBoxYield) || 1))
-          };
-
-          const paintLoss = Losses.paintLoss();
-          const paintArea = Round.to(netWallArea * (Number(State.materialSettings.paintCoats) || 1), 4);
-          paint = {
-            netWallArea,
-            paintArea,
-            liters: Round.to((paintArea / (Number(State.materialSettings.paintYield) || 1)) * (1 + paintLoss), 1)
-          };
-
-          const blockLoss = Losses.blockLoss();
-          blocks = {
-            quantity: Round.ceil(netWallArea * (Number(State.materialSettings.blocksPerM2) || 0) * (1 + blockLoss))
-          };
-        }
-
-        return {
-          room,
-          floorArea,
-          perimeter,
-          grossWallArea,
-          openingsArea,
-          netWallArea,
-          ceilingArea,
-          volume,
-          baseboard,
-          floor,
-          paint,
-          blocks
-        };
-      },
-      allRooms(log = false) {
-        if (log) State.audit = [];
-        return State.rooms.map(room => this.room(room, log));
-      },
-      totals(log = false) {
-        const rows = this.allRooms(log);
-        return rows.reduce((acc, item) => {
-          acc.floorArea += item.floorArea;
-          acc.netWallArea += item.netWallArea;
-          acc.grossWallArea += item.grossWallArea;
-          acc.openingsArea += item.openingsArea;
-          acc.ceilingArea += item.ceilingArea;
-          acc.volume += item.volume;
-          acc.baseboard += item.baseboard;
-          acc.floorBoxes += item.floor.boxes;
-          acc.paintLiters += item.paint.liters;
-          acc.blocks += item.blocks.quantity;
-          return acc;
-        }, {
-          floorArea: 0,
-          netWallArea: 0,
-          grossWallArea: 0,
-          openingsArea: 0,
-          ceilingArea: 0,
-          volume: 0,
-          baseboard: 0,
-          floorBoxes: 0,
-          paintLiters: 0,
-          blocks: 0
-        });
-      }
-    };
-
-    const Storage = {
-      key: "obra_facil_pro_pacote_01",
-      save() {
-        localStorage.setItem(this.key, JSON.stringify({
-          project: State.project,
-          rooms: State.rooms,
-          materialSettings: State.materialSettings,
-          budgetSettings: State.budgetSettings,
-          audit: State.audit
-        }));
-      },
-      load() {
-        try {
-          const raw = localStorage.getItem(this.key);
-          if (!raw) return;
-          const data = JSON.parse(raw);
-          State.project = { ...State.project, ...(data.project || {}) };
-          State.rooms = Array.isArray(data.rooms) ? data.rooms : [];
-          State.materialSettings = { ...State.materialSettings, ...(data.materialSettings || {}) };
-          State.budgetSettings = { ...State.budgetSettings, ...(data.budgetSettings || {}) };
-          State.audit = Array.isArray(data.audit) ? data.audit : [];
-        } catch (error) {
-          console.warn("Falha ao carregar dados locais:", error);
-        }
-      },
-      exportJSON() {
-        const data = {
-          app: AppInfo,
-          exportedAt: new Date().toISOString(),
-          project: State.project,
-          rooms: State.rooms,
-          materialSettings: State.materialSettings,
-          budgetSettings: State.budgetSettings
-        };
-
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        const safeName = (State.project.name || "obra-facil-pro").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-        a.href = url;
-        a.download = `${safeName || "obra-facil-pro"}-dados.json`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-        UI.toast("Arquivo JSON exportado.");
-      },
-      importJSON(event) {
-        const file = event.target.files && event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = () => {
-          try {
-            const data = JSON.parse(reader.result);
-            if (data.project) State.project = { ...State.project, ...data.project };
-            if (Array.isArray(data.rooms)) State.rooms = data.rooms;
-            if (data.materialSettings) State.materialSettings = { ...State.materialSettings, ...data.materialSettings };
-            if (data.budgetSettings) State.budgetSettings = { ...State.budgetSettings, ...data.budgetSettings };
-            State.audit = [];
-            this.save();
-            UI.fillForms();
-            UI.renderAll();
-            UI.toast("Dados importados com sucesso.");
-          } catch (error) {
-            UI.toast("Não foi possível importar o arquivo.");
-          }
-        };
-        reader.readAsText(file);
-        event.target.value = "";
-      }
-    };
-
-    const Floorplan = {
-      layout() {
-        const lotW = Number(State.project.lotWidth) || 6;
-        const lotL = Number(State.project.lotLength) || 20;
-
-        const margin = 46;
-        const canvasW = 900;
-        const canvasH = 520;
-        const usableW = canvasW - margin * 2;
-        const usableH = canvasH - margin * 2;
-
-        const scale = Math.min(usableW / lotW, usableH / lotL, 50);
-        const lotPxW = lotW * scale;
-        const lotPxH = lotL * scale;
-        const lotX = (canvasW - lotPxW) / 2;
-        const lotY = (canvasH - lotPxH) / 2;
-
-        const rooms = [];
-        let cursorX = lotX;
-        let cursorY = lotY;
-        let rowHeight = 0;
-
-        State.rooms.forEach(room => {
-          const w = Math.max(1, Number(room.width) || 1) * scale;
-          const h = Math.max(1, Number(room.length) || 1) * scale;
-
-          if (cursorX + w > lotX + lotPxW + 0.01) {
-            cursorX = lotX;
-            cursorY += rowHeight;
-            rowHeight = 0;
-          }
-
-          rooms.push({
-            id: room.id,
-            name: room.name,
-            x: cursorX,
-            y: cursorY,
-            width: w,
-            height: h,
-            realWidth: Number(room.width) || 0,
-            realLength: Number(room.length) || 0,
-            area: Geometry.area(room.width, room.length, false)
-          });
-
-          cursorX += w;
-          rowHeight = Math.max(rowHeight, h);
-        });
-
-        return { canvasW, canvasH, lotX, lotY, lotPxW, lotPxH, lotW, lotL, scale, rooms };
-      },
-      warnings(layout) {
-        const warnings = [];
-        const totalArea = Calculator.totals(false).floorArea;
-        const lotArea = Geometry.area(State.project.lotWidth, State.project.lotLength, false);
-
-        if (!State.rooms.length) {
-          warnings.push({ type: "warning", text: "Adicione cômodos para gerar a planta baixa." });
-        }
-
-        if (lotArea > 0 && totalArea > lotArea) {
-          warnings.push({ type: "danger", text: "A soma das áreas dos cômodos ultrapassa a área do terreno." });
-        }
-
-        const maxBottom = Math.max(0, ...layout.rooms.map(r => r.y + r.height));
-        if (maxBottom > layout.lotY + layout.lotPxH + 0.01) {
-          warnings.push({ type: "danger", text: "A distribuição automática não coube no terreno. No futuro, o editor manual permitirá reposicionar ambientes." });
-        }
-
-        return warnings;
-      }
-    };
-
-    const UI = {
-      qs(id) {
-        return document.getElementById(id);
-      },
-      value(id) {
-        return this.qs(id).value;
-      },
-      number(id, fallback = 0) {
-        const value = Number(this.value(id));
-        return Number.isFinite(value) ? value : fallback;
-      },
-      go(tabId) {
-        document.querySelectorAll(".section").forEach(el => el.classList.remove("active"));
-        document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
-
-        this.qs(tabId).classList.add("active");
-        const tab = document.querySelector(`.tab[data-tab="${tabId}"]`);
-        if (tab) tab.classList.add("active");
-
-        if (tabId === "planta") this.renderFloorplan();
-        if (tabId === "auditoria") this.renderAudit();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      },
-      toast(message) {
-        const el = this.qs("toast");
-        el.textContent = message;
-        el.classList.add("show");
-        clearTimeout(this.toastTimer);
-        this.toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
-      },
-      fillForms() {
-        const p = State.project;
-        this.qs("projectName").value = p.name || "";
-        this.qs("clientName").value = p.client || "";
-        this.qs("lotWidth").value = p.lotWidth || "";
-        this.qs("lotLength").value = p.lotLength || "";
-        this.qs("defaultHeight").value = p.defaultHeight || "";
-        this.qs("lossProfile").value = p.lossProfile || "medium";
-        this.qs("projectNotes").value = p.notes || "";
-
-        const m = State.materialSettings;
-        this.qs("floorBoxYield").value = m.floorBoxYield ?? 2.5;
-        this.qs("blocksPerM2").value = m.blocksPerM2 ?? 12.5;
-        this.qs("paintYield").value = m.paintYield ?? 12;
-        this.qs("paintCoats").value = m.paintCoats ?? 2;
-        this.qs("customFloorLoss").value = Number.isFinite(m.customFloorLoss) ? m.customFloorLoss : "";
-        this.qs("customBlockLoss").value = Number.isFinite(m.customBlockLoss) ? m.customBlockLoss : "";
-
-        const b = State.budgetSettings;
-        this.qs("priceFloorBox").value = b.priceFloorBox ?? 55;
-        this.qs("pricePaintLiter").value = b.pricePaintLiter ?? 18;
-        this.qs("priceBlock").value = b.priceBlock ?? 2.2;
-        this.qs("laborMode").value = b.laborMode || "perM2";
-        this.qs("laborPerM2").value = b.laborPerM2 ?? 450;
-        this.qs("laborManual").value = b.laborManual ?? 0;
-        this.qs("extraCosts").value = b.extraCosts ?? 0;
-        this.qs("safetyMarginPercent").value = b.safetyMarginPercent ?? 10;
-        this.qs("profitPercent").value = b.profitPercent ?? 20;
-        this.qs("discountPercent").value = b.discountPercent ?? 0;
-
-        this.qs("roomHeight").value = p.defaultHeight || 2.8;
-      },
-      saveProject() {
-        State.project = {
-          ...State.project,
-          name: this.value("projectName").trim(),
-          client: this.value("clientName").trim(),
-          lotWidth: this.number("lotWidth", 0),
-          lotLength: this.number("lotLength", 0),
-          defaultHeight: this.number("defaultHeight", 2.8),
-          lossProfile: this.value("lossProfile"),
-          notes: this.value("projectNotes").trim()
-        };
-
-        Storage.save();
-        this.renderAll();
-        this.toast("Obra salva com sucesso.");
-      },
-      saveMaterialSettings() {
-        State.materialSettings = {
-          floorBoxYield: this.number("floorBoxYield", 2.5),
-          blocksPerM2: this.number("blocksPerM2", 12.5),
-          paintYield: this.number("paintYield", 12),
-          paintCoats: this.number("paintCoats", 2),
-          customFloorLoss: this.value("customFloorLoss") === "" ? null : this.number("customFloorLoss", null),
-          customBlockLoss: this.value("customBlockLoss") === "" ? null : this.number("customBlockLoss", null)
-        };
-
-        Storage.save();
-        this.recalculate();
-        this.toast("Configurações salvas.");
-      },
-      saveBudgetSettings() {
-        State.budgetSettings = {
-          priceFloorBox: this.number("priceFloorBox", 0),
-          pricePaintLiter: this.number("pricePaintLiter", 0),
-          priceBlock: this.number("priceBlock", 0),
-          laborMode: this.value("laborMode"),
-          laborPerM2: this.number("laborPerM2", 0),
-          laborManual: this.number("laborManual", 0),
-          extraCosts: this.number("extraCosts", 0),
-          safetyMarginPercent: this.number("safetyMarginPercent", 0),
-          profitPercent: this.number("profitPercent", 0),
-          discountPercent: this.number("discountPercent", 0)
-        };
-
-        Storage.save();
-        this.recalculate();
-        this.toast("Orçamento salvo e recalculado.");
-      },
-      addRoom() {
-        const room = {
-          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
-          name: this.value("roomName").trim() || `Cômodo ${State.rooms.length + 1}`,
-          type: this.value("roomType"),
-          width: this.number("roomWidth", 0),
-          length: this.number("roomLength", 0),
-          height: this.number("roomHeight", State.project.defaultHeight || 2.8),
-          doorCount: this.number("doorCount", 0),
-          windowCount: this.number("windowCount", 0),
-          doorWidth: this.number("doorWidth", 0.8),
-          doorHeight: this.number("doorHeight", 2.1),
-          windowWidth: this.number("windowWidth", 1.2),
-          windowHeight: this.number("windowHeight", 1)
-        };
-
-        const warnings = Validation.roomWarnings(room);
-        if (warnings.some(w => w.includes("sem largura") || w.includes("sem comprimento") || w.includes("sem altura"))) {
-          this.toast("Verifique largura, comprimento e altura do cômodo.");
-          return;
-        }
-
-        State.rooms.push(room);
-        Storage.save();
-        this.clearRoomForm();
-        this.renderAll();
-        this.toast("Cômodo adicionado.");
-      },
-      clearRoomForm() {
-        this.qs("roomName").value = "";
-        this.qs("roomWidth").value = "";
-        this.qs("roomLength").value = "";
-        this.qs("roomHeight").value = State.project.defaultHeight || 2.8;
-        this.qs("doorCount").value = 1;
-        this.qs("windowCount").value = 1;
-        this.qs("doorWidth").value = 0.8;
-        this.qs("doorHeight").value = 2.1;
-        this.qs("windowWidth").value = 1.2;
-        this.qs("windowHeight").value = 1;
-      },
-      removeRoom(id) {
-        State.rooms = State.rooms.filter(room => room.id !== id);
-        Storage.save();
-        this.renderAll();
-        this.toast("Cômodo removido.");
-      },
-      fillSampleRooms() {
-        const h = State.project.defaultHeight || 2.8;
-        const samples = [
-          { name: "Sala", type: "social", width: 3.5, length: 4.0, height: h, doorCount: 1, windowCount: 1, doorWidth: 0.8, doorHeight: 2.1, windowWidth: 1.5, windowHeight: 1.1 },
-          { name: "Cozinha", type: "kitchen", width: 3.0, length: 3.0, height: h, doorCount: 1, windowCount: 1, doorWidth: 0.8, doorHeight: 2.1, windowWidth: 1.2, windowHeight: 1.0 },
-          { name: "Quarto 1", type: "bedroom", width: 3.0, length: 3.2, height: h, doorCount: 1, windowCount: 1, doorWidth: 0.8, doorHeight: 2.1, windowWidth: 1.2, windowHeight: 1.0 },
-          { name: "Banheiro", type: "bathroom", width: 1.5, length: 2.4, height: h, doorCount: 1, windowCount: 1, doorWidth: 0.7, doorHeight: 2.1, windowWidth: 0.6, windowHeight: 0.6 }
-        ];
-
-        samples.forEach(sample => {
-          State.rooms.push({
-            id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
-            ...sample
-          });
-        });
-
-        Storage.save();
-        this.renderAll();
-        this.toast("Cômodos de exemplo adicionados.");
-      },
-      recalculate() {
-        State.audit = [];
-        Calculator.totals(true);
-        Budget.calculate(true);
-        Storage.save();
-        this.renderAll();
-        this.toast("Cálculos atualizados pelo ObraCalc Engine.");
-      },
-      renderAll() {
-        this.renderDashboard();
-        this.renderProject();
-        this.renderRooms();
-        this.renderCalculations();
-        this.renderBudget();
-        this.renderFloorplan();
-        this.renderAudit();
-      },
-      renderDashboard() {
-        const totals = Calculator.totals(false);
-        const lotArea = Geometry.area(State.project.lotWidth, State.project.lotLength, false);
-
-        const budget = Budget.calculate(false);
-
-        this.qs("dashboardStats").innerHTML = `
-          <div class="stat"><strong>${State.rooms.length}</strong><span>Cômodos</span></div>
-          <div class="stat"><strong>${Units.m2(totals.floorArea)}</strong><span>Área cadastrada</span></div>
-          <div class="stat"><strong>${Units.units(totals.blocks, "blocos")}</strong><span>Blocos estimados</span></div>
-          <div class="stat"><strong>${Units.money(budget.finalPrice)}</strong><span>Valor sugerido</span></div>
-        `;
-      },
-      renderProject() {
-        const p = State.project;
-        const lotArea = Geometry.area(p.lotWidth, p.lotLength, false);
-        const totals = Calculator.totals(false);
-
-        this.qs("projectSummary").innerHTML = `
-          <div class="stats">
-            <div class="stat"><strong>${p.name || "Sem nome"}</strong><span>Obra</span></div>
-            <div class="stat"><strong>${p.client || "Não informado"}</strong><span>Cliente</span></div>
-            <div class="stat"><strong>${Units.m2(lotArea)}</strong><span>Terreno</span></div>
-            <div class="stat"><strong>${Units.m2(totals.floorArea)}</strong><span>Cômodos</span></div>
-          </div>
-          <p><b>Perfil de perda:</b> ${Losses.getProfile().label}</p>
-          <p><b>Altura padrão:</b> ${Units.m(p.defaultHeight || 0)}</p>
-          <p><b>Observações:</b> ${p.notes ? this.escape(p.notes) : "Nenhuma observação cadastrada."}</p>
-        `;
-
-        this.renderWarnings("projectWarnings", Validation.projectWarnings());
-      },
-      renderRooms() {
-        const list = this.qs("roomsList");
-
-        if (!State.rooms.length) {
-          list.innerHTML = `<div class="empty">Nenhum cômodo cadastrado ainda.</div>`;
-          return;
-        }
-
-        list.innerHTML = State.rooms.map(room => {
-          const calc = Calculator.room(room, false);
-          return `
-            <div class="room-item">
-              <div class="room-head">
-                <div>
-                  <strong>${this.escape(room.name)}</strong>
-                  <small>${Units.m(room.width)} × ${Units.m(room.length)} × ${Units.m(room.height)} altura</small>
-                </div>
-                <button class="btn danger" style="padding:8px 10px; min-height:auto;" onclick="UI.removeRoom('${room.id}')">Remover</button>
-              </div>
-              <div class="mini-grid">
-                <div class="mini"><span>Área</span><b>${Units.m2(calc.floorArea)}</b></div>
-                <div class="mini"><span>Perímetro</span><b>${Units.m(calc.perimeter)}</b></div>
-                <div class="mini"><span>Paredes úteis</span><b>${Units.m2(calc.netWallArea)}</b></div>
-                <div class="mini"><span>Rodapé</span><b>${Units.m(calc.baseboard)}</b></div>
-              </div>
-            </div>
-          `;
-        }).join("");
-      },
-      renderCalculations() {
-        const totals = Calculator.totals(false);
-
-        this.qs("calculationTotals").innerHTML = `
-          <div class="stat"><strong>${Units.m2(totals.floorArea)}</strong><span>Área de piso</span></div>
-          <div class="stat"><strong>${Units.m2(totals.netWallArea)}</strong><span>Paredes úteis</span></div>
-          <div class="stat"><strong>${Units.units(totals.floorBoxes, "caixas")}</strong><span>Piso estimado</span></div>
-          <div class="stat"><strong>${Units.liters(totals.paintLiters)}</strong><span>Tinta estimada</span></div>
-          <div class="stat"><strong>${Units.units(totals.blocks, "blocos")}</strong><span>Blocos</span></div>
-          <div class="stat"><strong>${Units.m(totals.baseboard)}</strong><span>Rodapé</span></div>
-          <div class="stat"><strong>${Units.m2(totals.ceilingArea)}</strong><span>Teto</span></div>
-          <div class="stat"><strong>${Units.m3(totals.volume)}</strong><span>Volume interno</span></div>
-        `;
-
-        const rows = State.rooms.map(room => Calculator.room(room, false));
-        this.qs("materialsTable").innerHTML = rows.length ? rows.map(item => `
-          <tr>
-            <td><b>${this.escape(item.room.name)}</b><br><small>${Units.m(item.room.width)} × ${Units.m(item.room.length)}</small></td>
-            <td>${Units.m2(item.floorArea)}</td>
-            <td>${Units.m2(item.netWallArea)}<br><small>Desconta portas/janelas</small></td>
-            <td>${item.floor.boxes} caixas<br><small>Perda: ${Round.to(item.floor.loss * 100, 1)}%</small></td>
-            <td>${Units.liters(item.paint.liters)}<br><small>${State.materialSettings.paintCoats} demãos</small></td>
-            <td>${item.blocks.quantity} blocos</td>
-            <td>
-              <span class="badge high">Área: alta</span><br><br>
-              <span class="badge medium">Materiais: média</span>
-            </td>
-          </tr>
-        `).join("") : `
-          <tr><td colspan="7">Cadastre cômodos para gerar o levantamento inicial.</td></tr>
-        `;
-
-        this.renderWarnings("calculationWarnings", [
-          ...Validation.projectWarnings(),
-          ...Validation.allWarnings()
-        ]);
-      },
-      renderBudget() {
-        const budget = Budget.calculate(false);
-
-        this.qs("budgetTotals").innerHTML = `
-          <div class="stat"><strong>${Units.money(budget.materialsTotal)}</strong><span>Materiais</span></div>
-          <div class="stat"><strong>${Units.money(budget.laborCost)}</strong><span>Mão de obra</span></div>
-          <div class="stat"><strong>${Units.money(budget.costWithSafety)}</strong><span>Custo seguro</span></div>
-          <div class="stat"><strong>${Units.money(budget.profit)}</strong><span>Lucro</span></div>
-          <div class="stat"><strong>${Units.money(budget.discount)}</strong><span>Desconto</span></div>
-          <div class="stat"><strong>${Units.money(budget.finalPrice)}</strong><span>Valor final</span></div>
-          <div class="stat"><strong>${Units.money(budget.pricePerM2)}</strong><span>Preço por m²</span></div>
-          <div class="stat"><strong>${Units.money(budget.minimumRecommended)}</strong><span>Mínimo recomendado</span></div>
-        `;
-
-        this.qs("budgetItemsTable").innerHTML = budget.items.length ? budget.items.map(item => `
-          <tr>
-            <td><b>${this.escape(item.name)}</b></td>
-            <td>${Round.to(item.quantity, 2)} ${this.escape(item.unit)}</td>
-            <td>${Units.money(item.unitPrice)}</td>
-            <td>${Units.money(item.cost)}</td>
-            <td><span class="badge ${item.confidence.key}">${item.confidence.label}</span></td>
-          </tr>
-        `).join("") + `
-          <tr>
-            <td><b>Total de materiais</b></td>
-            <td>-</td>
-            <td>-</td>
-            <td><b>${Units.money(budget.materialsTotal)}</b></td>
-            <td><span class="badge medium">Estimativa inicial</span></td>
-          </tr>
-        ` : `
-          <tr><td colspan="5">Cadastre cômodos e preços para gerar orçamento.</td></tr>
-        `;
-
-        this.renderWarnings("budgetWarnings", Budget.warnings(budget));
-      },
-      renderFloorplan() {
-        const svg = this.qs("floorplanSvg");
-        const layout = Floorplan.layout();
-
-        const roomColors = {
-          social: "#38bdf8",
-          bedroom: "#a78bfa",
-          kitchen: "#f59e0b",
-          bathroom: "#22c55e",
-          service: "#14b8a6",
-          external: "#94a3b8"
-        };
-
-        let html = `
-          <defs>
-            <filter id="roomShadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity=".28"/>
-            </filter>
-          </defs>
-          <rect x="0" y="0" width="900" height="520" fill="transparent"/>
-          <rect x="${layout.lotX}" y="${layout.lotY}" width="${layout.lotPxW}" height="${layout.lotPxH}" fill="rgba(15,23,42,.72)" stroke="rgba(34,197,94,.75)" stroke-width="3" rx="8"/>
-          <text x="${layout.lotX + 10}" y="${layout.lotY - 12}" fill="#cbd5e1" font-size="15" font-weight="700">Terreno: ${Round.to(layout.lotW, 2)}m × ${Round.to(layout.lotL, 2)}m</text>
-        `;
-
-        if (!State.rooms.length) {
-          html += `<text x="450" y="270" text-anchor="middle" fill="#94a3b8" font-size="18">Adicione cômodos para gerar a planta baixa</text>`;
-        }
-
-        layout.rooms.forEach(item => {
-          const room = State.rooms.find(r => r.id === item.id);
-          const color = roomColors[room?.type] || "#38bdf8";
-          const outOfLot = item.y + item.height > layout.lotY + layout.lotPxH + 0.01;
-          const fill = outOfLot ? "rgba(251,113,133,.20)" : "rgba(56,189,248,.13)";
-          const stroke = outOfLot ? "rgba(251,113,133,.85)" : color;
-          const labelX = item.x + item.width / 2;
-          const labelY = item.y + item.height / 2;
-
-          html += `
-            <rect x="${item.x}" y="${item.y}" width="${item.width}" height="${item.height}" fill="${fill}" stroke="${stroke}" stroke-width="2" rx="5" filter="url(#roomShadow)"/>
-            <text x="${labelX}" y="${labelY - 10}" text-anchor="middle" fill="#e5e7eb" font-size="13" font-weight="800">${this.escapeSvg(item.name)}</text>
-            <text x="${labelX}" y="${labelY + 8}" text-anchor="middle" fill="#cbd5e1" font-size="11">${Round.to(item.realWidth, 2)}m × ${Round.to(item.realLength, 2)}m</text>
-            <text x="${labelX}" y="${labelY + 24}" text-anchor="middle" fill="#94a3b8" font-size="10">${Round.to(item.area, 2)}m²</text>
-          `;
-        });
-
-        svg.innerHTML = html;
-        this.renderWarnings("floorplanWarnings", Floorplan.warnings(layout));
-      },
-      renderAudit() {
-        this.qs("formulaRegistry").innerHTML = FormulaRegistry.formulas.map(formula => `
-          <div class="module">
-            <div class="icon">ƒ</div>
-            <div>
-              <strong>${formula.name} <span class="kbd">v${formula.version}</span></strong>
-              <small>${formula.expression}</small>
-              <br><br><span class="badge ${formula.confidence.key}">${formula.confidence.label}</span>
-            </div>
-          </div>
-        `).join("");
-
-        const list = this.qs("auditList");
-        if (!State.audit.length) {
-          list.innerHTML = `<div class="empty">Clique em “Atualizar auditoria” para registrar os cálculos detalhados.</div>`;
-          return;
-        }
-
-        list.innerHTML = State.audit.map(item => `
-          <div class="audit-item">
-            <h4>${this.escape(item.formulaName)} <span class="kbd">v${this.escape(item.version)}</span></h4>
-            <span class="badge ${item.confidence.key}">${item.confidence.label}</span>
-            <p><b>Contexto:</b> ${this.escape(item.context)}</p>
-            <p><b>Resultado:</b> ${this.escape(String(item.result))}</p>
-            <code>${this.escape(item.steps)}</code>
-          </div>
-        `).join("");
-      },
-      renderWarnings(containerId, warnings) {
-        const el = this.qs(containerId);
-        if (!warnings || !warnings.length) {
-          el.innerHTML = `<div class="warning" style="border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.08);color:#a7f3d0;">Nenhum alerta importante encontrado.</div>`;
-          return;
-        }
-
-        el.innerHTML = warnings.map(w => `
-          <div class="warning ${w.type === "danger" ? "danger" : ""}">${this.escape(w.text)}</div>
-        `).join("");
-      },
-      escape(text) {
-        return String(text ?? "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      },
-      escapeSvg(text) {
-        return this.escape(text).replace(/&quot;/g, "'");
-      }
-    };
-
-    function boot() {
-      Storage.load();
-      UI.fillForms();
-      UI.renderAll();
+        <div class="grid two">
+          <div><label>Complexidade</label><select id="complexity"><option value="0.85">Simples</option><option value="1" selected>Média</option><option value="1.25">Alta</option></select></div>
+          <div><label>Folga extra (%)</label><input id="scheduleBuffer" type="number" step="1"></div>
+        </div>
+        <label>Observação do cronograma</label><textarea id="scheduleNotes" placeholder="Ex: equipe trabalha de segunda a sábado, cliente quer priorizar banheiro..."></textarea>
+        <div class="row"><button onclick="UI.saveSchedule()">Salvar cronograma</button><button class="sec" onclick="UI.renderAudit(true)">Auditar prazo</button></div>
+        <p class="mut">O cronograma calcula estimativa de apoio. Ele não substitui planejamento técnico completo de engenharia.</p>
+      </div>
+      <div class="card">
+        <h2>Resumo do prazo</h2>
+        <div id="scheduleTotals" class="stats"></div>
+        <div id="scheduleWarnings"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Etapas estimadas</h2>
+      <div class="table"><table><thead><tr><th>Etapa</th><th>Base do cálculo</th><th>Dias</th><th>Início</th><th>Término</th><th>Dependência</th><th>Progresso</th></tr></thead><tbody id="scheduleRows"></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="planta" class="page">
+    <div class="card"><h2>Planta baixa 2D automática</h2><p class="mut">A planta ainda é simples, mas já usa os dados reais dos cômodos para alimentar cálculos, orçamento e cronograma.</p><div class="svgbox"><svg id="floorSvg" viewBox="0 0 900 520" role="img"></svg></div></div>
+  </section>
+
+  <section id="auditoria" class="page">
+    <div class="grid two">
+      <div class="card"><h2>Auditoria</h2><p class="mut">Mostra rastros dos cálculos técnicos, financeiros e agora também do prazo.</p><div class="row"><button onclick="UI.renderAudit(true)">Atualizar auditoria</button><button class="sec" onclick="Audit.clear()">Limpar</button></div></div>
+      <div class="card"><h2>Fórmulas versionadas</h2><div id="formulaBox"></div></div>
+    </div>
+    <div class="card"><h2>Log</h2><div id="auditList"></div></div>
+  </section>
+</main>
+
+<nav class="tabs">
+  <button class="on" data-tab="inicio" onclick="UI.go('inicio')"><span>🏠</span><br>Início</button>
+  <button data-tab="obra" onclick="UI.go('obra')"><span>🏗️</span><br>Obra</button>
+  <button data-tab="comodos" onclick="UI.go('comodos')"><span>🚪</span><br>Cômodos</button>
+  <button data-tab="calculos" onclick="UI.go('calculos')"><span>🧮</span><br>Cálculos</button>
+  <button data-tab="orcamento" onclick="UI.go('orcamento')"><span>💰</span><br>Orçamento</button>
+  <button data-tab="cronograma" onclick="UI.go('cronograma')"><span>📅</span><br>Prazo</button>
+</nav>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const App={name:"Obra Fácil Pro",package:"Pacote 03",engine:"ObraCalc Engine",version:"1.2.0"};
+const StoreKey="obra_facil_pro_pacote_03";
+const OldKeys=["obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
+const State={
+  project:{name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
+  rooms:[],
+  settings:{floorYield:2.5,blocksPerM2:12.5,paintYield:12,paintCoats:2},
+  budget:{priceFloorBox:0,pricePaintLiter:0,priceBlock:0,laborPerM2:0,manualLabor:null,extraCosts:0,safetyMargin:10,profitMargin:20,discount:0},
+  schedule:{startDate:"",workdaysPerWeek:6,masons:1,helpers:1,complexity:1,scheduleBuffer:10,notes:""},
+  audit:[]
+};
+const Formulas=[
+  ["geometry.area","1.0.0","Área do cômodo","largura × comprimento","Alta"],
+  ["geometry.wallNet","1.0.0","Paredes úteis","perímetro × altura - portas - janelas","Alta"],
+  ["materials.floor","1.0.0","Caixas de piso","arredondar((área × perda) ÷ rendimento)","Alta"],
+  ["materials.paint","1.0.0","Litros de tinta","(parede útil × demãos ÷ rendimento) × perda","Média"],
+  ["materials.blocks","1.0.0","Quantidade de blocos","parede útil × blocos/m² × perda","Média"],
+  ["budget.total","1.1.0","Valor final","materiais + mão de obra + despesas + segurança + lucro - desconto","Média"],
+  ["schedule.duration","1.2.0","Prazo por etapa","quantidade ÷ produtividade ajustada por equipe e complexidade","Média"]
+];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+const n=(id,d=0)=>{const v=Number($(id).value);return Number.isFinite(v)?v:d};
+const round=(v,d=2)=>Math.round(((Number(v)||0)+Number.EPSILON)*10**d)/10**d;
+const money=v=>(Number(v)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const fmtDate=iso=>{if(!iso)return "-";const [y,m,d]=iso.split("-");return `${d}/${m}/${y}`};
+function parseSize(text){const parts=String(text||"").toLowerCase().replace(",",".").split("x").map(Number);return [parts[0]||0,parts[1]||0]}
+function todayISO(){const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+function addWorkDays(iso,days,workdaysPerWeek){let d=new Date(iso+"T12:00:00");let added=0;if(days<=0)return iso;while(added<days-1){d.setDate(d.getDate()+1);const day=d.getDay();const works=workdaysPerWeek>=7||(workdaysPerWeek==6&&day!==0)||(workdaysPerWeek==5&&day!==0&&day!==6);if(works)added++}return d.toISOString().slice(0,10)}
+function nextWorkDay(iso,workdaysPerWeek){let d=new Date(iso+"T12:00:00");do{d.setDate(d.getDate()+1);const day=d.getDay();if(workdaysPerWeek>=7||(workdaysPerWeek==6&&day!==0)||(workdaysPerWeek==5&&day!==0&&day!==6))break}while(true);return d.toISOString().slice(0,10)}
+
+const Audit={
+  add(formula,context,steps,result){State.audit.unshift({at:new Date().toISOString(),formula,context,steps,result});State.audit=State.audit.slice(0,160)},
+  clear(){State.audit=[];Storage.save();UI.renderAudit(false);UI.toast("Auditoria limpa.")}
+};
+
+const Calc={
+  room(room,log=false){
+    const area=room.width*room.length;
+    const perimeter=2*(room.width+room.length);
+    const [dw,dh]=parseSize(room.doorSize),[ww,wh]=parseSize(room.windowSize);
+    const openings=room.doorCount*dw*dh+room.windowCount*ww*wh;
+    const wallGross=perimeter*room.height;
+    const wallNet=Math.max(0,wallGross-openings);
+    const floorBoxes=Math.ceil((area*(1+Number(State.project.lossProfile)))/(State.settings.floorYield||1));
+    const paintLiters=round((wallNet*State.settings.paintCoats/(State.settings.paintYield||1))*(1+Number(State.project.lossProfile)),1);
+    const blocks=Math.ceil(wallNet*State.settings.blocksPerM2*(1+Number(State.project.lossProfile)));
+    const baseboard=Math.max(0,perimeter-room.doorCount*dw);
+    if(log){
+      Audit.add("geometry.area",room.name,`${room.width}m × ${room.length}m = ${round(area)}m²`,`${round(area)}m²`);
+      Audit.add("geometry.wallNet",room.name,`${round(perimeter)}m perímetro × ${room.height}m - ${round(openings)}m² aberturas = ${round(wallNet)}m²`,`${round(wallNet)}m²`);
+      Audit.add("materials.floor",room.name,`${round(area)}m² × ${(1+Number(State.project.lossProfile)).toFixed(2)} ÷ ${State.settings.floorYield}m²/caixa = ${floorBoxes} caixas`,`${floorBoxes} caixas`);
+      Audit.add("materials.paint",room.name,`${round(wallNet)}m² × ${State.settings.paintCoats} demãos ÷ ${State.settings.paintYield} × perda = ${paintLiters}L`,`${paintLiters}L`);
+      Audit.add("materials.blocks",room.name,`${round(wallNet)}m² × ${State.settings.blocksPerM2} blocos/m² × perda = ${blocks} blocos`,`${blocks} blocos`);
     }
+    return{area,perimeter,openings,wallGross,wallNet,floorBoxes,paintLiters,blocks,baseboard,volume:area*room.height};
+  },
+  totals(log=false){
+    if(log)State.audit=[];
+    return State.rooms.map(r=>this.room(r,log)).reduce((a,c)=>{for(const k of ["area","wallNet","wallGross","openings","floorBoxes","paintLiters","blocks","baseboard","volume"])a[k]+=c[k]||0;return a},{area:0,wallNet:0,wallGross:0,openings:0,floorBoxes:0,paintLiters:0,blocks:0,baseboard:0,volume:0});
+  },
+  budget(log=false){
+    const t=this.totals(false),b=State.budget;
+    const floorCost=t.floorBoxes*b.priceFloorBox;
+    const paintCost=t.paintLiters*b.pricePaintLiter;
+    const blockCost=t.blocks*b.priceBlock;
+    const materials=floorCost+paintCost+blockCost;
+    const labor=b.manualLabor!==null&&b.manualLabor!==""?Number(b.manualLabor):t.area*b.laborPerM2;
+    const base=materials+labor+b.extraCosts;
+    const safety=base*b.safetyMargin/100;
+    const minimum=base+safety;
+    const profit=minimum*b.profitMargin/100;
+    const final=Math.max(0,minimum+profit-b.discount);
+    if(log){
+      Audit.add("budget.total","Orçamento",`Materiais ${money(materials)} + mão de obra ${money(labor)} + despesas ${money(b.extraCosts)} + segurança ${money(safety)} + lucro ${money(profit)} - desconto ${money(b.discount)}`,money(final));
+    }
+    return{floorCost,paintCost,blockCost,materials,labor,base,safety,minimum,profit,final,pricePerM2:t.area?final/t.area:0};
+  }
+};
 
-    boot();
+const Schedule={
+  crewFactor(){
+    const s=State.schedule;
+    return Math.max(0.5,Number(s.masons||0)+Number(s.helpers||0)*0.45);
+  },
+  stages(log=false){
+    const t=Calc.totals(false);
+    const lot=State.project.lotWidth*State.project.lotLength;
+    const s=State.schedule;
+    const crew=this.crewFactor();
+    const complexity=Number(s.complexity)||1;
+    const buffer=(1+(Number(s.scheduleBuffer)||0)/100);
+    const data=[
+      {name:"Preparação e marcação",metric:`Terreno ${round(lot)}m²`,qty:Math.max(lot,1),rate:80,dep:"Início"},
+      {name:"Fundação / baldrame",metric:`Área construída ${round(t.area)}m²`,qty:Math.max(t.area,1),rate:18,dep:"Preparação"},
+      {name:"Alvenaria",metric:`${Math.round(t.blocks)} blocos`,qty:Math.max(t.blocks,1),rate:280,dep:"Fundação"},
+      {name:"Laje ou telhado",metric:`Cobertura ${round(t.area)}m²`,qty:Math.max(t.area,1),rate:22,dep:"Alvenaria"},
+      {name:"Elétrica e hidráulica básica",metric:`${State.rooms.length} cômodos`,qty:Math.max(State.rooms.length,1),rate:1.4,dep:"Alvenaria"},
+      {name:"Chapisco/reboco",metric:`Paredes ${round(t.wallNet)}m²`,qty:Math.max(t.wallNet,1),rate:32,dep:"Instalações"},
+      {name:"Contrapiso",metric:`Piso ${round(t.area)}m²`,qty:Math.max(t.area,1),rate:38,dep:"Reboco"},
+      {name:"Piso e revestimento",metric:`Piso ${round(t.area)}m²`,qty:Math.max(t.area,1),rate:18,dep:"Contrapiso"},
+      {name:"Pintura",metric:`Paredes ${round(t.wallNet)}m²`,qty:Math.max(t.wallNet,1),rate:55,dep:"Reboco/piso"},
+      {name:"Acabamentos finais",metric:`${State.rooms.length} cômodos`,qty:Math.max(State.rooms.length,1),rate:0.85,dep:"Piso e pintura"}
+    ];
+    let cursor=s.startDate||todayISO();
+    const rows=data.map((x,i)=>{
+      const adjustedRate=x.rate*crew/complexity;
+      const raw=x.qty/adjustedRate;
+      const days=Math.max(1,Math.ceil(raw*buffer));
+      const start=i===0?cursor:nextWorkDay(cursor,Number(s.workdaysPerWeek)||6);
+      const end=addWorkDays(start,days,Number(s.workdaysPerWeek)||6);
+      cursor=end;
+      if(log)Audit.add("schedule.duration",x.name,`${x.metric}; produtividade base ${x.rate}; equipe ajustada ${round(crew,2)}; complexidade ${complexity}; folga ${round((buffer-1)*100)}%; resultado ${days} dia(s)`,`${days} dia(s)`);
+      return{...x,days,start,end,raw};
+    });
+    const totalDays=rows.reduce((a,r)=>a+r.days,0);
+    return{rows,totalDays,start:rows[0]?.start||s.startDate,end:rows.at(-1)?.end||s.startDate,crew};
+  },
+  warnings(){
+    const w=[];
+    if(!State.rooms.length)w.push(["bad","Cadastre cômodos para o prazo ficar mais realista."]);
+    if((State.schedule.masons||0)+(State.schedule.helpers||0)<=0)w.push(["bad","Informe pelo menos um profissional na equipe."]);
+    if(Calc.totals(false).area<=0)w.push(["bad","A área construída está zerada."]);
+    if(!State.schedule.startDate)w.push(["warn","Defina uma data de início para gerar datas previstas."]);
+    return w;
+  }
+};
 
-    window.UI = UI;
-    window.Storage = Storage;
-    window.Audit = Audit;
-  </script>
+const Storage={
+  save(){localStorage.setItem(StoreKey,JSON.stringify(State))},
+  load(){
+    let raw=localStorage.getItem(StoreKey);
+    if(!raw){for(const k of OldKeys){raw=localStorage.getItem(k);if(raw)break}}
+    if(raw){try{const d=JSON.parse(raw);this.merge(d)}catch(e){}}
+    if(!State.schedule.startDate)State.schedule.startDate=todayISO();
+  },
+  merge(d){
+    const p=d.project||d.p||{};
+    State.project={...State.project,
+      name:p.name||p.n||State.project.name,client:p.client||p.c||State.project.client,
+      lotWidth:Number(p.lotWidth??p.lw??State.project.lotWidth),lotLength:Number(p.lotLength??p.ll??State.project.lotLength),
+      defaultHeight:Number(p.defaultHeight??p.h??State.project.defaultHeight),lossProfile:Number(p.lossProfile??p.loss??State.project.lossProfile),
+      notes:p.notes||State.project.notes
+    };
+    State.rooms=Array.isArray(d.rooms)?d.rooms.map(x=>({
+      id:String(x.id||cryptoRandom()),name:x.name||x.n||"Cômodo",type:x.type||"social",
+      width:Number(x.width??x.w??0),length:Number(x.length??x.l??0),height:Number(x.height??x.h??State.project.defaultHeight),
+      doorCount:Number(x.doorCount??x.dc??1),windowCount:Number(x.windowCount??x.wc??1),
+      doorSize:x.doorSize||x.ds||"0.80x2.10",windowSize:x.windowSize||x.ws||"1.20x1.00"
+    })):State.rooms;
+    const set=d.settings||d.set||d.materialSettings||{};
+    State.settings={...State.settings,
+      floorYield:Number(set.floorYield??set.fy??set.floorBoxYield??State.settings.floorYield),
+      blocksPerM2:Number(set.blocksPerM2??set.bm??State.settings.blocksPerM2),
+      paintYield:Number(set.paintYield??set.py??State.settings.paintYield),
+      paintCoats:Number(set.paintCoats??set.co??State.settings.paintCoats)
+    };
+    const b=d.budget||d.b||{};
+    State.budget={...State.budget,
+      priceFloorBox:Number(b.priceFloorBox??b.pf??State.budget.priceFloorBox),
+      pricePaintLiter:Number(b.pricePaintLiter??b.pp??State.budget.pricePaintLiter),
+      priceBlock:Number(b.priceBlock??b.pb??State.budget.priceBlock),
+      laborPerM2:Number(b.laborPerM2??b.lm??State.budget.laborPerM2),
+      manualLabor:(b.manualLabor??b.lman??null),extraCosts:Number(b.extraCosts??b.ex??State.budget.extraCosts),
+      safetyMargin:Number(b.safetyMargin??b.sg??State.budget.safetyMargin),
+      profitMargin:Number(b.profitMargin??b.pr??State.budget.profitMargin),
+      discount:Number(b.discount??b.dsct??State.budget.discount)
+    };
+    State.schedule={...State.schedule,...(d.schedule||{})};
+  },
+  exportJSON(){
+    const blob=new Blob([JSON.stringify({app:App,exportedAt:new Date().toISOString(),...State},null,2)],{type:"application/json"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-03.json";a.click();URL.revokeObjectURL(a.href);
+  },
+  importJSON(e){
+    const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+    rd.onload=()=>{try{this.merge(JSON.parse(rd.result));State.audit=[];this.save();UI.fill();UI.renderAll();UI.toast("Dados importados.");}catch(err){UI.toast("Erro ao importar JSON.")}};
+    rd.readAsText(f);e.target.value="";
+  }
+};
+
+function cryptoRandom(){return Date.now()+"_"+Math.random().toString(16).slice(2)}
+const UI={
+  go(id){
+    document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));
+    document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
+    $(id).classList.add("on");const b=document.querySelector(`[data-tab="${id}"]`);if(b)b.classList.add("on");
+    if(id==="planta")this.renderFloorplan();if(id==="auditoria")this.renderAudit(false);
+    scrollTo({top:0,behavior:"smooth"});
+  },
+  toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(this.t);this.t=setTimeout(()=>el.classList.remove("show"),2500)},
+  fill(){
+    const p=State.project,s=State.settings,b=State.budget,c=State.schedule;
+    projectName.value=p.name;clientName.value=p.client;lotWidth.value=p.lotWidth;lotLength.value=p.lotLength;defaultHeight.value=p.defaultHeight;lossProfile.value=String(p.lossProfile);projectNotes.value=p.notes;
+    roomHeight.value=p.defaultHeight;
+    floorYield.value=s.floorYield;blocksPerM2.value=s.blocksPerM2;paintYield.value=s.paintYield;paintCoats.value=s.paintCoats;
+    priceFloorBox.value=b.priceFloorBox;pricePaintLiter.value=b.pricePaintLiter;priceBlock.value=b.priceBlock;laborPerM2.value=b.laborPerM2;manualLabor.value=b.manualLabor??"";extraCosts.value=b.extraCosts;safetyMargin.value=b.safetyMargin;profitMargin.value=b.profitMargin;discount.value=b.discount;
+    startDate.value=c.startDate||todayISO();workdaysPerWeek.value=c.workdaysPerWeek;masons.value=c.masons;helpers.value=c.helpers;complexity.value=String(c.complexity);scheduleBuffer.value=c.scheduleBuffer;scheduleNotes.value=c.notes||"";
+  },
+  saveProject(){
+    State.project={name:projectName.value.trim(),client:clientName.value.trim(),lotWidth:n("lotWidth",6),lotLength:n("lotLength",20),defaultHeight:n("defaultHeight",2.8),lossProfile:n("lossProfile",.10),notes:projectNotes.value.trim()};
+    Storage.save();this.renderAll();this.toast("Obra salva.");
+  },
+  saveSettings(){State.settings={floorYield:n("floorYield",2.5),blocksPerM2:n("blocksPerM2",12.5),paintYield:n("paintYield",12),paintCoats:n("paintCoats",2)};Storage.save();this.renderAll();this.toast("Configurações salvas.")},
+  saveBudget(){State.budget={priceFloorBox:n("priceFloorBox"),pricePaintLiter:n("pricePaintLiter"),priceBlock:n("priceBlock"),laborPerM2:n("laborPerM2"),manualLabor:manualLabor.value===""?null:n("manualLabor"),extraCosts:n("extraCosts"),safetyMargin:n("safetyMargin",10),profitMargin:n("profitMargin",20),discount:n("discount")};Storage.save();this.renderAll();this.toast("Orçamento salvo.")},
+  saveSchedule(){State.schedule={startDate:startDate.value||todayISO(),workdaysPerWeek:n("workdaysPerWeek",6),masons:n("masons",1),helpers:n("helpers",1),complexity:n("complexity",1),scheduleBuffer:n("scheduleBuffer",10),notes:scheduleNotes.value.trim()};Storage.save();this.renderAll();this.toast("Cronograma salvo.")},
+  addRoom(){
+    const room={id:cryptoRandom(),name:roomName.value.trim()||`Cômodo ${State.rooms.length+1}`,type:roomType.value,width:n("roomWidth"),length:n("roomLength"),height:n("roomHeight",State.project.defaultHeight),doorCount:n("doorCount"),windowCount:n("windowCount"),doorSize:doorSize.value||"0.80x2.10",windowSize:windowSize.value||"1.20x1.00"};
+    if(room.width<=0||room.length<=0||room.height<=0){this.toast("Informe medidas válidas.");return}
+    State.rooms.push(room);Storage.save();roomName.value=roomWidth.value=roomLength.value="";roomHeight.value=State.project.defaultHeight;this.renderAll();this.toast("Cômodo adicionado.");
+  },
+  removeRoom(id){State.rooms=State.rooms.filter(r=>r.id!==id);Storage.save();this.renderAll();this.toast("Cômodo removido.")},
+  addSamples(){
+    const h=State.project.defaultHeight||2.8;
+    [["Sala","social",3.5,4],["Cozinha","kitchen",3,3],["Quarto 1","bedroom",3,3.2],["Banheiro","bathroom",1.5,2.4],["Área serviço","service",1.8,2.2]].forEach(x=>State.rooms.push({id:cryptoRandom(),name:x[0],type:x[1],width:x[2],length:x[3],height:h,doorCount:1,windowCount:1,doorSize:"0.80x2.10",windowSize:"1.20x1.00"}));
+    Storage.save();this.renderAll();this.toast("Exemplo adicionado.");
+  },
+  renderAll(){this.renderHome();this.renderProject();this.renderRooms();this.renderCalculations();this.renderBudget();this.renderSchedule();this.renderFloorplan();this.renderAudit(false)},
+  stat(items){return items.map(i=>`<div class="stat"><b>${i[0]}</b><span>${i[1]}</span></div>`).join("")},
+  renderHome(){
+    const t=Calc.totals(false),b=Calc.budget(false),s=Schedule.stages(false),lot=State.project.lotWidth*State.project.lotLength;
+    dash.innerHTML=this.stat([[State.rooms.length,"Cômodos"],[round(t.area)+" m²","Área construída"],[money(b.final),"Valor sugerido"],[s.totalDays+" dias","Prazo estimado"],[fmtDate(s.start),"Início"],[fmtDate(s.end),"Término"],[round(lot)+" m²","Terreno"],[Math.round(t.blocks),"Blocos"]]);
+    homeWarns.innerHTML=this.warnings([...this.projectWarnings(),...Schedule.warnings()]);
+  },
+  projectWarnings(){
+    const w=[],lot=State.project.lotWidth*State.project.lotLength,t=Calc.totals(false);
+    if(!State.project.name)w.push(["warn","A obra ainda não tem nome."]);
+    if(State.project.lotWidth<=0||State.project.lotLength<=0)w.push(["bad","Medidas do terreno inválidas."]);
+    if(t.area>lot&&lot>0)w.push(["bad",`Área dos cômodos (${round(t.area)}m²) ultrapassa o terreno (${round(lot)}m²).`]);
+    return w;
+  },
+  renderProject(){projectWarnings.innerHTML=this.warnings(this.projectWarnings())},
+  warnings(list){if(!list.length)return`<div class="warn ok">Nenhum alerta importante encontrado.</div>`;return list.map(w=>`<div class="warn ${w[0]==="bad"?"bad":""}">${esc(w[1])}</div>`).join("")},
+  renderRooms(){
+    roomsList.innerHTML=State.rooms.length?State.rooms.map(r=>{const c=Calc.room(r,false);return`<div class="room"><div class="roomHead"><div><b>${esc(r.name)}</b><div class="mut">${r.width}m × ${r.length}m × ${r.height}m</div></div><button class="danger" onclick="UI.removeRoom('${r.id}')">Remover</button></div><div class="mini"><div><span>Área</span><b>${round(c.area)}m²</b></div><div><span>Paredes úteis</span><b>${round(c.wallNet)}m²</b></div><div><span>Caixas piso</span><b>${c.floorBoxes}</b></div><div><span>Blocos</span><b>${c.blocks}</b></div></div></div>`}).join(""):`<div class="empty">Nenhum cômodo cadastrado.</div>`;
+  },
+  renderCalculations(){
+    const t=Calc.totals(false);
+    calcTotals.innerHTML=this.stat([[round(t.area)+" m²","Área de piso"],[round(t.wallNet)+" m²","Paredes úteis"],[t.floorBoxes,"Caixas piso"],[round(t.paintLiters,1)+" L","Tinta"],[Math.round(t.blocks),"Blocos"],[round(t.baseboard)+" m","Rodapé"],[round(t.volume)+" m³","Volume"],[round(t.openings)+" m²","Aberturas"]]);
+    materialsRows.innerHTML=State.rooms.length?State.rooms.map(r=>{const c=Calc.room(r,false);return`<tr><td><b>${esc(r.name)}</b></td><td>${round(c.area)}m²</td><td>${round(c.wallNet)}m²</td><td>${c.floorBoxes}</td><td>${round(c.paintLiters,1)}L</td><td>${c.blocks}</td><td><span class="badge high">Área alta</span><br><span class="badge mid">Materiais média</span></td></tr>`}).join(""):`<tr><td colspan="7">Cadastre cômodos.</td></tr>`;
+  },
+  renderBudget(){
+    const t=Calc.totals(false),b=Calc.budget(false),bud=State.budget;
+    budgetTotals.innerHTML=this.stat([[money(b.materials),"Materiais"],[money(b.labor),"Mão de obra"],[money(b.safety),"Segurança"],[money(b.profit),"Lucro"],[money(b.final),"Valor final"],[money(b.pricePerM2),"Preço/m²"]]);
+    budgetRows.innerHTML=[
+      ["Piso",`${t.floorBoxes} caixas`,money(bud.priceFloorBox),money(b.floorCost),"Cálculo de materiais"],
+      ["Tinta",`${round(t.paintLiters,1)} L`,money(bud.pricePaintLiter),money(b.paintCost),"Paredes úteis"],
+      ["Blocos",`${Math.round(t.blocks)} un.`,money(bud.priceBlock),money(b.blockCost),"Alvenaria estimada"],
+      ["Mão de obra",bud.manualLabor!==null?"manual":`${round(t.area)}m² × ${money(bud.laborPerM2)}`,"-",money(b.labor),"Orçamento"],
+      ["Outras despesas","manual","-",money(bud.extraCosts),"Orçamento"],
+      ["Margem segurança",`${bud.safetyMargin}%`,"-",money(b.safety),"Risco/perdas"],
+      ["Lucro",`${bud.profitMargin}%`,"-",money(b.profit),"Margem"],
+      ["Desconto","manual","-",`-${money(bud.discount)}`,"Negociação"]
+    ].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join("");
+  },
+  renderSchedule(){
+    const sc=Schedule.stages(false);
+    scheduleTotals.innerHTML=this.stat([[sc.totalDays+" dias","Duração estimada"],[fmtDate(sc.start),"Início"],[fmtDate(sc.end),"Término"],[round(sc.crew,2),"Força de equipe"],[State.schedule.masons,"Pedreiros"],[State.schedule.helpers,"Ajudantes"]]);
+    scheduleWarnings.innerHTML=this.warnings(Schedule.warnings());
+    const total=sc.totalDays||1,work=Number(State.schedule.workdaysPerWeek)||6;
+    scheduleRows.innerHTML=sc.rows.map(r=>{const pct=Math.min(100,round(r.days/total*100,1));return`<tr><td><b>${r.name}</b></td><td>${r.metric}</td><td>${r.days}</td><td>${fmtDate(r.start)}</td><td>${fmtDate(r.end)}</td><td>${r.dep}</td><td><div class="progress"><div class="bar" style="width:${pct}%"></div></div><small>${pct}% do prazo</small></td></tr>`}).join("");
+  },
+  renderFloorplan(){
+    const svg=$("floorSvg"),lotW=State.project.lotWidth||6,lotL=State.project.lotLength||20,scale=Math.min(810/lotW,430/lotL,50),x0=45,y0=45,lotPxW=lotW*scale,lotPxH=lotL*scale;
+    let x=x0,y=y0,rowH=0,html=`<rect width="900" height="520" fill="transparent"/><rect x="${x0}" y="${y0}" width="${lotPxW}" height="${lotPxH}" fill="rgba(15,23,42,.70)" stroke="rgba(34,197,94,.85)" stroke-width="3" rx="8"/><text x="${x0+8}" y="${y0-12}" fill="#cbd5e1" font-size="15" font-weight="800">Terreno ${round(lotW)}m × ${round(lotL)}m</text>`;
+    if(!State.rooms.length)html+=`<text x="450" y="270" text-anchor="middle" fill="#94a3b8" font-size="18">Adicione cômodos para gerar a planta</text>`;
+    State.rooms.forEach(r=>{const w=r.width*scale,h=r.length*scale;if(x+w>x0+lotPxW){x=x0;y+=rowH;rowH=0}const bad=y+h>y0+lotPxH;html+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${bad?'rgba(251,113,133,.20)':'rgba(56,189,248,.14)'}" stroke="${bad?'#fb7185':'#38bdf8'}" stroke-width="2" rx="5"/><text x="${x+w/2}" y="${y+h/2-6}" text-anchor="middle" fill="#e5e7eb" font-size="12" font-weight="800">${esc(r.name)}</text><text x="${x+w/2}" y="${y+h/2+10}" text-anchor="middle" fill="#cbd5e1" font-size="10">${round(r.width)}m × ${round(r.length)}m</text>`;x+=w;rowH=Math.max(rowH,h)});
+    svg.innerHTML=html;
+  },
+  renderAudit(refresh){
+    if(refresh){Calc.totals(true);Calc.budget(true);Schedule.stages(true);Storage.save()}
+    formulaBox.innerHTML=Formulas.map(f=>`<div class="audit"><b>${f[2]} <span class="badge">v${f[1]}</span></b><p class="mut">${f[3]}</p><span class="badge ${f[4]==='Alta'?'high':f[4]==='Média'?'mid':'tech'}">${f[4]}</span></div>`).join("");
+    auditList.innerHTML=State.audit.length?State.audit.map(a=>`<div class="audit"><h4>${esc(a.formula)}</h4><p><b>Contexto:</b> ${esc(a.context)}</p><p><b>Resultado:</b> ${esc(a.result)}</p><code>${esc(a.steps)}</code></div>`).join(""):`<div class="empty">Clique em “Atualizar auditoria” para gerar o log.</div>`;
+  }
+};
+
+Storage.load();UI.fill();UI.renderAll();
+window.UI=UI;window.Storage=Storage;window.Audit=Audit;
+</script>
 </body>
 </html>
