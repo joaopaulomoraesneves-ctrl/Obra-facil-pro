@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Obra Fácil Pro — Pacote 05</title>
+<title>Obra Fácil Pro — Pacote 06</title>
 <style>
 :root{
   --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--line:rgba(148,163,184,.24);
@@ -46,6 +46,7 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 .toast{position:fixed;left:14px;right:14px;bottom:84px;display:none;z-index:40;background:#111827;border:1px solid rgba(34,197,94,.36);border-radius:14px;padding:12px;box-shadow:var(--shadow)}.toast.show{display:block}
 .progress{height:8px;border-radius:999px;background:#020617;border:1px solid var(--line);overflow:hidden;min-width:100px}.bar{height:100%;background:linear-gradient(90deg,var(--ok),var(--sky))}
 
+.floorLegend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.legendDot{width:12px;height:12px;border-radius:4px;display:inline-block;margin-right:5px}.floorWarnList{display:grid;gap:8px}.coordInput{min-width:82px}.svgbox svg text{user-select:none}
 .trackCard{border:1px solid var(--line);border-radius:15px;padding:11px;margin-top:9px;background:rgba(2,6,23,.34)}
 .statusSelect{min-width:130px}.smallInput{min-width:95px}.logItem{border:1px solid var(--line);border-radius:14px;background:rgba(2,6,23,.35);padding:11px;margin-top:9px}.logItem h4{margin-bottom:4px}
 .compareBox{display:grid;grid-template-columns:1fr;gap:10px}.compareBox .stat{margin:0}
@@ -71,14 +72,14 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 05 — Acompanhamento da Obra</div></div></div>
-    <div class="pill">ObraCalc Engine v1.4.0</div>
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 06 — Planta Baixa 2D</div></div></div>
+    <div class="pill">ObraCalc Engine v1.5.0</div>
   </header>
 
   <section id="inicio" class="page on">
     <div class="hero">
       <h2>Agora o sistema calcula custo e tempo.</h2>
-      <p class="mut">O Pacote 05 mantém materiais, orçamento, cronograma e relatório, adicionando acompanhamento da execução: status por etapa, progresso geral, diário de obra e comparação entre planejado e realizado.</p>
+      <p class="mut">O Pacote 06 mantém materiais, orçamento, cronograma, relatório e execução, adicionando uma planta baixa 2D mais forte: posições por cômodo, validação de encaixe no terreno, verificação de sobreposição e exportação em SVG.</p>
       <div class="rules">
         <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
         <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
@@ -293,7 +294,45 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   </section>
 
   <section id="planta" class="page">
-    <div class="card"><h2>Planta baixa 2D automática</h2><p class="mut">A planta ainda é simples, mas já usa os dados reais dos cômodos para alimentar cálculos, orçamento e cronograma.</p><div class="svgbox"><svg id="floorSvg" viewBox="0 0 900 520" role="img"></svg></div></div>
+    <div class="grid two">
+      <div class="card">
+        <h2>Planta baixa 2D editável</h2>
+        <p class="mut">Agora cada cômodo pode ter posição X/Y dentro do terreno. O sistema valida se cabe no lote e se há sobreposição entre ambientes.</p>
+        <div class="grid two">
+          <div><label>Escala visual (px por metro)</label><input id="floorScale" type="number" step="1" min="20" max="80"></div>
+          <div><label>Grade de encaixe (m)</label><input id="floorGrid" type="number" step=".10" min=".10"></div>
+        </div>
+        <div class="row">
+          <button onclick="UI.autoLayoutFloorplan()">Organizar automaticamente</button>
+          <button class="sec" onclick="UI.saveFloorSettings()">Salvar escala/grade</button>
+          <button class="ghost" onclick="UI.exportFloorplanSVG()">Exportar SVG</button>
+        </div>
+        <div class="floorLegend">
+          <span><i class="legendDot" style="background:#38bdf8"></i>Normal</span>
+          <span><i class="legendDot" style="background:#fb7185"></i>Fora do terreno ou sobreposto</span>
+          <span><i class="legendDot" style="background:#22c55e"></i>Terreno</span>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Validações da planta</h2>
+        <div id="floorWarnings" class="floorWarnList"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Posição dos cômodos</h2>
+      <div class="table">
+        <table>
+          <thead><tr><th>Cômodo</th><th>Medida</th><th>X no terreno</th><th>Y no terreno</th><th>Área</th><th>Status</th></tr></thead>
+          <tbody id="floorRows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Desenho da planta</h2>
+      <div class="svgbox"><svg id="floorSvg" viewBox="0 0 900 560" role="img"></svg></div>
+    </div>
   </section>
 
   <section id="auditoria" class="page">
@@ -319,9 +358,9 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 <div id="toast" class="toast"></div>
 
 <script>
-const App={name:"Obra Fácil Pro",package:"Pacote 05",engine:"ObraCalc Engine",version:"1.4.0"};
-const StoreKey="obra_facil_pro_pacote_05";
-const OldKeys=["obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
+const App={name:"Obra Fácil Pro",package:"Pacote 06",engine:"ObraCalc Engine",version:"1.5.0"};
+const StoreKey="obra_facil_pro_pacote_06";
+const OldKeys=["obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
 const State={
   project:{name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
   rooms:[],
@@ -329,6 +368,7 @@ const State={
   budget:{priceFloorBox:0,pricePaintLiter:0,priceBlock:0,laborPerM2:0,manualLabor:null,extraCosts:0,safetyMargin:10,profitMargin:20,discount:0},
   schedule:{startDate:"",workdaysPerWeek:6,masons:1,helpers:1,complexity:1,scheduleBuffer:10,notes:""},
   tracking:{stages:{},logs:[]},
+  floorplan:{grid:0.5,showGrid:true,scale:40},
   audit:[]
 };
 const Formulas=[
@@ -340,7 +380,8 @@ const Formulas=[
   ["budget.total","1.1.0","Valor final","materiais + mão de obra + despesas + segurança + lucro - desconto","Média"],
   ["schedule.duration","1.2.0","Prazo por etapa","quantidade ÷ produtividade ajustada por equipe e complexidade","Média"],
   ["report.summary","1.3.0","Relatório da obra","consolida dados técnicos, financeiros e cronograma","Alta"],
-  ["tracking.progress","1.4.0","Progresso da obra","média ponderada do avanço informado por etapa","Média"]
+  ["tracking.progress","1.4.0","Progresso da obra","média ponderada do avanço informado por etapa","Média"],
+  ["floorplan.validation","1.5.0","Validação da planta","verifica cômodos fora do terreno e sobreposições","Alta"]
 ];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -451,6 +492,17 @@ const Schedule={
 };
 
 
+
+const Floorplan={
+  snap(value){const grid=Number(State.floorplan.grid)||0.5;return round(Math.round((Number(value)||0)/grid)*grid,2)},
+  ensurePositions(){let cursorX=0,cursorY=0,rowH=0;const lotW=Number(State.project.lotWidth)||6;State.rooms.forEach(room=>{if(Number.isFinite(Number(room.x))&&Number.isFinite(Number(room.y)))return;if(cursorX+room.width>lotW&&cursorX>0){cursorX=0;cursorY+=rowH;rowH=0}room.x=this.snap(cursorX);room.y=this.snap(cursorY);cursorX+=room.width;rowH=Math.max(rowH,room.length)})},
+  autoLayout(){let cursorX=0,cursorY=0,rowH=0;const lotW=Number(State.project.lotWidth)||6;State.rooms.forEach(room=>{if(cursorX+room.width>lotW&&cursorX>0){cursorX=0;cursorY+=rowH;rowH=0}room.x=this.snap(cursorX);room.y=this.snap(cursorY);cursorX+=room.width;rowH=Math.max(rowH,room.length)})},
+  rect(room){return{x:Number(room.x)||0,y:Number(room.y)||0,w:Number(room.width)||0,h:Number(room.length)||0}},
+  overlaps(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y},
+  validation(){this.ensurePositions();const lotW=Number(State.project.lotWidth)||0,lotL=Number(State.project.lotLength)||0,warnings=[];if(!State.rooms.length)warnings.push(["warn","Cadastre cômodos para gerar a planta."]);State.rooms.forEach(room=>{const r=this.rect(room);if(r.x<0||r.y<0||r.x+r.w>lotW||r.y+r.h>lotL)warnings.push(["bad",`${room.name} está fora dos limites do terreno.`])});for(let i=0;i<State.rooms.length;i++){for(let j=i+1;j<State.rooms.length;j++){if(this.overlaps(this.rect(State.rooms[i]),this.rect(State.rooms[j])))warnings.push(["bad",`${State.rooms[i].name} está sobreposto com ${State.rooms[j].name}.`])}}const totalArea=Calc.totals(false).area,lotArea=lotW*lotL;if(lotArea>0&&totalArea>lotArea)warnings.push(["bad",`A soma dos cômodos (${round(totalArea)}m²) ultrapassa o terreno (${round(lotArea)}m²).`]);if(!warnings.length)warnings.push(["ok","Planta sem sobreposição e dentro do terreno."]);return warnings},
+  invalidRooms(){const invalid=new Set(),lotW=Number(State.project.lotWidth)||0,lotL=Number(State.project.lotLength)||0;State.rooms.forEach(room=>{const r=this.rect(room);if(r.x<0||r.y<0||r.x+r.w>lotW||r.y+r.h>lotL)invalid.add(room.id)});for(let i=0;i<State.rooms.length;i++){for(let j=i+1;j<State.rooms.length;j++){if(this.overlaps(this.rect(State.rooms[i]),this.rect(State.rooms[j]))){invalid.add(State.rooms[i].id);invalid.add(State.rooms[j].id)}}}return invalid}
+};
+
 const Tracking={
   ensure(){
     const sc=Schedule.stages(false);
@@ -522,7 +574,8 @@ const Storage={
       id:String(x.id||cryptoRandom()),name:x.name||x.n||"Cômodo",type:x.type||"social",
       width:Number(x.width??x.w??0),length:Number(x.length??x.l??0),height:Number(x.height??x.h??State.project.defaultHeight),
       doorCount:Number(x.doorCount??x.dc??1),windowCount:Number(x.windowCount??x.wc??1),
-      doorSize:x.doorSize||x.ds||"0.80x2.10",windowSize:x.windowSize||x.ws||"1.20x1.00"
+      doorSize:x.doorSize||x.ds||"0.80x2.10",windowSize:x.windowSize||x.ws||"1.20x1.00",
+      x:Number.isFinite(Number(x.x))?Number(x.x):null,y:Number.isFinite(Number(x.y))?Number(x.y):null
     })):State.rooms;
     const set=d.settings||d.set||d.materialSettings||{};
     State.settings={...State.settings,
@@ -546,10 +599,11 @@ const Storage={
     State.tracking={...State.tracking,...(d.tracking||{})};
     if(!State.tracking.stages)State.tracking.stages={};
     if(!Array.isArray(State.tracking.logs))State.tracking.logs=[];
+    State.floorplan={...State.floorplan,...(d.floorplan||{})};
   },
   exportJSON(){
     const blob=new Blob([JSON.stringify({app:App,exportedAt:new Date().toISOString(),...State},null,2)],{type:"application/json"});
-    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-05.json";a.click();URL.revokeObjectURL(a.href);
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-06.json";a.click();URL.revokeObjectURL(a.href);
   },
   importJSON(e){
     const f=e.target.files[0];if(!f)return;const rd=new FileReader();
@@ -584,14 +638,14 @@ const UI={
   saveBudget(){State.budget={priceFloorBox:n("priceFloorBox"),pricePaintLiter:n("pricePaintLiter"),priceBlock:n("priceBlock"),laborPerM2:n("laborPerM2"),manualLabor:manualLabor.value===""?null:n("manualLabor"),extraCosts:n("extraCosts"),safetyMargin:n("safetyMargin",10),profitMargin:n("profitMargin",20),discount:n("discount")};Storage.save();this.renderAll();this.toast("Orçamento salvo.")},
   saveSchedule(){State.schedule={startDate:startDate.value||todayISO(),workdaysPerWeek:n("workdaysPerWeek",6),masons:n("masons",1),helpers:n("helpers",1),complexity:n("complexity",1),scheduleBuffer:n("scheduleBuffer",10),notes:scheduleNotes.value.trim()};Storage.save();this.renderAll();this.toast("Cronograma salvo.")},
   addRoom(){
-    const room={id:cryptoRandom(),name:roomName.value.trim()||`Cômodo ${State.rooms.length+1}`,type:roomType.value,width:n("roomWidth"),length:n("roomLength"),height:n("roomHeight",State.project.defaultHeight),doorCount:n("doorCount"),windowCount:n("windowCount"),doorSize:doorSize.value||"0.80x2.10",windowSize:windowSize.value||"1.20x1.00"};
+    const room={id:cryptoRandom(),name:roomName.value.trim()||`Cômodo ${State.rooms.length+1}`,type:roomType.value,width:n("roomWidth"),length:n("roomLength"),height:n("roomHeight",State.project.defaultHeight),doorCount:n("doorCount"),windowCount:n("windowCount"),doorSize:doorSize.value||"0.80x2.10",windowSize:windowSize.value||"1.20x1.00",x:null,y:null};
     if(room.width<=0||room.length<=0||room.height<=0){this.toast("Informe medidas válidas.");return}
     State.rooms.push(room);Storage.save();roomName.value=roomWidth.value=roomLength.value="";roomHeight.value=State.project.defaultHeight;this.renderAll();this.toast("Cômodo adicionado.");
   },
   removeRoom(id){State.rooms=State.rooms.filter(r=>r.id!==id);Storage.save();this.renderAll();this.toast("Cômodo removido.")},
   addSamples(){
     const h=State.project.defaultHeight||2.8;
-    [["Sala","social",3.5,4],["Cozinha","kitchen",3,3],["Quarto 1","bedroom",3,3.2],["Banheiro","bathroom",1.5,2.4],["Área serviço","service",1.8,2.2]].forEach(x=>State.rooms.push({id:cryptoRandom(),name:x[0],type:x[1],width:x[2],length:x[3],height:h,doorCount:1,windowCount:1,doorSize:"0.80x2.10",windowSize:"1.20x1.00"}));
+    [["Sala","social",3.5,4],["Cozinha","kitchen",3,3],["Quarto 1","bedroom",3,3.2],["Banheiro","bathroom",1.5,2.4],["Área serviço","service",1.8,2.2]].forEach(x=>State.rooms.push({id:cryptoRandom(),name:x[0],type:x[1],width:x[2],length:x[3],height:h,doorCount:1,windowCount:1,doorSize:"0.80x2.10",windowSize:"1.20x1.00",x:null,y:null}));
     Storage.save();this.renderAll();this.toast("Exemplo adicionado.");
   },
   renderAll(){this.renderHome();this.renderProject();this.renderRooms();this.renderCalculations();this.renderBudget();this.renderSchedule();this.renderTracking();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
@@ -647,6 +701,8 @@ const UI={
     trackingTotals.innerHTML=this.stat([[sum.progress+"%","Progresso real"],[expected+"%","Progresso esperado"],[sum.done+"/"+sum.total,"Etapas concluídas"],[money(sum.extraCosts),"Custos extras"],[round(sum.hours,1)+" h","Horas registradas"],[sum.inProgress,"Em andamento"]]);
     trackingWarnings.innerHTML=this.warnings(Tracking.warnings());
 
+    if($("floorScale"))floorScale.value=State.floorplan.scale||40;
+    if($("floorGrid"))floorGrid.value=State.floorplan.grid||0.5;
     logDate.value=logDate.value||todayISO();
     logStage.innerHTML=sc.rows.map(r=>`<option value="${esc(r.name)}">${esc(r.name)}</option>`).join("");
 
@@ -713,7 +769,7 @@ const UI={
     Storage.save();this.renderTracking();this.renderReport();this.toast("Registro removido.");
   },
   renderReport(){
-    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress();
+    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress(),floorWarningsList=Floorplan.validation();
     const areaTerreno=(p.lotWidth||0)*(p.lotLength||0);
     const rowsMaterials=[
       ["Área de piso",`${round(t.area)} m²`,"Base dos cômodos"],
@@ -799,10 +855,17 @@ const UI={
             <tr><td>Horas registradas</td><td>${round(track.hours,1)} h</td></tr>
           </table>
         </div>
+        <div class="reportBox">
+          <h3>6. Planta baixa 2D</h3>
+          <table class="reportTable">
+            <tr><th>Validação</th><th>Resultado</th></tr>
+            ${floorWarningsList.map(w=>`<tr><td>${w[0]==="bad"?"Alerta":w[0]==="ok"?"OK":"Aviso"}</td><td>${esc(w[1])}</td></tr>`).join("")}
+          </table>
+        </div>
       </div>
 
       <div class="reportBox" style="margin-top:12px">
-        <h3>6. Etapas da obra</h3>
+        <h3>7. Etapas da obra</h3>
         <table class="reportTable">
           <tr><th>Etapa</th><th>Duração</th><th>Início</th><th>Término</th></tr>
           ${scheduleRows}
@@ -811,7 +874,7 @@ const UI={
 
 
       <div class="reportBox" style="margin-top:12px">
-        <h3>7. Últimos registros do diário</h3>
+        <h3>8. Últimos registros do diário</h3>
         <table class="reportTable">
           <tr><th>Data</th><th>Etapa</th><th>Registro</th><th>Custo extra</th></tr>
           ${State.tracking.logs.slice(0,6).map(l=>`<tr><td>${fmtDate(l.date)}</td><td>${esc(l.stage)}</td><td>${esc(l.text)}</td><td>${money(l.extraCost)}</td></tr>`).join("")||`<tr><td colspan="4">Nenhum registro diário cadastrado.</td></tr>`}
@@ -819,7 +882,7 @@ const UI={
       </div>
 
       <div class="reportBox" style="margin-top:12px">
-        <h3>8. Observações</h3>
+        <h3>9. Observações</h3>
         <p>${esc(p.notes||"Nenhuma observação cadastrada.")}</p>
         <p>${esc(State.schedule.notes||"Nenhuma observação específica de cronograma cadastrada.")}</p>
         <div class="reportNote">
@@ -848,14 +911,30 @@ const UI={
     a.href=URL.createObjectURL(blob);a.download=`${safe||"relatorio-obra-facil-pro"}.html`;a.click();URL.revokeObjectURL(a.href);
   },
   renderFloorplan(){
-    const svg=$("floorSvg"),lotW=State.project.lotWidth||6,lotL=State.project.lotLength||20,scale=Math.min(810/lotW,430/lotL,50),x0=45,y0=45,lotPxW=lotW*scale,lotPxH=lotL*scale;
-    let x=x0,y=y0,rowH=0,html=`<rect width="900" height="520" fill="transparent"/><rect x="${x0}" y="${y0}" width="${lotPxW}" height="${lotPxH}" fill="rgba(15,23,42,.70)" stroke="rgba(34,197,94,.85)" stroke-width="3" rx="8"/><text x="${x0+8}" y="${y0-12}" fill="#cbd5e1" font-size="15" font-weight="800">Terreno ${round(lotW)}m × ${round(lotL)}m</text>`;
-    if(!State.rooms.length)html+=`<text x="450" y="270" text-anchor="middle" fill="#94a3b8" font-size="18">Adicione cômodos para gerar a planta</text>`;
-    State.rooms.forEach(r=>{const w=r.width*scale,h=r.length*scale;if(x+w>x0+lotPxW){x=x0;y+=rowH;rowH=0}const bad=y+h>y0+lotPxH;html+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${bad?'rgba(251,113,133,.20)':'rgba(56,189,248,.14)'}" stroke="${bad?'#fb7185':'#38bdf8'}" stroke-width="2" rx="5"/><text x="${x+w/2}" y="${y+h/2-6}" text-anchor="middle" fill="#e5e7eb" font-size="12" font-weight="800">${esc(r.name)}</text><text x="${x+w/2}" y="${y+h/2+10}" text-anchor="middle" fill="#cbd5e1" font-size="10">${round(r.width)}m × ${round(r.length)}m</text>`;x+=w;rowH=Math.max(rowH,h)});
-    svg.innerHTML=html;
+    if(!$("floorSvg"))return;
+    Floorplan.ensurePositions();
+    if($("floorScale"))floorScale.value=State.floorplan.scale||40;
+    if($("floorGrid"))floorGrid.value=State.floorplan.grid||0.5;
+    const svg=$("floorSvg"),lotW=State.project.lotWidth||6,lotL=State.project.lotLength||20;
+    const scale=Number(State.floorplan.scale)||40,x0=45,y0=55,lotPxW=lotW*scale,lotPxH=lotL*scale;
+    const invalid=Floorplan.invalidRooms();
+    const colors={social:"#38bdf8",bedroom:"#a78bfa",kitchen:"#f59e0b",bathroom:"#22c55e",service:"#14b8a6",external:"#94a3b8"};
+    let htmlSvg=`<rect width="900" height="560" fill="transparent"/>`;
+    for(let gx=0;gx<=lotW;gx+=Number(State.floorplan.grid)||0.5){const x=x0+gx*scale;htmlSvg+=`<line x1="${x}" y1="${y0}" x2="${x}" y2="${y0+lotPxH}" stroke="rgba(148,163,184,.12)" stroke-width="1"/>`}
+    for(let gy=0;gy<=lotL;gy+=Number(State.floorplan.grid)||0.5){const y=y0+gy*scale;htmlSvg+=`<line x1="${x0}" y1="${y}" x2="${x0+lotPxW}" y2="${y}" stroke="rgba(148,163,184,.12)" stroke-width="1"/>`}
+    htmlSvg+=`<rect x="${x0}" y="${y0}" width="${lotPxW}" height="${lotPxH}" fill="rgba(15,23,42,.35)" stroke="rgba(34,197,94,.90)" stroke-width="3" rx="8"/><text x="${x0+8}" y="${y0-18}" fill="#cbd5e1" font-size="15" font-weight="800">Terreno ${round(lotW)}m × ${round(lotL)}m</text>`;
+    if(!State.rooms.length)htmlSvg+=`<text x="450" y="285" text-anchor="middle" fill="#94a3b8" font-size="18">Adicione cômodos para gerar a planta</text>`;
+    State.rooms.forEach(room=>{const x=x0+(Number(room.x)||0)*scale,y=y0+(Number(room.y)||0)*scale,w=room.width*scale,h=room.length*scale;const bad=invalid.has(room.id),stroke=bad?"#fb7185":(colors[room.type]||"#38bdf8");htmlSvg+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${bad?'rgba(251,113,133,.20)':'rgba(56,189,248,.14)'}" stroke="${stroke}" stroke-width="2.5" rx="5"/><text x="${x+w/2}" y="${y+h/2-10}" text-anchor="middle" fill="#e5e7eb" font-size="12" font-weight="800">${esc(room.name)}</text><text x="${x+w/2}" y="${y+h/2+7}" text-anchor="middle" fill="#cbd5e1" font-size="10">${round(room.width)}m × ${round(room.length)}m</text><text x="${x+w/2}" y="${y+h/2+22}" text-anchor="middle" fill="#94a3b8" font-size="10">X:${round(room.x)} Y:${round(room.y)}</text>`});
+    svg.innerHTML=htmlSvg;
+    if($("floorWarnings"))floorWarnings.innerHTML=this.warnings(Floorplan.validation());
+    if($("floorRows"))floorRows.innerHTML=State.rooms.length?State.rooms.map((room,index)=>{const c=Calc.room(room,false),bad=invalid.has(room.id);return`<tr><td><b>${esc(room.name)}</b></td><td>${round(room.width)}m × ${round(room.length)}m</td><td><input class="coordInput" type="number" step="${State.floorplan.grid||0.5}" value="${round(room.x)}" onchange="UI.updateRoomCoord(${index},'x',this.value)"></td><td><input class="coordInput" type="number" step="${State.floorplan.grid||0.5}" value="${round(room.y)}" onchange="UI.updateRoomCoord(${index},'y',this.value)"></td><td>${round(c.area)}m²</td><td><span class="badge ${bad?'tech':'high'}">${bad?'Verificar':'OK'}</span></td></tr>`}).join(""):`<tr><td colspan="6">Cadastre cômodos para editar a planta.</td></tr>`;
   },
+  saveFloorSettings(){State.floorplan.scale=Math.max(20,Math.min(80,n("floorScale",40)));State.floorplan.grid=Math.max(.1,n("floorGrid",.5));Storage.save();this.renderFloorplan();this.toast("Configurações da planta salvas.")},
+  autoLayoutFloorplan(){Floorplan.autoLayout();Storage.save();this.renderFloorplan();this.renderReport();this.toast("Planta organizada automaticamente.")},
+  updateRoomCoord(index,field,value){const room=State.rooms[index];if(!room)return;room[field]=Floorplan.snap(value);Storage.save();this.renderFloorplan();this.renderReport()},
+  exportFloorplanSVG(){this.renderFloorplan();const svg=$("floorSvg").outerHTML;const file=`<!doctype html><html><head><meta charset="utf-8"><title>Planta baixa - Obra Fácil Pro</title></head><body style="margin:0;background:#0f172a">${svg}</body></html>`;const blob=new Blob([file],{type:"text/html"});const a=document.createElement("a");const safe=(State.project.name||"planta-baixa").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");a.href=URL.createObjectURL(blob);a.download=`${safe||"planta-baixa"}-planta.html`;a.click();URL.revokeObjectURL(a.href)},
   renderAudit(refresh){
-    if(refresh){Calc.totals(true);Calc.budget(true);Schedule.stages(true);Audit.add("tracking.progress","Acompanhamento",`Progresso informado ${Tracking.summary().progress}% versus esperado ${Tracking.expectedProgress()}%`,`${Tracking.summary().progress}%`);Storage.save()}
+    if(refresh){Calc.totals(true);Calc.budget(true);Schedule.stages(true);Audit.add("tracking.progress","Acompanhamento",`Progresso informado ${Tracking.summary().progress}% versus esperado ${Tracking.expectedProgress()}%`,`${Tracking.summary().progress}%`);Audit.add("floorplan.validation","Planta baixa",Floorplan.validation().map(w=>w[1]).join("\n"),Floorplan.invalidRooms().size?`${Floorplan.invalidRooms().size} alerta(s)`:"Planta OK");Storage.save()}
     formulaBox.innerHTML=Formulas.map(f=>`<div class="audit"><b>${f[2]} <span class="badge">v${f[1]}</span></b><p class="mut">${f[3]}</p><span class="badge ${f[4]==='Alta'?'high':f[4]==='Média'?'mid':'tech'}">${f[4]}</span></div>`).join("");
     auditList.innerHTML=State.audit.length?State.audit.map(a=>`<div class="audit"><h4>${esc(a.formula)}</h4><p><b>Contexto:</b> ${esc(a.context)}</p><p><b>Resultado:</b> ${esc(a.result)}</p><code>${esc(a.steps)}</code></div>`).join(""):`<div class="empty">Clique em “Atualizar auditoria” para gerar o log.</div>`;
   }
