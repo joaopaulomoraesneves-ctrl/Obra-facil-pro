@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Obra Fácil Pro — Pacote 09</title>
+<title>Obra Fácil Pro — Pacote 10</title>
 <style>
 :root{
   --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--line:rgba(148,163,184,.24);
@@ -49,6 +49,17 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 .compactWarn{max-height:260px;overflow:auto}.floorHint{border:1px solid rgba(56,189,248,.35);background:rgba(56,189,248,.08);color:#bae6fd;border-radius:13px;padding:10px;margin-top:8px}
 
 
+
+.projectCard{border:1px solid var(--line);border-radius:16px;padding:12px;background:rgba(2,6,23,.36);margin-top:10px}
+.projectCard.activeProject{border-color:rgba(34,197,94,.72);background:rgba(34,197,94,.08)}
+.projectActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.projectMeta{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+.projectMeta div{border:1px solid rgba(148,163,184,.16);background:rgba(15,23,42,.5);border-radius:12px;padding:8px}
+.projectMeta span{display:block;color:var(--mut);font-size:.72rem}
+.backupBox{border:1px solid rgba(56,189,248,.35);background:rgba(56,189,248,.08);color:#bae6fd;border-radius:14px;padding:11px;margin-top:10px}
+.currentProjectPill{display:inline-flex;border:1px solid rgba(34,197,94,.45);background:rgba(34,197,94,.11);color:#a7f3d0;border-radius:999px;padding:5px 9px;font-size:.75rem;margin-top:4px}
+@media(min-width:760px){.projectMeta{grid-template-columns:repeat(4,1fr)}}
+
 .installCard{border:1px solid var(--line);border-radius:15px;background:rgba(2,6,23,.34);padding:11px;margin-top:9px}
 .installGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .installGrid label{margin-top:0}
@@ -80,20 +91,20 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   .reportBox{break-inside:avoid}
 }
 
-@media(min-width:760px){.reportGrid{grid-template-columns:1fr 1fr}.signatureArea{grid-template-columns:1fr 1fr}main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(980px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(12,1fr);overflow:visible}.tabs button{flex:auto}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
+@media(min-width:760px){.reportGrid{grid-template-columns:1fr 1fr}.signatureArea{grid-template-columns:1fr 1fr}main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(980px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(13,1fr);overflow:visible}.tabs button{flex:auto}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
 </style>
 </head>
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 09 — Hidráulica e Elétrica</div></div></div>
-    <div class="pill">ObraCalc Engine v1.8.0</div>
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 10 — Minhas Obras e Backup</div></div></div>
+    <div class="pill">ObraCalc Engine v1.9.0</div>
   </header>
 
   <section id="inicio" class="page on">
     <div class="hero">
       <h2>Agora o sistema calcula custo e tempo.</h2>
-      <p class="mut">O Pacote 09 adiciona instalações básicas: pontos elétricos e hidráulicos por cômodo, estimativa de conduíte, fios, tubos, conexões e entrada automática na lista de compras.</p>
+      <p class="mut">O Pacote 10 transforma a base em um sistema de gestão de múltiplas obras, com lista de obras, abrir, duplicar, excluir, backup geral e restauração.</p>
       <div class="rules">
         <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
         <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
@@ -103,12 +114,48 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
     <div class="card"><h3>Resumo geral</h3><div id="dash" class="stats"></div><div id="homeWarns"></div></div>
   </section>
 
+
+  <section id="obras" class="page">
+    <div class="grid two">
+      <div class="card">
+        <h2>Minhas Obras</h2>
+        <p class="mut">Agora o sistema controla várias obras separadas. Cada obra mantém seus próprios cômodos, planta, orçamento, compras, execução e relatório.</p>
+        <div class="grid two">
+          <div><label>Nome da nova obra</label><input id="newProjectName" placeholder="Ex: Casa bairro Centro"></div>
+          <div><label>Status inicial</label><select id="newProjectStatus"><option value="orcamento">Orçamento</option><option value="andamento">Em andamento</option><option value="pausada">Pausada</option><option value="finalizada">Finalizada</option></select></div>
+        </div>
+        <div class="row">
+          <button onclick="UI.createNewProject()">Criar nova obra</button>
+          <button class="sec" onclick="ProjectManager.duplicateCurrent()">Duplicar obra atual</button>
+          <button class="ghost" onclick="ProjectManager.quickBackup()">Backup rápido</button>
+        </div>
+        <div class="backupBox">Recomendação: faça backup geral sempre antes de substituir o arquivo no GitHub Pages ou limpar dados do navegador.</div>
+      </div>
+
+      <div class="card">
+        <h2>Backup e restauração</h2>
+        <p class="mut">Exporte todas as obras em um único arquivo JSON. Depois você pode restaurar em outro celular, computador ou navegador.</p>
+        <div class="row">
+          <button onclick="ProjectManager.exportAll()">Exportar todas as obras</button>
+          <label class="btn sec">Importar backup geral<input type="file" accept="application/json" hidden onchange="ProjectManager.importAll(event)"></label>
+        </div>
+        <div id="managerTotals" class="stats"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Lista de obras</h2>
+      <div id="projectsList"></div>
+    </div>
+  </section>
+
   <section id="obra" class="page">
     <div class="grid two">
       <div class="card">
         <h2>Cadastro da obra</h2>
         <label>Nome da obra</label><input id="projectName" placeholder="Ex: Casa do cliente João">
         <label>Cliente</label><input id="clientName" placeholder="Ex: Maria Silva">
+        <label>Status da obra</label><select id="projectStatus"><option value="orcamento">Orçamento</option><option value="andamento">Em andamento</option><option value="pausada">Pausada</option><option value="finalizada">Finalizada</option></select>
         <div class="grid two">
           <div><label>Largura do terreno (m)</label><input id="lotWidth" type="number" step=".01"></div>
           <div><label>Comprimento do terreno (m)</label><input id="lotLength" type="number" step=".01"></div>
@@ -504,6 +551,7 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 
 <nav class="tabs">
   <button class="on" data-tab="inicio" onclick="UI.go('inicio')"><span>🏠</span><br>Início</button>
+  <button data-tab="obras" onclick="UI.go('obras')"><span>📁</span><br>Obras</button>
   <button data-tab="obra" onclick="UI.go('obra')"><span>🏗️</span><br>Obra</button>
   <button data-tab="comodos" onclick="UI.go('comodos')"><span>🚪</span><br>Cômodos</button>
   <button data-tab="calculos" onclick="UI.go('calculos')"><span>🧮</span><br>Cálculos</button>
@@ -520,10 +568,11 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 <div id="toast" class="toast"></div>
 
 <script>
-const App={name:"Obra Fácil Pro",package:"Pacote 09",engine:"ObraCalc Engine",version:"1.8.0"};
-const StoreKey="obra_facil_pro_pacote_09";
-const OldKeys=["obra_facil_pro_pacote_08","obra_facil_pro_pacote_07","obra_facil_pro_pacote_06_2","obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
+const App={name:"Obra Fácil Pro",package:"Pacote 10",engine:"ObraCalc Engine",version:"1.9.0"};
+const StoreKey="obra_facil_pro_pacote_10";
+const OldKeys=["obra_facil_pro_pacote_09","obra_facil_pro_pacote_08","obra_facil_pro_pacote_07","obra_facil_pro_pacote_06_2","obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
 const State={
+  meta:{id:"",status:"orcamento",createdAt:"",updatedAt:""},
   project:{name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
   rooms:[],
   settings:{floorYield:2.5,blocksPerM2:12.5,paintYield:12,paintCoats:2},
@@ -549,7 +598,8 @@ const Formulas=[
   ["floorplan.validation","1.5.0","Validação da planta","verifica cômodos fora do terreno e sobreposições","Alta"],
   ["purchases.balance","1.6.0","Saldo de materiais","comprado - usado, comparado com quantidade planejada","Média"],
   ["compositions.materials","1.7.0","Composições de serviço","converte áreas e volumes em argamassa, rejunte, cimento e areia","Média"],
-  ["installations.basic","1.8.0","Instalações básicas","estima pontos elétricos, hidráulicos, conduíte, fios e tubos","Requer validação técnica"]
+  ["installations.basic","1.8.0","Instalações básicas","estima pontos elétricos, hidráulicos, conduíte, fios e tubos","Requer validação técnica"],
+  ["projects.manager","1.9.0","Gerenciador de obras","salva múltiplas obras com backup, duplicação e restauração","Alta"]
 ];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -931,8 +981,221 @@ const Tracking={
 };
 
 
+
+const ProjectManagerKey="obra_facil_pro_manager_v1";
+const ProjectManager={
+  data:{currentId:null,projects:[]},
+  emptyState(name="Nova obra",status="orcamento"){
+    const id=cryptoRandom();
+    const now=new Date().toISOString();
+    return {
+      meta:{id,status,createdAt:now,updatedAt:now},
+      project:{name,client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
+      rooms:[],
+      settings:{floorYield:2.5,blocksPerM2:12.5,paintYield:12,paintCoats:2},
+      budget:{priceFloorBox:0,pricePaintLiter:0,priceBlock:0,laborPerM2:0,manualLabor:null,extraCosts:0,safetyMargin:10,profitMargin:20,discount:0},
+      schedule:{startDate:todayISO(),workdaysPerWeek:6,masons:1,helpers:1,complexity:1,scheduleBuffer:10,notes:""},
+      tracking:{stages:{},logs:[]},
+      floorplan:{grid:0.5,showGrid:true,scale:40},
+      purchases:{items:{},manual:[]},
+      compositions:Compositions.defaults(),
+      installations:{rooms:{},settings:{wireMultiplier:2.8,conduitFactor:1.25,pipeFactor:1.15,defaultOutletWireM:8,defaultLightWireM:10,defaultSwitchWireM:6,hydraulicPointPipeM:4,sewerPointPipeM:3}},
+      audit:[]
+    };
+  },
+  compact(state){
+    const t=Calc.totals(false);
+    const b=Calc.budget(false);
+    const sc=Schedule.stages(false);
+    return {
+      id:state.meta.id,
+      name:state.project.name||"Obra sem nome",
+      client:state.project.client||"",
+      status:state.meta.status||"orcamento",
+      updatedAt:state.meta.updatedAt||new Date().toISOString(),
+      createdAt:state.meta.createdAt||new Date().toISOString(),
+      rooms:state.rooms.length,
+      area:round(t.area),
+      value:round(b.final,2),
+      deadlineDays:sc.totalDays||0
+    };
+  },
+  snapshot(){
+    State.meta.updatedAt=new Date().toISOString();
+    return JSON.parse(JSON.stringify(State));
+  },
+  apply(state){
+    const clean=JSON.parse(JSON.stringify(state));
+    Object.keys(State).forEach(k=>delete State[k]);
+    Object.assign(State,clean);
+    if(!State.meta)State.meta={id:cryptoRandom(),status:"orcamento",createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
+    if(!State.project)State.project={name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""};
+    if(!Array.isArray(State.rooms))State.rooms=[];
+    if(!State.purchases)State.purchases={items:{},manual:[]};
+    if(!State.compositions)State.compositions=Compositions.defaults();
+    if(!State.installations)State.installations={rooms:{},settings:{wireMultiplier:2.8,conduitFactor:1.25,pipeFactor:1.15,defaultOutletWireM:8,defaultLightWireM:10,defaultSwitchWireM:6,hydraulicPointPipeM:4,sewerPointPipeM:3}};
+  },
+  load(){
+    try{
+      const raw=localStorage.getItem(ProjectManagerKey);
+      if(raw){
+        this.data=JSON.parse(raw);
+        if(!Array.isArray(this.data.projects))this.data.projects=[];
+      }
+    }catch(e){this.data={currentId:null,projects:[]};}
+  },
+  save(){
+    localStorage.setItem(ProjectManagerKey,JSON.stringify(this.data));
+  },
+  initAfterStorageLoad(){
+    this.load();
+    if(!State.meta)State.meta={};
+    if(!State.meta.id)State.meta.id=cryptoRandom();
+    if(!State.meta.createdAt)State.meta.createdAt=new Date().toISOString();
+    if(!State.meta.updatedAt)State.meta.updatedAt=new Date().toISOString();
+    if(!State.meta.status)State.meta.status="orcamento";
+
+    if(!this.data.projects.length){
+      const snap=this.snapshot();
+      this.data.currentId=snap.meta.id;
+      this.data.projects=[{id:snap.meta.id,summary:this.compact(snap),state:snap}];
+      this.save();
+      return;
+    }
+
+    if(this.data.currentId){
+      const found=this.data.projects.find(p=>p.id===this.data.currentId);
+      if(found&&found.state){
+        this.apply(found.state);
+      }
+    }
+  },
+  saveCurrent(){
+    if(!State.meta.id)State.meta.id=cryptoRandom();
+    State.meta.updatedAt=new Date().toISOString();
+    const snap=this.snapshot();
+    const index=this.data.projects.findIndex(p=>p.id===snap.meta.id);
+    const entry={id:snap.meta.id,summary:this.compact(snap),state:snap};
+    if(index>=0)this.data.projects[index]=entry;
+    else this.data.projects.unshift(entry);
+    this.data.currentId=snap.meta.id;
+    this.save();
+  },
+  create(name,status){
+    this.saveCurrent();
+    const next=this.emptyState(name||"Nova obra",status||"orcamento");
+    this.apply(next);
+    this.data.currentId=State.meta.id;
+    this.saveCurrent();
+    Storage.save();
+    UI.fill();
+    UI.renderAll();
+    UI.go("obra");
+    UI.toast("Nova obra criada.");
+  },
+  open(id){
+    this.saveCurrent();
+    const found=this.data.projects.find(p=>p.id===id);
+    if(!found)return;
+    this.apply(found.state);
+    this.data.currentId=id;
+    this.save();
+    Storage.save();
+    UI.fill();
+    UI.renderAll();
+    UI.go("inicio");
+    UI.toast("Obra aberta.");
+  },
+  duplicateCurrent(){
+    this.saveCurrent();
+    const copy=this.snapshot();
+    copy.meta.id=cryptoRandom();
+    copy.meta.createdAt=new Date().toISOString();
+    copy.meta.updatedAt=new Date().toISOString();
+    copy.project.name=(copy.project.name||"Obra")+" — cópia";
+    this.apply(copy);
+    this.data.currentId=copy.meta.id;
+    this.saveCurrent();
+    Storage.save();
+    UI.fill();
+    UI.renderAll();
+    UI.go("obra");
+    UI.toast("Obra duplicada.");
+  },
+  remove(id){
+    if(this.data.projects.length<=1){UI.toast("Mantenha pelo menos uma obra cadastrada.");return;}
+    const project=this.data.projects.find(p=>p.id===id);
+    const name=project?.summary?.name||"esta obra";
+    if(!confirm(`Excluir ${name}? Faça backup antes se precisar desses dados.`))return;
+    this.data.projects=this.data.projects.filter(p=>p.id!==id);
+    if(this.data.currentId===id){
+      const first=this.data.projects[0];
+      this.apply(first.state);
+      this.data.currentId=first.id;
+    }
+    this.save();
+    Storage.save();
+    UI.fill();
+    UI.renderAll();
+    UI.toast("Obra excluída.");
+  },
+  setStatus(id,status){
+    const p=this.data.projects.find(x=>x.id===id);
+    if(!p)return;
+    p.state.meta.status=status;
+    p.summary.status=status;
+    p.state.meta.updatedAt=new Date().toISOString();
+    if(State.meta.id===id)State.meta.status=status;
+    this.save();
+    Storage.save();
+    UI.renderProjects();
+    UI.renderHome();
+  },
+  exportAll(){
+    this.saveCurrent();
+    const file={app:App,kind:"backup_geral_obras",exportedAt:new Date().toISOString(),manager:this.data};
+    const blob=new Blob([JSON.stringify(file,null,2)],{type:"application/json"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="obra-facil-pro-backup-geral-pacote-10.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  },
+  quickBackup(){
+    this.exportAll();
+    UI.toast("Backup geral exportado.");
+  },
+  importAll(event){
+    const file=event.target.files[0];
+    if(!file)return;
+    const rd=new FileReader();
+    rd.onload=()=>{
+      try{
+        const data=JSON.parse(rd.result);
+        const incoming=data.manager||data;
+        if(!incoming.projects||!Array.isArray(incoming.projects))throw new Error("backup inválido");
+        if(!confirm("Importar backup geral? Isso substituirá a lista atual de obras neste navegador."))return;
+        this.data=incoming;
+        this.save();
+        const current=this.data.projects.find(p=>p.id===this.data.currentId)||this.data.projects[0];
+        this.data.currentId=current.id;
+        this.apply(current.state);
+        this.save();
+        Storage.save();
+        UI.fill();
+        UI.renderAll();
+        UI.go("obras");
+        UI.toast("Backup geral importado.");
+      }catch(e){UI.toast("Não foi possível importar o backup geral.");}
+    };
+    rd.readAsText(file);
+    event.target.value="";
+  }
+};
+
+
 const Storage={
-  save(){localStorage.setItem(StoreKey,JSON.stringify(State))},
+  save(){localStorage.setItem(StoreKey,JSON.stringify(State)); if(window.ProjectManager&&!Storage._savingManager){Storage._savingManager=true;try{ProjectManager.saveCurrent()}finally{Storage._savingManager=false;}}},
   load(){
     let raw=localStorage.getItem(StoreKey);
     if(!raw){for(const k of OldKeys){raw=localStorage.getItem(k);if(raw)break}}
@@ -987,7 +1250,7 @@ const Storage={
   },
   exportJSON(){
     const blob=new Blob([JSON.stringify({app:App,exportedAt:new Date().toISOString(),...State},null,2)],{type:"application/json"});
-    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-09.json";a.click();URL.revokeObjectURL(a.href);
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-10.json";a.click();URL.revokeObjectURL(a.href);
   },
   importJSON(e){
     const f=e.target.files[0];if(!f)return;const rd=new FileReader();
@@ -1002,13 +1265,60 @@ const UI={
     document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));
     document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
     $(id).classList.add("on");const b=document.querySelector(`[data-tab="${id}"]`);if(b)b.classList.add("on");
-    if(id==="composicoes")this.renderCompositions();if(id==="instalacoes")this.renderInstallations();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
+    if(id==="obras")this.renderProjects();if(id==="composicoes")this.renderCompositions();if(id==="instalacoes")this.renderInstallations();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
     scrollTo({top:0,behavior:"smooth"});
   },
   toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(this.t);this.t=setTimeout(()=>el.classList.remove("show"),2500)},
+  createNewProject(){
+    ProjectManager.create(newProjectName.value.trim()||"Nova obra",newProjectStatus.value||"orcamento");
+    newProjectName.value="";
+  },
+  renderProjects(){
+    if(!$("projectsList"))return;
+    ProjectManager.saveCurrent();
+    const projects=ProjectManager.data.projects||[];
+    const totals={
+      all:projects.length,
+      orcamento:projects.filter(p=>p.summary.status==="orcamento").length,
+      andamento:projects.filter(p=>p.summary.status==="andamento").length,
+      finalizada:projects.filter(p=>p.summary.status==="finalizada").length
+    };
+    managerTotals.innerHTML=this.stat([[totals.all,"Obras"],[totals.orcamento,"Em orçamento"],[totals.andamento,"Em andamento"],[totals.finalizada,"Finalizadas"]]);
+    projectsList.innerHTML=projects.length?projects.map(p=>{
+      const s=p.summary||{};
+      const active=p.id===ProjectManager.data.currentId;
+      return `<div class="projectCard ${active?"activeProject":""}">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+          <div>
+            <h3>${esc(s.name||"Obra sem nome")}</h3>
+            <div class="mut">Cliente: ${esc(s.client||"Não informado")}</div>
+            ${active?`<div class="currentProjectPill">Obra aberta agora</div>`:""}
+          </div>
+          <select onchange="ProjectManager.setStatus('${p.id}',this.value)">
+            <option value="orcamento" ${s.status==="orcamento"?"selected":""}>Orçamento</option>
+            <option value="andamento" ${s.status==="andamento"?"selected":""}>Em andamento</option>
+            <option value="pausada" ${s.status==="pausada"?"selected":""}>Pausada</option>
+            <option value="finalizada" ${s.status==="finalizada"?"selected":""}>Finalizada</option>
+          </select>
+        </div>
+        <div class="projectMeta">
+          <div><b>${s.rooms||0}</b><span>Cômodos</span></div>
+          <div><b>${round(s.area||0)}m²</b><span>Área</span></div>
+          <div><b>${money(s.value||0)}</b><span>Valor</span></div>
+          <div><b>${s.deadlineDays||0} dias</b><span>Prazo</span></div>
+        </div>
+        <div class="projectActions">
+          <button onclick="ProjectManager.open('${p.id}')">Abrir</button>
+          <button class="sec" onclick="ProjectManager.open('${p.id}');ProjectManager.duplicateCurrent()">Duplicar</button>
+          <button class="danger" onclick="ProjectManager.remove('${p.id}')">Excluir</button>
+        </div>
+        <p class="mut">Atualizada em ${new Date(s.updatedAt||Date.now()).toLocaleString("pt-BR")}</p>
+      </div>`;
+    }).join(""):`<div class="empty">Nenhuma obra cadastrada.</div>`;
+  },
   fill(){
     const p=State.project,s=State.settings,b=State.budget,c=State.schedule;
-    projectName.value=p.name;clientName.value=p.client;lotWidth.value=p.lotWidth;lotLength.value=p.lotLength;defaultHeight.value=p.defaultHeight;lossProfile.value=String(p.lossProfile);projectNotes.value=p.notes;
+    projectName.value=p.name;clientName.value=p.client;if($("projectStatus"))projectStatus.value=State.meta.status||"orcamento";lotWidth.value=p.lotWidth;lotLength.value=p.lotLength;defaultHeight.value=p.defaultHeight;lossProfile.value=String(p.lossProfile);projectNotes.value=p.notes;
     roomHeight.value=p.defaultHeight;
     floorYield.value=s.floorYield;blocksPerM2.value=s.blocksPerM2;paintYield.value=s.paintYield;paintCoats.value=s.paintCoats;
     priceFloorBox.value=b.priceFloorBox;pricePaintLiter.value=b.pricePaintLiter;priceBlock.value=b.priceBlock;laborPerM2.value=b.laborPerM2;manualLabor.value=b.manualLabor??"";extraCosts.value=b.extraCosts;safetyMargin.value=b.safetyMargin;profitMargin.value=b.profitMargin;discount.value=b.discount;
@@ -1018,6 +1328,7 @@ const UI={
   },
   saveProject(){
     State.project={name:projectName.value.trim(),client:clientName.value.trim(),lotWidth:n("lotWidth",6),lotLength:n("lotLength",20),defaultHeight:n("defaultHeight",2.8),lossProfile:n("lossProfile",.10),notes:projectNotes.value.trim()};
+    State.meta.status=projectStatus.value||State.meta.status||"orcamento";
     Storage.save();this.renderAll();this.toast("Obra salva.");
   },
   saveSettings(){State.settings={floorYield:n("floorYield",2.5),blocksPerM2:n("blocksPerM2",12.5),paintYield:n("paintYield",12),paintCoats:n("paintCoats",2)};Storage.save();this.renderAll();this.toast("Configurações salvas.")},
@@ -1034,7 +1345,7 @@ const UI={
     [["Sala","social",3.5,4],["Cozinha","kitchen",3,3],["Quarto 1","bedroom",3,3.2],["Banheiro","bathroom",1.5,2.4],["Área serviço","service",1.8,2.2]].forEach(x=>State.rooms.push({id:cryptoRandom(),name:x[0],type:x[1],width:x[2],length:x[3],height:h,doorCount:1,windowCount:1,doorSize:"0.80x2.10",windowSize:"1.20x1.00",x:null,y:null}));
     Storage.save();this.renderAll();this.toast("Exemplo adicionado.");
   },
-  renderAll(){this.renderHome();this.renderProject();this.renderRooms();this.renderCalculations();this.renderCompositions();this.renderInstallations();this.renderBudget();this.renderSchedule();this.renderPurchases();this.renderTracking();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
+  renderAll(){this.renderHome();this.renderProjects();this.renderProject();this.renderRooms();this.renderCalculations();this.renderCompositions();this.renderInstallations();this.renderBudget();this.renderSchedule();this.renderPurchases();this.renderTracking();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
   stat(items){return items.map(i=>`<div class="stat"><b>${i[0]}</b><span>${i[1]}</span></div>`).join("")},
   renderHome(){
     const t=Calc.totals(false),b=Calc.budget(false),s=Schedule.stages(false),lot=State.project.lotWidth*State.project.lotLength;
@@ -1370,7 +1681,7 @@ const UI={
           <table class="reportTable">
             <tr><th>Campo</th><th>Informação</th></tr>
             <tr><td>Obra</td><td>${esc(p.name||"Não informado")}</td></tr>
-            <tr><td>Cliente</td><td>${esc(p.client||"Não informado")}</td></tr>
+            <tr><td>Cliente</td><td>${esc(p.client||"Não informado")}</td></tr><tr><td>Status</td><td>${esc(State.meta.status||"Orçamento")}</td></tr>
             <tr><td>Terreno</td><td>${round(p.lotWidth)}m × ${round(p.lotLength)}m = ${round(areaTerreno)}m²</td></tr>
             <tr><td>Área cadastrada</td><td>${round(t.area)}m²</td></tr>
             <tr><td>Altura padrão</td><td>${round(p.defaultHeight)}m</td></tr>
@@ -1545,7 +1856,7 @@ const UI={
 };
 
 Storage.load();if(typeof Floorplan!=="undefined"){Floorplan.ensurePositions();Storage.save();}UI.fill();UI.renderAll();
-window.UI=UI;window.Storage=Storage;window.Audit=Audit;
+window.UI=UI;window.Storage=Storage;window.Audit=Audit;window.ProjectManager=ProjectManager;
 </script>
 </body>
 </html>
