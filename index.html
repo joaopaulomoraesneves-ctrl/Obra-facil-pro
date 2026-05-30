@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Obra Fácil Pro — Pacote 11</title>
+<title>Obra Fácil Pro — Pacote 12</title>
 <style>
 :root{
   --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--line:rgba(148,163,184,.24);
@@ -51,6 +51,13 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 
 
 
+
+.schemaBox{border:1px solid var(--line);border-radius:15px;background:rgba(2,6,23,.36);padding:12px;margin-top:10px}
+.schemaBox code,.codeBlock{display:block;white-space:pre-wrap;background:rgba(2,6,23,.72);border:1px solid rgba(56,189,248,.16);border-radius:12px;color:#bae6fd;padding:10px;font-size:.78rem;line-height:1.45;max-height:360px;overflow:auto}
+.backendStep{border:1px solid var(--line);border-radius:14px;background:rgba(2,6,23,.34);padding:11px;margin-top:9px}
+.backendStep b{display:block}
+.apiBadge{display:inline-flex;border:1px solid rgba(56,189,248,.35);background:rgba(56,189,248,.08);color:#bae6fd;border-radius:999px;padding:4px 8px;font-size:.72rem;margin:2px}
+
 .healthGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.healthItem{border:1px solid var(--line);background:rgba(2,6,23,.36);border-radius:14px;padding:11px}.healthItem b{display:block}.healthOk{border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.08)}.healthWarn{border-color:rgba(245,158,11,.35);background:rgba(245,158,11,.08)}.healthBad{border-color:rgba(251,113,133,.35);background:rgba(251,113,133,.08)}.stickyActions{position:sticky;bottom:78px;z-index:8;background:rgba(15,23,42,.88);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:16px;padding:10px;margin-top:12px}.smallNote{font-size:.78rem;color:var(--mut);line-height:1.4}.navHint{display:block;color:#bae6fd;font-size:.75rem;margin-top:4px}.dangerZone{border:1px solid rgba(251,113,133,.35);background:rgba(251,113,133,.08);border-radius:14px;padding:12px;margin-top:12px}
 @media(min-width:760px){.healthGrid{grid-template-columns:repeat(4,1fr)}.stickyActions{bottom:92px}}
 
@@ -95,20 +102,20 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   .reportBox{break-inside:avoid}
 }
 
-@media(min-width:760px){.reportGrid{grid-template-columns:1fr 1fr}.signatureArea{grid-template-columns:1fr 1fr}main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(980px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(14,1fr);overflow:visible}.tabs button{flex:auto}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
+@media(min-width:760px){.reportGrid{grid-template-columns:1fr 1fr}.signatureArea{grid-template-columns:1fr 1fr}main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(980px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(15,1fr);overflow:visible}.tabs button{flex:auto}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
 </style>
 </head>
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 11 — Estabilidade e Polimento</div></div></div>
-    <div><div class="pill">ObraCalc Engine v2.0.0</div><span class="navHint">Arraste a barra inferior para ver todas as abas</span></div>
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 12 — Preparação Backend/SaaS</div></div></div>
+    <div><div class="pill">ObraCalc Engine v2.1.0</div><span class="navHint">Arraste a barra inferior para ver todas as abas</span></div>
   </header>
 
   <section id="inicio" class="page on">
     <div class="hero">
       <h2>Agora o sistema calcula custo e tempo.</h2>
-      <p class="mut">O Pacote 11 faz polimento e estabilização: painel de saúde, navegação mais confortável, validações gerais, limpeza de dados e backup preventivo.</p>
+      <p class="mut">O Pacote 12 prepara a base para backend/SaaS: modelo de dados, exportação estruturada, SQL inicial PostgreSQL/Supabase e checklist de migração para nuvem.</p>
       <div class="rules">
         <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
         <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
@@ -545,6 +552,62 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   </section>
 
 
+
+  <section id="backend" class="page">
+    <div class="grid two">
+      <div class="card">
+        <h2>Preparação para Backend/SaaS</h2>
+        <p class="mut">Este módulo não conecta ainda em servidor, mas deixa a base pronta para migrar depois para Supabase/PostgreSQL, login, assinatura e backup em nuvem.</p>
+        <div class="grid two">
+          <div><label>Nome da empresa/tenant</label><input id="tenantName" placeholder="Ex: Construtora JP"></div>
+          <div><label>Plano futuro</label><select id="backendPlan"><option value="local">Local</option><option value="cliente_unico">Cliente único</option><option value="multi_cliente">Multi-cliente/SaaS</option></select></div>
+        </div>
+        <div class="grid two">
+          <div><label>Responsável</label><input id="ownerName" placeholder="Nome do responsável"></div>
+          <div><label>Email do responsável</label><input id="ownerEmail" placeholder="email@exemplo.com"></div>
+        </div>
+        <div class="row">
+          <button onclick="UI.saveBackendSettings()">Salvar preparação</button>
+          <button class="sec" onclick="BackendPrep.exportNormalized()">Exportar dados estruturados</button>
+          <button class="ghost" onclick="BackendPrep.exportSQL()">Baixar SQL inicial</button>
+        </div>
+        <div class="backupBox">A versão atual continua 100% local no navegador. Este pacote apenas prepara a arquitetura para migrar com segurança depois.</div>
+      </div>
+
+      <div class="card">
+        <h2>Prontidão para nuvem</h2>
+        <div id="backendReadiness" class="healthGrid"></div>
+        <div id="backendWarnings"></div>
+      </div>
+    </div>
+
+    <div class="grid two">
+      <div class="card">
+        <h2>Modelo de dados recomendado</h2>
+        <div id="dataModelList"></div>
+      </div>
+
+      <div class="card">
+        <h2>Checklist de migração</h2>
+        <div id="migrationChecklist"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Prévia do pacote estruturado</h2>
+      <div class="schemaBox">
+        <code id="normalizedPreview"></code>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>SQL inicial PostgreSQL/Supabase</h2>
+      <div class="schemaBox">
+        <code id="sqlPreview"></code>
+      </div>
+    </div>
+  </section>
+
   <section id="sistema" class="page">
     <div class="grid two">
       <div class="card">
@@ -604,6 +667,7 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   <button data-tab="cronograma" onclick="UI.go('cronograma')"><span>📅</span><br>Prazo</button>
   <button data-tab="acompanhamento" onclick="UI.go('acompanhamento')"><span>✅</span><br>Execução</button>
   <button data-tab="planta" onclick="UI.go('planta')"><span>📐</span><br>Planta</button>
+  <button data-tab="backend" onclick="UI.go('backend')"><span>☁️</span><br>Backend</button>
   <button data-tab="sistema" onclick="UI.go('sistema')"><span>🛡️</span><br>Sistema</button>
   <button data-tab="relatorio" onclick="UI.go('relatorio')"><span>📄</span><br>Relatório</button>
 </nav>
@@ -611,9 +675,9 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 <div id="toast" class="toast"></div>
 
 <script>
-const App={name:"Obra Fácil Pro",package:"Pacote 11",engine:"ObraCalc Engine",version:"2.0.0"};
-const StoreKey="obra_facil_pro_pacote_11";
-const OldKeys=["obra_facil_pro_pacote_10","obra_facil_pro_pacote_09","obra_facil_pro_pacote_08","obra_facil_pro_pacote_07","obra_facil_pro_pacote_06_2","obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
+const App={name:"Obra Fácil Pro",package:"Pacote 12",engine:"ObraCalc Engine",version:"2.1.0"};
+const StoreKey="obra_facil_pro_pacote_12";
+const OldKeys=["obra_facil_pro_pacote_11","obra_facil_pro_pacote_10","obra_facil_pro_pacote_09","obra_facil_pro_pacote_08","obra_facil_pro_pacote_07","obra_facil_pro_pacote_06_2","obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
 const State={
   meta:{id:"",status:"orcamento",createdAt:"",updatedAt:""},
   project:{name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
@@ -626,6 +690,7 @@ const State={
   purchases:{items:{},manual:[]},
   compositions:{tileMortarKgM2:4.5,mortarBagKg:20,groutKgM2:0.25,plasterThicknessCm:2,plasterCementBagsM3:6,plasterSandM3M3:1.15,subfloorThicknessCm:4,subfloorCementBagsM3:5,subfloorSandM3M3:1.1,chapiscoKgM2:1.5},
   installations:{rooms:{},settings:{wireMultiplier:2.8,conduitFactor:1.25,pipeFactor:1.15,defaultOutletWireM:8,defaultLightWireM:10,defaultSwitchWireM:6,hydraulicPointPipeM:4,sewerPointPipeM:3}},
+  backend:{tenantName:"Minha Empresa",ownerName:"",ownerEmail:"",plan:"local",cloudReady:false},
   audit:[]
 };
 const Formulas=[
@@ -643,7 +708,8 @@ const Formulas=[
   ["compositions.materials","1.7.0","Composições de serviço","converte áreas e volumes em argamassa, rejunte, cimento e areia","Média"],
   ["installations.basic","1.8.0","Instalações básicas","estima pontos elétricos, hidráulicos, conduíte, fios e tubos","Requer validação técnica"],
   ["projects.manager","1.9.0","Gerenciador de obras","salva múltiplas obras com backup, duplicação e restauração","Alta"],
-  ["system.health","2.0.0","Saúde do sistema","verifica dados, alertas, backup e consistência geral","Alta"]
+  ["system.health","2.0.0","Saúde do sistema","verifica dados, alertas, backup e consistência geral","Alta"],
+  ["backend.schema","2.1.0","Preparação backend","normaliza dados locais para futura migração PostgreSQL/Supabase","Alta"]
 ];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -1027,6 +1093,206 @@ const Tracking={
 
 
 
+
+const BackendPrep={
+  tables(){
+    return [
+      ["tenants","Empresa/cliente dono das obras"],
+      ["profiles","Usuários e permissões futuras"],
+      ["projects","Obras principais"],
+      ["rooms","Cômodos e medidas"],
+      ["floorplan_rooms","Posição X/Y dos cômodos na planta"],
+      ["material_settings","Configurações de rendimento"],
+      ["budget_settings","Preços, mão de obra, lucro e descontos"],
+      ["composition_settings","Índices de argamassa, reboco e contrapiso"],
+      ["installation_points","Pontos hidráulicos e elétricos por cômodo"],
+      ["purchase_items","Lista de compras e controle de materiais"],
+      ["schedule_settings","Equipe, data de início e produtividade"],
+      ["tracking_stages","Execução por etapa"],
+      ["daily_logs","Diário de obra"],
+      ["reports","Relatórios gerados no futuro"],
+      ["audit_logs","Auditoria de cálculo"]
+    ];
+  },
+  normalized(){
+    ProjectManager.saveCurrent();
+    const manager=ProjectManager.data;
+    const current=this.normalizeState(State);
+    const projects=(manager.projects||[]).map(p=>this.normalizeState(p.state));
+    return {
+      schemaVersion:"2.1.0",
+      exportedAt:new Date().toISOString(),
+      app:App,
+      tenant:{
+        id:"local_tenant",
+        name:State.backend?.tenantName||"Minha Empresa",
+        ownerName:State.backend?.ownerName||"",
+        ownerEmail:State.backend?.ownerEmail||"",
+        plan:State.backend?.plan||"local"
+      },
+      currentProjectId:State.meta.id,
+      current,
+      projects
+    };
+  },
+  normalizeState(state){
+    return {
+      meta:state.meta,
+      project:state.project,
+      rooms:state.rooms||[],
+      settings:state.settings,
+      budget:state.budget,
+      schedule:state.schedule,
+      tracking:state.tracking,
+      floorplan:state.floorplan,
+      purchases:state.purchases,
+      compositions:state.compositions,
+      installations:state.installations,
+      audit:state.audit||[]
+    };
+  },
+  readiness(){
+    const h=SystemHealth.collect();
+    const checks=[
+      ["Obras com ID",ProjectManager.data.projects.every(p=>p.id&&p.state?.meta?.id),"Alguma obra está sem ID interno."],
+      ["Obra atual salva",!!State.meta.id,"Salve a obra atual."],
+      ["Nome da empresa",!!(State.backend?.tenantName),"Informe nome da empresa/tenant."],
+      ["Backup geral",!!localStorage.getItem("obra_facil_pro_last_backup"),"Faça backup geral antes da migração."],
+      ["Dados consistentes",h.bad===0,"Resolva alertas graves na aba Sistema."],
+      ["Múltiplas obras prontas",ProjectManager.data.projects.length>=1,"Crie ou importe obras."],
+      ["Exportação estruturada",true,"Disponível neste pacote."],
+      ["SQL inicial",true,"Disponível neste pacote."]
+    ];
+    return checks;
+  },
+  warnings(){
+    const checks=this.readiness();
+    const w=[];
+    checks.forEach(c=>{if(!c[1])w.push(["warn",c[2]])});
+    if(SystemHealth.collect().bad>0)w.push(["bad","Existem alertas graves no sistema. Corrija antes de migrar para backend."]);
+    if(!w.length)w.push(["ok","Base pronta para uma primeira migração técnica."]);
+    return w;
+  },
+  sql(){
+    return `-- Obra Fácil Pro — SQL inicial PostgreSQL/Supabase
+-- Versão de modelo: 2.1.0
+-- Observação: antes de produção, adicionar RLS, autenticação e políticas de acesso.
+
+create table if not exists tenants (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  owner_name text,
+  owner_email text,
+  plan text default 'local',
+  created_at timestamptz default now()
+);
+
+create table if not exists projects (
+  id uuid primary key default gen_random_uuid(),
+  tenant_id uuid references tenants(id) on delete cascade,
+  local_id text,
+  name text not null,
+  client text,
+  status text default 'orcamento',
+  lot_width numeric default 0,
+  lot_length numeric default 0,
+  default_height numeric default 2.8,
+  loss_profile numeric default 0.10,
+  notes text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists rooms (
+  id uuid primary key default gen_random_uuid(),
+  project_id uuid references projects(id) on delete cascade,
+  local_id text,
+  name text not null,
+  type text,
+  width numeric default 0,
+  length numeric default 0,
+  height numeric default 0,
+  door_count numeric default 0,
+  window_count numeric default 0,
+  door_size text,
+  window_size text,
+  position_x numeric,
+  position_y numeric,
+  created_at timestamptz default now()
+);
+
+create table if not exists purchase_items (
+  id uuid primary key default gen_random_uuid(),
+  project_id uuid references projects(id) on delete cascade,
+  source_id text,
+  name text not null,
+  unit text,
+  planned_qty numeric default 0,
+  bought_qty numeric default 0,
+  used_qty numeric default 0,
+  actual_price numeric default 0,
+  supplier text,
+  status text default 'pendente',
+  source text,
+  created_at timestamptz default now()
+);
+
+create table if not exists daily_logs (
+  id uuid primary key default gen_random_uuid(),
+  project_id uuid references projects(id) on delete cascade,
+  log_date date,
+  stage text,
+  text text,
+  extra_cost numeric default 0,
+  hours numeric default 0,
+  created_at timestamptz default now()
+);
+
+create table if not exists audit_logs (
+  id uuid primary key default gen_random_uuid(),
+  project_id uuid references projects(id) on delete cascade,
+  formula text,
+  context text,
+  steps text,
+  result text,
+  created_at timestamptz default now()
+);
+
+create table if not exists project_snapshots (
+  id uuid primary key default gen_random_uuid(),
+  project_id uuid references projects(id) on delete cascade,
+  schema_version text,
+  snapshot jsonb not null,
+  created_at timestamptz default now()
+);
+
+-- Próximas tabelas recomendadas:
+-- budget_settings, schedule_settings, tracking_stages, installation_points,
+-- composition_settings, material_settings, reports, profiles.
+`;
+  },
+  exportNormalized(){
+    const data=this.normalized();
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="obra-facil-pro-dados-estruturados-backend.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    UI.toast("Dados estruturados exportados.");
+  },
+  exportSQL(){
+    const blob=new Blob([this.sql()],{type:"text/sql"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="obra-facil-pro-schema-inicial.sql";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    UI.toast("SQL inicial exportado.");
+  }
+};
+
+
 const SystemHealth={
   collect(){
     const t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),purchase=Purchases.summary();
@@ -1363,13 +1629,14 @@ const Storage={
     if(!State.purchases.items)State.purchases.items={};
     if(!Array.isArray(State.purchases.manual))State.purchases.manual=[];
     State.compositions={...State.compositions,...(d.compositions||{})};
+    State.backend={...State.backend,...(d.backend||{})};
     State.installations={...State.installations,...(d.installations||{})};
     if(!State.installations.rooms)State.installations.rooms={};
     State.installations.settings={...{wireMultiplier:2.8,conduitFactor:1.25,pipeFactor:1.15,defaultOutletWireM:8,defaultLightWireM:10,defaultSwitchWireM:6,hydraulicPointPipeM:4,sewerPointPipeM:3},...(State.installations.settings||{})};
   },
   exportJSON(){
     const blob=new Blob([JSON.stringify({app:App,exportedAt:new Date().toISOString(),...State},null,2)],{type:"application/json"});
-    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-11.json";a.click();URL.revokeObjectURL(a.href);
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-12.json";a.click();URL.revokeObjectURL(a.href);
   },
   importJSON(e){
     const f=e.target.files[0];if(!f)return;const rd=new FileReader();
@@ -1384,7 +1651,7 @@ const UI={
     document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));
     document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
     $(id).classList.add("on");const b=document.querySelector(`[data-tab="${id}"]`);if(b)b.classList.add("on");
-    if(id==="sistema")this.renderSystemHealth();if(id==="obras")this.renderProjects();if(id==="composicoes")this.renderCompositions();if(id==="instalacoes")this.renderInstallations();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
+    if(id==="backend")this.renderBackend();if(id==="sistema")this.renderSystemHealth();if(id==="obras")this.renderProjects();if(id==="composicoes")this.renderCompositions();if(id==="instalacoes")this.renderInstallations();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
     scrollTo({top:0,behavior:"smooth"});
   },
   toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(this.t);this.t=setTimeout(()=>el.classList.remove("show"),2500)},
@@ -1436,6 +1703,47 @@ const UI={
     }).join(""):`<div class="empty">Nenhuma obra cadastrada.</div>`;
   },
 
+
+  saveBackendSettings(){
+    State.backend={
+      tenantName:tenantName.value.trim()||"Minha Empresa",
+      ownerName:ownerName.value.trim(),
+      ownerEmail:ownerEmail.value.trim(),
+      plan:backendPlan.value||"local",
+      cloudReady:BackendPrep.readiness().every(x=>x[1])
+    };
+    Storage.save();
+    this.renderBackend();
+    this.renderReport();
+    this.toast("Preparação de backend salva.");
+  },
+  renderBackend(){
+    if(!$("backendReadiness"))return;
+    const checks=BackendPrep.readiness();
+    const ready=checks.filter(x=>x[1]).length;
+    backendReadiness.innerHTML=[
+      ["Prontidão",Math.round((ready/checks.length)*100)+"%",ready===checks.length?"healthOk":"healthWarn"],
+      ["Tabelas sugeridas",BackendPrep.tables().length,"healthOk"],
+      ["Obras no pacote",ProjectManager.data.projects.length,"healthOk"],
+      ["Plano",State.backend?.plan||"local","healthOk"]
+    ].map(x=>`<div class="healthItem ${x[2]}"><b>${x[1]}</b><span>${x[0]}</span></div>`).join("");
+    backendWarnings.innerHTML=this.warnings(BackendPrep.warnings());
+
+    dataModelList.innerHTML=BackendPrep.tables().map(t=>`<div class="backendStep"><b>${esc(t[0])}</b><span class="mut">${esc(t[1])}</span></div>`).join("");
+
+    migrationChecklist.innerHTML=checks.map(c=>`<div class="warn ${c[1]?"ok":"bad"}"><b>${c[1]?"✓":"!"} ${esc(c[0])}</b><br>${c[1]?"Pronto":esc(c[2])}</div>`).join("");
+
+    const normalized=BackendPrep.normalized();
+    normalizedPreview.textContent=JSON.stringify({
+      schemaVersion:normalized.schemaVersion,
+      tenant:normalized.tenant,
+      currentProjectId:normalized.currentProjectId,
+      projectsCount:normalized.projects.length,
+      sampleProject:normalized.current.project,
+      sampleRooms:normalized.current.rooms.slice(0,2)
+    },null,2);
+    sqlPreview.textContent=BackendPrep.sql();
+  },
   renderSystemHealth(){
     if(!$("healthTotals"))return;
     const h=SystemHealth.collect();
@@ -1465,6 +1773,7 @@ const UI={
     startDate.value=c.startDate||todayISO();workdaysPerWeek.value=c.workdaysPerWeek;masons.value=c.masons;helpers.value=c.helpers;complexity.value=String(c.complexity);scheduleBuffer.value=c.scheduleBuffer;scheduleNotes.value=c.notes||"";
     if($("tileMortarKgM2")){const cp=State.compositions;tileMortarKgM2.value=cp.tileMortarKgM2;mortarBagKg.value=cp.mortarBagKg;groutKgM2.value=cp.groutKgM2;chapiscoKgM2.value=cp.chapiscoKgM2;plasterThicknessCm.value=cp.plasterThicknessCm;plasterCementBagsM3.value=cp.plasterCementBagsM3;plasterSandM3M3.value=cp.plasterSandM3M3;subfloorThicknessCm.value=cp.subfloorThicknessCm;subfloorCementBagsM3.value=cp.subfloorCementBagsM3;subfloorSandM3M3.value=cp.subfloorSandM3M3;}
     if($("wireMultiplier")){const is=State.installations.settings;wireMultiplier.value=is.wireMultiplier;conduitFactor.value=is.conduitFactor;pipeFactor.value=is.pipeFactor;hydraulicPointPipeM.value=is.hydraulicPointPipeM;sewerPointPipeM.value=is.sewerPointPipeM;defaultOutletWireM.value=is.defaultOutletWireM;defaultLightWireM.value=is.defaultLightWireM;defaultSwitchWireM.value=is.defaultSwitchWireM;}
+    if($("tenantName")){tenantName.value=State.backend?.tenantName||"";ownerName.value=State.backend?.ownerName||"";ownerEmail.value=State.backend?.ownerEmail||"";backendPlan.value=State.backend?.plan||"local";}
   },
   saveProject(){
     State.project={name:projectName.value.trim(),client:clientName.value.trim(),lotWidth:n("lotWidth",6),lotLength:n("lotLength",20),defaultHeight:n("defaultHeight",2.8),lossProfile:n("lossProfile",.10),notes:projectNotes.value.trim()};
@@ -1485,7 +1794,7 @@ const UI={
     [["Sala","social",3.5,4],["Cozinha","kitchen",3,3],["Quarto 1","bedroom",3,3.2],["Banheiro","bathroom",1.5,2.4],["Área serviço","service",1.8,2.2]].forEach(x=>State.rooms.push({id:cryptoRandom(),name:x[0],type:x[1],width:x[2],length:x[3],height:h,doorCount:1,windowCount:1,doorSize:"0.80x2.10",windowSize:"1.20x1.00",x:null,y:null}));
     Storage.save();this.renderAll();this.toast("Exemplo adicionado.");
   },
-  renderAll(){this.renderHome();this.renderSystemHealth();this.renderProjects();this.renderProject();this.renderRooms();this.renderCalculations();this.renderCompositions();this.renderInstallations();this.renderBudget();this.renderSchedule();this.renderPurchases();this.renderTracking();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
+  renderAll(){this.renderHome();this.renderBackend();this.renderSystemHealth();this.renderProjects();this.renderProject();this.renderRooms();this.renderCalculations();this.renderCompositions();this.renderInstallations();this.renderBudget();this.renderSchedule();this.renderPurchases();this.renderTracking();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
   stat(items){return items.map(i=>`<div class="stat"><b>${i[0]}</b><span>${i[1]}</span></div>`).join("")},
   renderHome(){
     const t=Calc.totals(false),b=Calc.budget(false),s=Schedule.stages(false),lot=State.project.lotWidth*State.project.lotLength;
@@ -1780,7 +2089,7 @@ const UI={
   },
   renderReport(){
     Floorplan.ensurePositions();
-    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress(),floorWarningsList=Floorplan.validation(),purchaseSummary=Purchases.summary(),comp=Compositions.calculate(false),inst=Installations.calculate(false),health=SystemHealth.collect();
+    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress(),floorWarningsList=Floorplan.validation(),purchaseSummary=Purchases.summary(),comp=Compositions.calculate(false),inst=Installations.calculate(false),health=SystemHealth.collect(),backendReady=BackendPrep.readiness().filter(x=>x[1]).length,backendTotal=BackendPrep.readiness().length;
     const areaTerreno=(p.lotWidth||0)*(p.lotLength||0);
     const rowsMaterials=[
       ["Área de piso",`${round(t.area)} m²`,"Base dos cômodos"],
@@ -1821,7 +2130,7 @@ const UI={
           <table class="reportTable">
             <tr><th>Campo</th><th>Informação</th></tr>
             <tr><td>Obra</td><td>${esc(p.name||"Não informado")}</td></tr>
-            <tr><td>Cliente</td><td>${esc(p.client||"Não informado")}</td></tr><tr><td>Status</td><td>${esc(State.meta.status||"Orçamento")}</td></tr><tr><td>Saúde do sistema</td><td>${health.bad} alerta(s) grave(s), ${health.warn} aviso(s)</td></tr>
+            <tr><td>Cliente</td><td>${esc(p.client||"Não informado")}</td></tr><tr><td>Status</td><td>${esc(State.meta.status||"Orçamento")}</td></tr><tr><td>Saúde do sistema</td><td>${health.bad} alerta(s) grave(s), ${health.warn} aviso(s)</td></tr><tr><td>Prontidão backend</td><td>${backendReady}/${backendTotal} itens prontos</td></tr>
             <tr><td>Terreno</td><td>${round(p.lotWidth)}m × ${round(p.lotLength)}m = ${round(areaTerreno)}m²</td></tr>
             <tr><td>Área cadastrada</td><td>${round(t.area)}m²</td></tr>
             <tr><td>Altura padrão</td><td>${round(p.defaultHeight)}m</td></tr>
@@ -1996,7 +2305,7 @@ const UI={
 };
 
 Storage.load();if(typeof Floorplan!=="undefined"){Floorplan.ensurePositions();Storage.save();}UI.fill();UI.renderAll();
-window.UI=UI;window.Storage=Storage;window.Audit=Audit;window.ProjectManager=ProjectManager;
+window.UI=UI;window.Storage=Storage;window.Audit=Audit;window.ProjectManager=ProjectManager;window.BackendPrep=BackendPrep;
 </script>
 </body>
 </html>
