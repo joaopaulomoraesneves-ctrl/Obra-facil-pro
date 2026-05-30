@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Obra Fácil Pro — Pacote 08</title>
+<title>Obra Fácil Pro — Pacote 09</title>
 <style>
 :root{
   --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--line:rgba(148,163,184,.24);
@@ -48,6 +48,12 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 
 .compactWarn{max-height:260px;overflow:auto}.floorHint{border:1px solid rgba(56,189,248,.35);background:rgba(56,189,248,.08);color:#bae6fd;border-radius:13px;padding:10px;margin-top:8px}
 
+
+.installCard{border:1px solid var(--line);border-radius:15px;background:rgba(2,6,23,.34);padding:11px;margin-top:9px}
+.installGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.installGrid label{margin-top:0}
+.techAlert{border:1px solid rgba(251,113,133,.35);background:rgba(251,113,133,.08);color:#fecdd3;border-radius:13px;padding:10px;margin-top:10px}
+
 .compNote{border:1px solid rgba(56,189,248,.35);background:rgba(56,189,248,.08);color:#bae6fd;border-radius:13px;padding:10px;margin-top:10px}
 .compFormula{font-size:.78rem;color:var(--mut);line-height:1.35}
 
@@ -74,20 +80,20 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   .reportBox{break-inside:avoid}
 }
 
-@media(min-width:760px){.reportGrid{grid-template-columns:1fr 1fr}.signatureArea{grid-template-columns:1fr 1fr}main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(980px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(11,1fr);overflow:visible}.tabs button{flex:auto}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
+@media(min-width:760px){.reportGrid{grid-template-columns:1fr 1fr}.signatureArea{grid-template-columns:1fr 1fr}main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(980px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(12,1fr);overflow:visible}.tabs button{flex:auto}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
 </style>
 </head>
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 08 — Composições de Serviço</div></div></div>
-    <div class="pill">ObraCalc Engine v1.7.0</div>
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 09 — Hidráulica e Elétrica</div></div></div>
+    <div class="pill">ObraCalc Engine v1.8.0</div>
   </header>
 
   <section id="inicio" class="page on">
     <div class="hero">
       <h2>Agora o sistema calcula custo e tempo.</h2>
-      <p class="mut">O Pacote 08 fortalece a matriz matemática com composições de serviço: argamassa de piso, rejunte, reboco, contrapiso, cimento e areia estimados automaticamente.</p>
+      <p class="mut">O Pacote 09 adiciona instalações básicas: pontos elétricos e hidráulicos por cômodo, estimativa de conduíte, fios, tubos, conexões e entrada automática na lista de compras.</p>
       <div class="rules">
         <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
         <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
@@ -286,6 +292,54 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 
 
 
+
+  <section id="instalacoes" class="page">
+    <div class="grid two">
+      <div class="card">
+        <h2>Instalações elétricas e hidráulicas básicas</h2>
+        <p class="mut">Configure pontos por cômodo. O sistema estima materiais básicos e envia automaticamente para a lista de compras.</p>
+        <div id="installationTotals" class="stats"></div>
+        <div id="installationWarnings"></div>
+        <div class="techAlert">Atenção: este módulo é levantamento inicial. Dimensionamento elétrico, carga, bitola, disjuntores, pressão hidráulica, diâmetro de tubos e esgoto exigem validação técnica profissional.</div>
+      </div>
+      <div class="card">
+        <h2>Parâmetros de estimativa</h2>
+        <div class="grid two">
+          <div><label>Multiplicador de fios</label><input id="wireMultiplier" type="number" step=".1"></div>
+          <div><label>Fator conduíte</label><input id="conduitFactor" type="number" step=".05"></div>
+        </div>
+        <div class="grid two">
+          <div><label>Fator tubos</label><input id="pipeFactor" type="number" step=".05"></div>
+          <div><label>Tubo por ponto hidráulico (m)</label><input id="hydraulicPointPipeM" type="number" step=".1"></div>
+        </div>
+        <div class="grid two">
+          <div><label>Esgoto por ponto (m)</label><input id="sewerPointPipeM" type="number" step=".1"></div>
+          <div><label>Fio por tomada (m)</label><input id="defaultOutletWireM" type="number" step=".1"></div>
+        </div>
+        <div class="grid two">
+          <div><label>Fio por ponto de luz (m)</label><input id="defaultLightWireM" type="number" step=".1"></div>
+          <div><label>Fio por interruptor (m)</label><input id="defaultSwitchWireM" type="number" step=".1"></div>
+        </div>
+        <button onclick="UI.saveInstallationSettings()">Salvar parâmetros</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Pontos por cômodo</h2>
+      <div id="installationRooms"></div>
+    </div>
+
+    <div class="card">
+      <h2>Materiais estimados de instalações</h2>
+      <div class="table">
+        <table>
+          <thead><tr><th>Material</th><th>Quantidade</th><th>Origem</th><th>Confiança</th></tr></thead>
+          <tbody id="installationRows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <section id="compras" class="page">
     <div class="grid two">
       <div class="card">
@@ -454,6 +508,7 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   <button data-tab="comodos" onclick="UI.go('comodos')"><span>🚪</span><br>Cômodos</button>
   <button data-tab="calculos" onclick="UI.go('calculos')"><span>🧮</span><br>Cálculos</button>
   <button data-tab="composicoes" onclick="UI.go('composicoes')"><span>🧱</span><br>Composições</button>
+  <button data-tab="instalacoes" onclick="UI.go('instalacoes')"><span>⚡</span><br>Instalações</button>
   <button data-tab="orcamento" onclick="UI.go('orcamento')"><span>💰</span><br>Orçamento</button>
   <button data-tab="compras" onclick="UI.go('compras')"><span>🧾</span><br>Compras</button>
   <button data-tab="cronograma" onclick="UI.go('cronograma')"><span>📅</span><br>Prazo</button>
@@ -465,9 +520,9 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 <div id="toast" class="toast"></div>
 
 <script>
-const App={name:"Obra Fácil Pro",package:"Pacote 08",engine:"ObraCalc Engine",version:"1.7.0"};
-const StoreKey="obra_facil_pro_pacote_08";
-const OldKeys=["obra_facil_pro_pacote_07","obra_facil_pro_pacote_06_2","obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
+const App={name:"Obra Fácil Pro",package:"Pacote 09",engine:"ObraCalc Engine",version:"1.8.0"};
+const StoreKey="obra_facil_pro_pacote_09";
+const OldKeys=["obra_facil_pro_pacote_08","obra_facil_pro_pacote_07","obra_facil_pro_pacote_06_2","obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
 const State={
   project:{name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
   rooms:[],
@@ -478,6 +533,7 @@ const State={
   floorplan:{grid:0.5,showGrid:true,scale:40},
   purchases:{items:{},manual:[]},
   compositions:{tileMortarKgM2:4.5,mortarBagKg:20,groutKgM2:0.25,plasterThicknessCm:2,plasterCementBagsM3:6,plasterSandM3M3:1.15,subfloorThicknessCm:4,subfloorCementBagsM3:5,subfloorSandM3M3:1.1,chapiscoKgM2:1.5},
+  installations:{rooms:{},settings:{wireMultiplier:2.8,conduitFactor:1.25,pipeFactor:1.15,defaultOutletWireM:8,defaultLightWireM:10,defaultSwitchWireM:6,hydraulicPointPipeM:4,sewerPointPipeM:3}},
   audit:[]
 };
 const Formulas=[
@@ -492,7 +548,8 @@ const Formulas=[
   ["tracking.progress","1.4.0","Progresso da obra","média ponderada do avanço informado por etapa","Média"],
   ["floorplan.validation","1.5.0","Validação da planta","verifica cômodos fora do terreno e sobreposições","Alta"],
   ["purchases.balance","1.6.0","Saldo de materiais","comprado - usado, comparado com quantidade planejada","Média"],
-  ["compositions.materials","1.7.0","Composições de serviço","converte áreas e volumes em argamassa, rejunte, cimento e areia","Média"]
+  ["compositions.materials","1.7.0","Composições de serviço","converte áreas e volumes em argamassa, rejunte, cimento e areia","Média"],
+  ["installations.basic","1.8.0","Instalações básicas","estima pontos elétricos, hidráulicos, conduíte, fios e tubos","Requer validação técnica"]
 ];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -663,6 +720,91 @@ const Compositions={
 };
 
 
+
+const Installations={
+  defaultsForRoom(room){
+    const type=room.type||"social";
+    const base={outlets:2,switches:1,lights:1,coldWater:0,sewer:0,shower:0,toilet:0,sink:0,tank:0};
+    if(type==="kitchen")return{...base,outlets:4,coldWater:2,sewer:1,sink:1};
+    if(type==="bathroom")return{...base,outlets:1,coldWater:3,sewer:2,shower:1,toilet:1,sink:1};
+    if(type==="service")return{...base,outlets:2,coldWater:2,sewer:1,tank:1};
+    if(type==="bedroom")return{...base,outlets:3};
+    if(type==="external")return{...base,outlets:1,lights:1};
+    return base;
+  },
+  ensure(){
+    State.rooms.forEach(room=>{
+      if(!State.installations.rooms[room.id]){
+        State.installations.rooms[room.id]=this.defaultsForRoom(room);
+      }
+    });
+    Object.keys(State.installations.rooms).forEach(id=>{
+      if(!State.rooms.some(r=>r.id===id))delete State.installations.rooms[id];
+    });
+  },
+  calculate(log=false){
+    this.ensure();
+    const s=State.installations.settings;
+    let outlets=0,switches=0,lights=0,coldWater=0,sewer=0,shower=0,toilet=0,sink=0,tank=0;
+    State.rooms.forEach(room=>{
+      const r=State.installations.rooms[room.id]||this.defaultsForRoom(room);
+      outlets+=Number(r.outlets)||0;
+      switches+=Number(r.switches)||0;
+      lights+=Number(r.lights)||0;
+      coldWater+=Number(r.coldWater)||0;
+      sewer+=Number(r.sewer)||0;
+      shower+=Number(r.shower)||0;
+      toilet+=Number(r.toilet)||0;
+      sink+=Number(r.sink)||0;
+      tank+=Number(r.tank)||0;
+    });
+    const totalElectricalPoints=outlets+switches+lights;
+    const conduitM=round((outlets*s.defaultOutletWireM+lights*s.defaultLightWireM+switches*s.defaultSwitchWireM)*s.conduitFactor,1);
+    const wire15M=round((lights*s.defaultLightWireM+switches*s.defaultSwitchWireM)*s.wireMultiplier,1);
+    const wire25M=round(outlets*s.defaultOutletWireM*s.wireMultiplier,1);
+    const boxes4x2=Math.ceil(outlets+switches);
+    const ceilingBoxes=Math.ceil(lights);
+    const breakers=Math.max(1,Math.ceil(totalElectricalPoints/8));
+    const hydraulicPoints=coldWater+shower+sink+tank+toilet;
+    const sewerPoints=sewer+toilet+sink+tank;
+    const waterPipeM=round(hydraulicPoints*s.hydraulicPointPipeM*s.pipeFactor,1);
+    const sewerPipeM=round(sewerPoints*s.sewerPointPipeM*s.pipeFactor,1);
+    const elbows=Math.ceil((hydraulicPoints+sewerPoints)*2.2);
+    const tees=Math.ceil((hydraulicPoints+sewerPoints)*0.8);
+    const registers=Math.ceil(Math.max(1,shower+sink+tank));
+    if(log){
+      Audit.add("installations.basic","Instalações",`Pontos elétricos: ${totalElectricalPoints}; conduíte ${conduitM}m; fio 1,5mm ${wire15M}m; fio 2,5mm ${wire25M}m. Pontos hidráulicos: ${hydraulicPoints}; tubo água ${waterPipeM}m; esgoto ${sewerPipeM}m.`,`${totalElectricalPoints} pontos elétricos e ${hydraulicPoints} pontos hidráulicos`);
+    }
+    return{outlets,switches,lights,coldWater,sewer,shower,toilet,sink,tank,totalElectricalPoints,conduitM,wire15M,wire25M,boxes4x2,ceilingBoxes,breakers,hydraulicPoints,sewerPoints,waterPipeM,sewerPipeM,elbows,tees,registers};
+  },
+  purchaseItems(){
+    const c=this.calculate(false);
+    return [
+      {id:"electrical_conduit_m",name:"Conduíte elétrico",unit:"m",planned:c.conduitM,defaultPrice:0,source:"Instalações elétricas"},
+      {id:"wire_15_m",name:"Fio 1,5mm²",unit:"m",planned:c.wire15M,defaultPrice:0,source:"Iluminação/interruptores"},
+      {id:"wire_25_m",name:"Fio 2,5mm²",unit:"m",planned:c.wire25M,defaultPrice:0,source:"Tomadas"},
+      {id:"box_4x2",name:"Caixa elétrica 4x2",unit:"un.",planned:c.boxes4x2,defaultPrice:0,source:"Tomadas/interruptores"},
+      {id:"ceiling_box",name:"Caixa de teto/ponto de luz",unit:"un.",planned:c.ceilingBoxes,defaultPrice:0,source:"Pontos de luz"},
+      {id:"breakers",name:"Disjuntores estimados",unit:"un.",planned:c.breakers,defaultPrice:0,source:"Quadro elétrico básico"},
+      {id:"water_pipe_m",name:"Tubo água fria",unit:"m",planned:c.waterPipeM,defaultPrice:0,source:"Instalação hidráulica"},
+      {id:"sewer_pipe_m",name:"Tubo esgoto",unit:"m",planned:c.sewerPipeM,defaultPrice:0,source:"Instalação sanitária"},
+      {id:"hydraulic_elbows",name:"Joelhos/conexões",unit:"un.",planned:c.elbows,defaultPrice:0,source:"Instalações hidráulicas"},
+      {id:"hydraulic_tees",name:"Tês/conexões",unit:"un.",planned:c.tees,defaultPrice:0,source:"Instalações hidráulicas"},
+      {id:"registers",name:"Registros hidráulicos",unit:"un.",planned:c.registers,defaultPrice:0,source:"Água fria"}
+    ].filter(x=>Number(x.planned)>0);
+  },
+  warnings(){
+    const c=this.calculate(false),w=[];
+    if(!State.rooms.length)w.push(["warn","Cadastre cômodos para estimar instalações."]);
+    if(c.totalElectricalPoints>0)w.push(["bad","Elétrica é estimativa básica. Dimensionamento de circuitos, disjuntores, bitolas e carga deve ser validado por profissional habilitado."]);
+    if(c.hydraulicPoints>0)w.push(["bad","Hidráulica é estimativa básica. Diâmetros, pressão, queda, esgoto e normas devem ser validados tecnicamente."]);
+    if(c.outlets<Math.max(1,State.rooms.length))w.push(["warn","Quantidade de tomadas pode estar baixa para a quantidade de cômodos."]);
+    if(!w.length)w.push(["ok","Sem alertas importantes de instalações."]);
+    return w;
+  }
+};
+
+
 const Purchases={
   estimatedItems(){
     const t=Calc.totals(false),b=State.budget;
@@ -672,7 +814,7 @@ const Purchases={
       {id:"blocks",name:"Blocos / tijolos",unit:"unidades",planned:Math.round(t.blocks),defaultPrice:b.priceBlock,source:"Cálculo de alvenaria"},
       {id:"baseboard",name:"Rodapé",unit:"metros",planned:round(t.baseboard,1),defaultPrice:0,source:"Perímetro dos cômodos"}
     ];
-    return [...base,...Compositions.purchaseItems()];
+    return [...base,...Compositions.purchaseItems(),...Installations.purchaseItems()];
   },
   get(id){
     if(!State.purchases.items[id])State.purchases.items[id]={bought:0,used:0,actualPrice:null,supplier:"",status:"pendente",note:""};
@@ -839,10 +981,13 @@ const Storage={
     if(!State.purchases.items)State.purchases.items={};
     if(!Array.isArray(State.purchases.manual))State.purchases.manual=[];
     State.compositions={...State.compositions,...(d.compositions||{})};
+    State.installations={...State.installations,...(d.installations||{})};
+    if(!State.installations.rooms)State.installations.rooms={};
+    State.installations.settings={...{wireMultiplier:2.8,conduitFactor:1.25,pipeFactor:1.15,defaultOutletWireM:8,defaultLightWireM:10,defaultSwitchWireM:6,hydraulicPointPipeM:4,sewerPointPipeM:3},...(State.installations.settings||{})};
   },
   exportJSON(){
     const blob=new Blob([JSON.stringify({app:App,exportedAt:new Date().toISOString(),...State},null,2)],{type:"application/json"});
-    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-08.json";a.click();URL.revokeObjectURL(a.href);
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-09.json";a.click();URL.revokeObjectURL(a.href);
   },
   importJSON(e){
     const f=e.target.files[0];if(!f)return;const rd=new FileReader();
@@ -857,7 +1002,7 @@ const UI={
     document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));
     document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
     $(id).classList.add("on");const b=document.querySelector(`[data-tab="${id}"]`);if(b)b.classList.add("on");
-    if(id==="composicoes")this.renderCompositions();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
+    if(id==="composicoes")this.renderCompositions();if(id==="instalacoes")this.renderInstallations();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
     scrollTo({top:0,behavior:"smooth"});
   },
   toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(this.t);this.t=setTimeout(()=>el.classList.remove("show"),2500)},
@@ -869,6 +1014,7 @@ const UI={
     priceFloorBox.value=b.priceFloorBox;pricePaintLiter.value=b.pricePaintLiter;priceBlock.value=b.priceBlock;laborPerM2.value=b.laborPerM2;manualLabor.value=b.manualLabor??"";extraCosts.value=b.extraCosts;safetyMargin.value=b.safetyMargin;profitMargin.value=b.profitMargin;discount.value=b.discount;
     startDate.value=c.startDate||todayISO();workdaysPerWeek.value=c.workdaysPerWeek;masons.value=c.masons;helpers.value=c.helpers;complexity.value=String(c.complexity);scheduleBuffer.value=c.scheduleBuffer;scheduleNotes.value=c.notes||"";
     if($("tileMortarKgM2")){const cp=State.compositions;tileMortarKgM2.value=cp.tileMortarKgM2;mortarBagKg.value=cp.mortarBagKg;groutKgM2.value=cp.groutKgM2;chapiscoKgM2.value=cp.chapiscoKgM2;plasterThicknessCm.value=cp.plasterThicknessCm;plasterCementBagsM3.value=cp.plasterCementBagsM3;plasterSandM3M3.value=cp.plasterSandM3M3;subfloorThicknessCm.value=cp.subfloorThicknessCm;subfloorCementBagsM3.value=cp.subfloorCementBagsM3;subfloorSandM3M3.value=cp.subfloorSandM3M3;}
+    if($("wireMultiplier")){const is=State.installations.settings;wireMultiplier.value=is.wireMultiplier;conduitFactor.value=is.conduitFactor;pipeFactor.value=is.pipeFactor;hydraulicPointPipeM.value=is.hydraulicPointPipeM;sewerPointPipeM.value=is.sewerPointPipeM;defaultOutletWireM.value=is.defaultOutletWireM;defaultLightWireM.value=is.defaultLightWireM;defaultSwitchWireM.value=is.defaultSwitchWireM;}
   },
   saveProject(){
     State.project={name:projectName.value.trim(),client:clientName.value.trim(),lotWidth:n("lotWidth",6),lotLength:n("lotLength",20),defaultHeight:n("defaultHeight",2.8),lossProfile:n("lossProfile",.10),notes:projectNotes.value.trim()};
@@ -888,7 +1034,7 @@ const UI={
     [["Sala","social",3.5,4],["Cozinha","kitchen",3,3],["Quarto 1","bedroom",3,3.2],["Banheiro","bathroom",1.5,2.4],["Área serviço","service",1.8,2.2]].forEach(x=>State.rooms.push({id:cryptoRandom(),name:x[0],type:x[1],width:x[2],length:x[3],height:h,doorCount:1,windowCount:1,doorSize:"0.80x2.10",windowSize:"1.20x1.00",x:null,y:null}));
     Storage.save();this.renderAll();this.toast("Exemplo adicionado.");
   },
-  renderAll(){this.renderHome();this.renderProject();this.renderRooms();this.renderCalculations();this.renderCompositions();this.renderBudget();this.renderSchedule();this.renderPurchases();this.renderTracking();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
+  renderAll(){this.renderHome();this.renderProject();this.renderRooms();this.renderCalculations();this.renderCompositions();this.renderInstallations();this.renderBudget();this.renderSchedule();this.renderPurchases();this.renderTracking();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
   stat(items){return items.map(i=>`<div class="stat"><b>${i[0]}</b><span>${i[1]}</span></div>`).join("")},
   renderHome(){
     const t=Calc.totals(false),b=Calc.budget(false),s=Schedule.stages(false),lot=State.project.lotWidth*State.project.lotLength;
@@ -964,6 +1110,54 @@ const UI={
 
 
 
+
+  saveInstallationSettings(){
+    State.installations.settings={
+      wireMultiplier:n("wireMultiplier",2.8),
+      conduitFactor:n("conduitFactor",1.25),
+      pipeFactor:n("pipeFactor",1.15),
+      hydraulicPointPipeM:n("hydraulicPointPipeM",4),
+      sewerPointPipeM:n("sewerPointPipeM",3),
+      defaultOutletWireM:n("defaultOutletWireM",8),
+      defaultLightWireM:n("defaultLightWireM",10),
+      defaultSwitchWireM:n("defaultSwitchWireM",6)
+    };
+    Storage.save();this.renderInstallations();this.renderPurchases();this.renderReport();this.toast("Parâmetros de instalações salvos.");
+  },
+  renderInstallations(){
+    if(!$("installationRows"))return;
+    Installations.ensure();
+    const c=Installations.calculate(false);
+    installationTotals.innerHTML=this.stat([[c.totalElectricalPoints,"Pontos elétricos"],[c.hydraulicPoints,"Pontos hidráulicos"],[round(c.conduitM,1)+" m","Conduíte"],[round(c.wire15M+c.wire25M,1)+" m","Fios"],[round(c.waterPipeM,1)+" m","Tubo água"],[round(c.sewerPipeM,1)+" m","Tubo esgoto"]]);
+    installationWarnings.innerHTML=this.warnings(Installations.warnings());
+    installationRooms.innerHTML=State.rooms.length?State.rooms.map(room=>{
+      const d=State.installations.rooms[room.id]||Installations.defaultsForRoom(room);
+      return `<div class="installCard">
+        <h3>${esc(room.name)}</h3>
+        <div class="installGrid">
+          <div><label>Tomadas</label><input type="number" min="0" step="1" value="${d.outlets||0}" onchange="UI.updateInstallation('${room.id}','outlets',this.value)"></div>
+          <div><label>Interruptores</label><input type="number" min="0" step="1" value="${d.switches||0}" onchange="UI.updateInstallation('${room.id}','switches',this.value)"></div>
+          <div><label>Pontos de luz</label><input type="number" min="0" step="1" value="${d.lights||0}" onchange="UI.updateInstallation('${room.id}','lights',this.value)"></div>
+          <div><label>Água fria</label><input type="number" min="0" step="1" value="${d.coldWater||0}" onchange="UI.updateInstallation('${room.id}','coldWater',this.value)"></div>
+          <div><label>Esgoto</label><input type="number" min="0" step="1" value="${d.sewer||0}" onchange="UI.updateInstallation('${room.id}','sewer',this.value)"></div>
+          <div><label>Chuveiro</label><input type="number" min="0" step="1" value="${d.shower||0}" onchange="UI.updateInstallation('${room.id}','shower',this.value)"></div>
+          <div><label>Vaso sanitário</label><input type="number" min="0" step="1" value="${d.toilet||0}" onchange="UI.updateInstallation('${room.id}','toilet',this.value)"></div>
+          <div><label>Pia/lavatório</label><input type="number" min="0" step="1" value="${d.sink||0}" onchange="UI.updateInstallation('${room.id}','sink',this.value)"></div>
+          <div><label>Tanque</label><input type="number" min="0" step="1" value="${d.tank||0}" onchange="UI.updateInstallation('${room.id}','tank',this.value)"></div>
+        </div>
+      </div>`;
+    }).join(""):`<div class="empty">Cadastre cômodos para configurar instalações.</div>`;
+    installationRows.innerHTML=Installations.purchaseItems().map(item=>`<tr><td><b>${esc(item.name)}</b></td><td>${round(item.planned,1)} ${esc(item.unit)}</td><td>${esc(item.source)}</td><td><span class="badge tech">Validação técnica</span></td></tr>`).join("")||`<tr><td colspan="4">Nenhum material de instalação calculado.</td></tr>`;
+  },
+  updateInstallation(roomId,field,value){
+    Installations.ensure();
+    if(!State.installations.rooms[roomId])State.installations.rooms[roomId]={};
+    State.installations.rooms[roomId][field]=Math.max(0,Number(value)||0);
+    Storage.save();
+    this.renderInstallations();
+    this.renderPurchases();
+    this.renderReport();
+  },
   renderPurchases(){
     if(!$("purchaseRows"))return;
     const sum=Purchases.summary();
@@ -1135,7 +1329,7 @@ const UI={
   },
   renderReport(){
     Floorplan.ensurePositions();
-    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress(),floorWarningsList=Floorplan.validation(),purchaseSummary=Purchases.summary(),comp=Compositions.calculate(false);
+    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress(),floorWarningsList=Floorplan.validation(),purchaseSummary=Purchases.summary(),comp=Compositions.calculate(false),inst=Installations.calculate(false);
     const areaTerreno=(p.lotWidth||0)*(p.lotLength||0);
     const rowsMaterials=[
       ["Área de piso",`${round(t.area)} m²`,"Base dos cômodos"],
@@ -1220,6 +1414,20 @@ const UI={
             <tr><td>Areia para reboco</td><td>${round(comp.plasterSandM3,2)} m³</td></tr>
             <tr><td>Cimento para contrapiso</td><td>${comp.subfloorCementBags} sacos</td></tr>
             <tr><td>Areia para contrapiso</td><td>${round(comp.subfloorSandM3,2)} m³</td></tr>
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>3.3 Instalações básicas</h3>
+          <table class="reportTable">
+            <tr><th>Item</th><th>Quantidade</th></tr>
+            <tr><td>Pontos elétricos</td><td>${inst.totalElectricalPoints}</td></tr>
+            <tr><td>Conduíte estimado</td><td>${round(inst.conduitM,1)} m</td></tr>
+            <tr><td>Fio 1,5mm²</td><td>${round(inst.wire15M,1)} m</td></tr>
+            <tr><td>Fio 2,5mm²</td><td>${round(inst.wire25M,1)} m</td></tr>
+            <tr><td>Pontos hidráulicos</td><td>${inst.hydraulicPoints}</td></tr>
+            <tr><td>Tubo água fria</td><td>${round(inst.waterPipeM,1)} m</td></tr>
+            <tr><td>Tubo esgoto</td><td>${round(inst.sewerPipeM,1)} m</td></tr>
           </table>
         </div>
 
