@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Obra Fácil Pro — Pacote 06</title>
+<title>Obra Fácil Pro — Pacote 06.1</title>
 <style>
 :root{
   --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--line:rgba(148,163,184,.24);
@@ -46,7 +46,7 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 .toast{position:fixed;left:14px;right:14px;bottom:84px;display:none;z-index:40;background:#111827;border:1px solid rgba(34,197,94,.36);border-radius:14px;padding:12px;box-shadow:var(--shadow)}.toast.show{display:block}
 .progress{height:8px;border-radius:999px;background:#020617;border:1px solid var(--line);overflow:hidden;min-width:100px}.bar{height:100%;background:linear-gradient(90deg,var(--ok),var(--sky))}
 
-.floorLegend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.legendDot{width:12px;height:12px;border-radius:4px;display:inline-block;margin-right:5px}.floorWarnList{display:grid;gap:8px}.coordInput{min-width:82px}.svgbox svg text{user-select:none}
+.compactWarn{max-height:260px;overflow:auto}.floorHint{border:1px solid rgba(56,189,248,.35);background:rgba(56,189,248,.08);color:#bae6fd;border-radius:13px;padding:10px;margin-top:8px}.floorLegend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.legendDot{width:12px;height:12px;border-radius:4px;display:inline-block;margin-right:5px}.floorWarnList{display:grid;gap:8px}.coordInput{min-width:82px}.svgbox svg text{user-select:none}
 .trackCard{border:1px solid var(--line);border-radius:15px;padding:11px;margin-top:9px;background:rgba(2,6,23,.34)}
 .statusSelect{min-width:130px}.smallInput{min-width:95px}.logItem{border:1px solid var(--line);border-radius:14px;background:rgba(2,6,23,.35);padding:11px;margin-top:9px}.logItem h4{margin-bottom:4px}
 .compareBox{display:grid;grid-template-columns:1fr;gap:10px}.compareBox .stat{margin:0}
@@ -72,14 +72,14 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 06 — Planta Baixa 2D</div></div></div>
-    <div class="pill">ObraCalc Engine v1.5.0</div>
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 06.1 — Correção da Planta 2D</div></div></div>
+    <div class="pill">ObraCalc Engine v1.5.1</div>
   </header>
 
   <section id="inicio" class="page on">
     <div class="hero">
       <h2>Agora o sistema calcula custo e tempo.</h2>
-      <p class="mut">O Pacote 06 mantém materiais, orçamento, cronograma, relatório e execução, adicionando uma planta baixa 2D mais forte: posições por cômodo, validação de encaixe no terreno, verificação de sobreposição e exportação em SVG.</p>
+      <p class="mut">O Pacote 06.1 corrige a planta baixa 2D: organiza automaticamente dados antigos, reduz alertas repetidos no relatório e melhora a validação de sobreposição.</p>
       <div class="rules">
         <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
         <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
@@ -304,6 +304,7 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
         </div>
         <div class="row">
           <button onclick="UI.autoLayoutFloorplan()">Organizar automaticamente</button>
+          <button class="sec" onclick="UI.cleanDuplicateRooms()">Remover cômodos duplicados</button>
           <button class="sec" onclick="UI.saveFloorSettings()">Salvar escala/grade</button>
           <button class="ghost" onclick="UI.exportFloorplanSVG()">Exportar SVG</button>
         </div>
@@ -358,9 +359,9 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 <div id="toast" class="toast"></div>
 
 <script>
-const App={name:"Obra Fácil Pro",package:"Pacote 06",engine:"ObraCalc Engine",version:"1.5.0"};
-const StoreKey="obra_facil_pro_pacote_06";
-const OldKeys=["obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
+const App={name:"Obra Fácil Pro",package:"Pacote 06.1",engine:"ObraCalc Engine",version:"1.5.1"};
+const StoreKey="obra_facil_pro_pacote_06_1";
+const OldKeys=["obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
 const State={
   project:{name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
   rooms:[],
@@ -495,11 +496,30 @@ const Schedule={
 
 const Floorplan={
   snap(value){const grid=Number(State.floorplan.grid)||0.5;return round(Math.round((Number(value)||0)/grid)*grid,2)},
-  ensurePositions(){let cursorX=0,cursorY=0,rowH=0;const lotW=Number(State.project.lotWidth)||6;State.rooms.forEach(room=>{if(Number.isFinite(Number(room.x))&&Number.isFinite(Number(room.y)))return;if(cursorX+room.width>lotW&&cursorX>0){cursorX=0;cursorY+=rowH;rowH=0}room.x=this.snap(cursorX);room.y=this.snap(cursorY);cursorX+=room.width;rowH=Math.max(rowH,room.length)})},
+  ensurePositions(){
+    const lotW=Number(State.project.lotWidth)||6,rooms=State.rooms||[];
+    if(!rooms.length)return;
+    const missing=rooms.some(room=>!Number.isFinite(Number(room.x))||!Number.isFinite(Number(room.y)));
+    const allZero=rooms.length>1&&rooms.every(room=>(Number(room.x)||0)===0&&(Number(room.y)||0)===0);
+    const keys=rooms.map(room=>`${Number(room.x)||0},${Number(room.y)||0}`);
+    const repeated=keys.length!==new Set(keys).size;
+    if(missing||allZero||repeated){this.autoLayout();return;}
+    let cursorX=0,cursorY=0,rowH=0;rooms.forEach(room=>{if(Number.isFinite(Number(room.x))&&Number.isFinite(Number(room.y)))return;if(cursorX+room.width>lotW&&cursorX>0){cursorX=0;cursorY+=rowH;rowH=0}room.x=this.snap(cursorX);room.y=this.snap(cursorY);cursorX+=room.width;rowH=Math.max(rowH,room.length)})
+  },
   autoLayout(){let cursorX=0,cursorY=0,rowH=0;const lotW=Number(State.project.lotWidth)||6;State.rooms.forEach(room=>{if(cursorX+room.width>lotW&&cursorX>0){cursorX=0;cursorY+=rowH;rowH=0}room.x=this.snap(cursorX);room.y=this.snap(cursorY);cursorX+=room.width;rowH=Math.max(rowH,room.length)})},
   rect(room){return{x:Number(room.x)||0,y:Number(room.y)||0,w:Number(room.width)||0,h:Number(room.length)||0}},
   overlaps(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y},
-  validation(){this.ensurePositions();const lotW=Number(State.project.lotWidth)||0,lotL=Number(State.project.lotLength)||0,warnings=[];if(!State.rooms.length)warnings.push(["warn","Cadastre cômodos para gerar a planta."]);State.rooms.forEach(room=>{const r=this.rect(room);if(r.x<0||r.y<0||r.x+r.w>lotW||r.y+r.h>lotL)warnings.push(["bad",`${room.name} está fora dos limites do terreno.`])});for(let i=0;i<State.rooms.length;i++){for(let j=i+1;j<State.rooms.length;j++){if(this.overlaps(this.rect(State.rooms[i]),this.rect(State.rooms[j])))warnings.push(["bad",`${State.rooms[i].name} está sobreposto com ${State.rooms[j].name}.`])}}const totalArea=Calc.totals(false).area,lotArea=lotW*lotL;if(lotArea>0&&totalArea>lotArea)warnings.push(["bad",`A soma dos cômodos (${round(totalArea)}m²) ultrapassa o terreno (${round(lotArea)}m²).`]);if(!warnings.length)warnings.push(["ok","Planta sem sobreposição e dentro do terreno."]);return warnings},
+  validation(){
+    this.ensurePositions();const lotW=Number(State.project.lotWidth)||0,lotL=Number(State.project.lotLength)||0,warnings=[],seen=new Set();
+    const add=(type,text)=>{const key=type+"|"+text;if(!seen.has(key)){warnings.push([type,text]);seen.add(key)}};
+    if(!State.rooms.length)add("warn","Cadastre cômodos para gerar a planta.");
+    State.rooms.forEach(room=>{const r=this.rect(room);if(r.x<0||r.y<0||r.x+r.w>lotW||r.y+r.h>lotL)add("bad",`${room.name} está fora dos limites do terreno.`)});
+    let overlapCount=0;
+    for(let i=0;i<State.rooms.length;i++){for(let j=i+1;j<State.rooms.length;j++){if(this.overlaps(this.rect(State.rooms[i]),this.rect(State.rooms[j]))){overlapCount++;if(overlapCount<=6)add("bad",`${State.rooms[i].name} está sobreposto com ${State.rooms[j].name}.`)}}}
+    if(overlapCount>6)add("bad",`Existem ${overlapCount} sobreposições no total. Use “Organizar automaticamente” para corrigir a distribuição inicial.`);
+    const totalArea=Calc.totals(false).area,lotArea=lotW*lotL;if(lotArea>0&&totalArea>lotArea)add("bad",`A soma dos cômodos (${round(totalArea)}m²) ultrapassa o terreno (${round(lotArea)}m²).`);
+    if(!warnings.length)add("ok","Planta sem sobreposição e dentro do terreno.");return warnings
+  },
   invalidRooms(){const invalid=new Set(),lotW=Number(State.project.lotWidth)||0,lotL=Number(State.project.lotLength)||0;State.rooms.forEach(room=>{const r=this.rect(room);if(r.x<0||r.y<0||r.x+r.w>lotW||r.y+r.h>lotL)invalid.add(room.id)});for(let i=0;i<State.rooms.length;i++){for(let j=i+1;j<State.rooms.length;j++){if(this.overlaps(this.rect(State.rooms[i]),this.rect(State.rooms[j]))){invalid.add(State.rooms[i].id);invalid.add(State.rooms[j].id)}}}return invalid}
 };
 
@@ -603,7 +623,7 @@ const Storage={
   },
   exportJSON(){
     const blob=new Blob([JSON.stringify({app:App,exportedAt:new Date().toISOString(),...State},null,2)],{type:"application/json"});
-    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-06.json";a.click();URL.revokeObjectURL(a.href);
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-06-1.json";a.click();URL.revokeObjectURL(a.href);
   },
   importJSON(e){
     const f=e.target.files[0];if(!f)return;const rd=new FileReader();
@@ -769,6 +789,7 @@ const UI={
     Storage.save();this.renderTracking();this.renderReport();this.toast("Registro removido.");
   },
   renderReport(){
+    Floorplan.ensurePositions();
     const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress(),floorWarningsList=Floorplan.validation();
     const areaTerreno=(p.lotWidth||0)*(p.lotLength||0);
     const rowsMaterials=[
@@ -859,7 +880,8 @@ const UI={
           <h3>6. Planta baixa 2D</h3>
           <table class="reportTable">
             <tr><th>Validação</th><th>Resultado</th></tr>
-            ${floorWarningsList.map(w=>`<tr><td>${w[0]==="bad"?"Alerta":w[0]==="ok"?"OK":"Aviso"}</td><td>${esc(w[1])}</td></tr>`).join("")}
+            ${floorWarningsList.slice(0,5).map(w=>`<tr><td>${w[0]==="bad"?"Alerta":w[0]==="ok"?"OK":"Aviso"}</td><td>${esc(w[1])}</td></tr>`).join("")}
+            ${floorWarningsList.length>5?`<tr><td>Resumo</td><td>Há mais ${floorWarningsList.length-5} alerta(s). Corrija na aba Planta antes de enviar o relatório final.</td></tr>`:""}
           </table>
         </div>
       </div>
@@ -926,8 +948,13 @@ const UI={
     if(!State.rooms.length)htmlSvg+=`<text x="450" y="285" text-anchor="middle" fill="#94a3b8" font-size="18">Adicione cômodos para gerar a planta</text>`;
     State.rooms.forEach(room=>{const x=x0+(Number(room.x)||0)*scale,y=y0+(Number(room.y)||0)*scale,w=room.width*scale,h=room.length*scale;const bad=invalid.has(room.id),stroke=bad?"#fb7185":(colors[room.type]||"#38bdf8");htmlSvg+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${bad?'rgba(251,113,133,.20)':'rgba(56,189,248,.14)'}" stroke="${stroke}" stroke-width="2.5" rx="5"/><text x="${x+w/2}" y="${y+h/2-10}" text-anchor="middle" fill="#e5e7eb" font-size="12" font-weight="800">${esc(room.name)}</text><text x="${x+w/2}" y="${y+h/2+7}" text-anchor="middle" fill="#cbd5e1" font-size="10">${round(room.width)}m × ${round(room.length)}m</text><text x="${x+w/2}" y="${y+h/2+22}" text-anchor="middle" fill="#94a3b8" font-size="10">X:${round(room.x)} Y:${round(room.y)}</text>`});
     svg.innerHTML=htmlSvg;
-    if($("floorWarnings"))floorWarnings.innerHTML=this.warnings(Floorplan.validation());
+    if($("floorWarnings"))floorWarnings.innerHTML=`<div class="floorHint">Se aparecer sobreposição, clique em <b>Organizar automaticamente</b>. Depois ajuste X/Y manualmente se necessário.</div><div class="compactWarn">${this.warnings(Floorplan.validation())}</div>`;
     if($("floorRows"))floorRows.innerHTML=State.rooms.length?State.rooms.map((room,index)=>{const c=Calc.room(room,false),bad=invalid.has(room.id);return`<tr><td><b>${esc(room.name)}</b></td><td>${round(room.width)}m × ${round(room.length)}m</td><td><input class="coordInput" type="number" step="${State.floorplan.grid||0.5}" value="${round(room.x)}" onchange="UI.updateRoomCoord(${index},'x',this.value)"></td><td><input class="coordInput" type="number" step="${State.floorplan.grid||0.5}" value="${round(room.y)}" onchange="UI.updateRoomCoord(${index},'y',this.value)"></td><td>${round(c.area)}m²</td><td><span class="badge ${bad?'tech':'high'}">${bad?'Verificar':'OK'}</span></td></tr>`}).join(""):`<tr><td colspan="6">Cadastre cômodos para editar a planta.</td></tr>`;
+  },
+  cleanDuplicateRooms(){
+    const seen=new Set(),clean=[];
+    State.rooms.forEach(room=>{const key=[room.name,room.width,room.length,room.height].join("|");if(!seen.has(key)){seen.add(key);clean.push(room)}});
+    const removed=State.rooms.length-clean.length;State.rooms=clean;Floorplan.autoLayout();Storage.save();this.renderAll();this.toast(removed?`${removed} cômodo(s) duplicado(s) removido(s).`:"Nenhum cômodo duplicado encontrado.");
   },
   saveFloorSettings(){State.floorplan.scale=Math.max(20,Math.min(80,n("floorScale",40)));State.floorplan.grid=Math.max(.1,n("floorGrid",.5));Storage.save();this.renderFloorplan();this.toast("Configurações da planta salvas.")},
   autoLayoutFloorplan(){Floorplan.autoLayout();Storage.save();this.renderFloorplan();this.renderReport();this.toast("Planta organizada automaticamente.")},
@@ -940,7 +967,7 @@ const UI={
   }
 };
 
-Storage.load();UI.fill();UI.renderAll();
+Storage.load();if(typeof Floorplan!=="undefined"){Floorplan.ensurePositions();Storage.save();}UI.fill();UI.renderAll();
 window.UI=UI;window.Storage=Storage;window.Audit=Audit;
 </script>
 </body>
