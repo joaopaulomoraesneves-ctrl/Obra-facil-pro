@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Obra Fácil Pro — Pacote 07</title>
+<title>Obra Fácil Pro — Pacote 08</title>
 <style>
 :root{
   --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--line:rgba(148,163,184,.24);
@@ -47,6 +47,10 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 .progress{height:8px;border-radius:999px;background:#020617;border:1px solid var(--line);overflow:hidden;min-width:100px}.bar{height:100%;background:linear-gradient(90deg,var(--ok),var(--sky))}
 
 .compactWarn{max-height:260px;overflow:auto}.floorHint{border:1px solid rgba(56,189,248,.35);background:rgba(56,189,248,.08);color:#bae6fd;border-radius:13px;padding:10px;margin-top:8px}
+
+.compNote{border:1px solid rgba(56,189,248,.35);background:rgba(56,189,248,.08);color:#bae6fd;border-radius:13px;padding:10px;margin-top:10px}
+.compFormula{font-size:.78rem;color:var(--mut);line-height:1.35}
+
 .purchaseSummary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.purchaseCell{border:1px solid var(--line);background:rgba(2,6,23,.36);border-radius:14px;padding:10px}.purchaseCell b{display:block}.purchaseCell span{color:var(--mut);font-size:.76rem}.qtyInput{min-width:84px}.wideInput{min-width:160px}.statusPill{white-space:nowrap}
 @media(min-width:760px){.purchaseSummary{grid-template-columns:repeat(4,1fr)}}
 
@@ -70,20 +74,20 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   .reportBox{break-inside:avoid}
 }
 
-@media(min-width:760px){.reportGrid{grid-template-columns:1fr 1fr}.signatureArea{grid-template-columns:1fr 1fr}main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(980px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(10,1fr);overflow:visible}.tabs button{flex:auto}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
+@media(min-width:760px){.reportGrid{grid-template-columns:1fr 1fr}.signatureArea{grid-template-columns:1fr 1fr}main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(980px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(11,1fr);overflow:visible}.tabs button{flex:auto}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
 </style>
 </head>
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 07 — Compras e Materiais</div></div></div>
-    <div class="pill">ObraCalc Engine v1.6.0</div>
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 08 — Composições de Serviço</div></div></div>
+    <div class="pill">ObraCalc Engine v1.7.0</div>
   </header>
 
   <section id="inicio" class="page on">
     <div class="hero">
       <h2>Agora o sistema calcula custo e tempo.</h2>
-      <p class="mut">O Pacote 07 adiciona lista de compras e controle de materiais: planejado, comprado, usado, saldo, fornecedor e custo real.</p>
+      <p class="mut">O Pacote 08 fortalece a matriz matemática com composições de serviço: argamassa de piso, rejunte, reboco, contrapiso, cimento e areia estimados automaticamente.</p>
       <div class="rules">
         <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
         <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
@@ -164,6 +168,54 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
     <div class="card">
       <h2>Levantamento por cômodo</h2>
       <div class="table"><table><thead><tr><th>Cômodo</th><th>Piso</th><th>Paredes úteis</th><th>Caixas</th><th>Tinta</th><th>Blocos</th><th>Confiança</th></tr></thead><tbody id="materialsRows"></tbody></table></div>
+    </div>
+  </section>
+
+
+  <section id="composicoes" class="page">
+    <div class="grid two">
+      <div class="card">
+        <h2>Composições de serviço</h2>
+        <p class="mut">Aqui a matriz transforma área e volume em insumos complementares. Os índices são ajustáveis, porque cada região, material e equipe pode consumir diferente.</p>
+        <div class="grid two">
+          <div><label>Argamassa piso (kg/m²)</label><input id="tileMortarKgM2" type="number" step=".01"></div>
+          <div><label>Peso do saco de argamassa (kg)</label><input id="mortarBagKg" type="number" step=".01"></div>
+        </div>
+        <div class="grid two">
+          <div><label>Rejunte (kg/m²)</label><input id="groutKgM2" type="number" step=".01"></div>
+          <div><label>Chapisco/consumo auxiliar (kg/m²)</label><input id="chapiscoKgM2" type="number" step=".01"></div>
+        </div>
+        <div class="grid two">
+          <div><label>Espessura reboco (cm)</label><input id="plasterThicknessCm" type="number" step=".1"></div>
+          <div><label>Cimento reboco (sacos/m³)</label><input id="plasterCementBagsM3" type="number" step=".1"></div>
+        </div>
+        <div class="grid two">
+          <div><label>Areia reboco (m³ por m³)</label><input id="plasterSandM3M3" type="number" step=".01"></div>
+          <div><label>Espessura contrapiso (cm)</label><input id="subfloorThicknessCm" type="number" step=".1"></div>
+        </div>
+        <div class="grid two">
+          <div><label>Cimento contrapiso (sacos/m³)</label><input id="subfloorCementBagsM3" type="number" step=".1"></div>
+          <div><label>Areia contrapiso (m³ por m³)</label><input id="subfloorSandM3M3" type="number" step=".01"></div>
+        </div>
+        <div class="row"><button onclick="UI.saveCompositions()">Salvar composições</button><button class="sec" onclick="UI.resetCompositions()">Restaurar padrão</button></div>
+        <div class="compNote">Essas composições são estimativas de levantamento. Elas aumentam muito a utilidade da lista de compras, mas devem ser conferidas pelo profissional na obra.</div>
+      </div>
+
+      <div class="card">
+        <h2>Resumo das composições</h2>
+        <div id="compositionTotals" class="stats"></div>
+        <div id="compositionWarnings"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Insumos complementares calculados</h2>
+      <div class="table">
+        <table>
+          <thead><tr><th>Serviço</th><th>Base</th><th>Insumo</th><th>Quantidade</th><th>Fórmula</th></tr></thead>
+          <tbody id="compositionRows"></tbody>
+        </table>
+      </div>
     </div>
   </section>
 
@@ -401,6 +453,7 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   <button data-tab="obra" onclick="UI.go('obra')"><span>🏗️</span><br>Obra</button>
   <button data-tab="comodos" onclick="UI.go('comodos')"><span>🚪</span><br>Cômodos</button>
   <button data-tab="calculos" onclick="UI.go('calculos')"><span>🧮</span><br>Cálculos</button>
+  <button data-tab="composicoes" onclick="UI.go('composicoes')"><span>🧱</span><br>Composições</button>
   <button data-tab="orcamento" onclick="UI.go('orcamento')"><span>💰</span><br>Orçamento</button>
   <button data-tab="compras" onclick="UI.go('compras')"><span>🧾</span><br>Compras</button>
   <button data-tab="cronograma" onclick="UI.go('cronograma')"><span>📅</span><br>Prazo</button>
@@ -412,9 +465,9 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 <div id="toast" class="toast"></div>
 
 <script>
-const App={name:"Obra Fácil Pro",package:"Pacote 07",engine:"ObraCalc Engine",version:"1.6.0"};
-const StoreKey="obra_facil_pro_pacote_07";
-const OldKeys=["obra_facil_pro_pacote_06_2","obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
+const App={name:"Obra Fácil Pro",package:"Pacote 08",engine:"ObraCalc Engine",version:"1.7.0"};
+const StoreKey="obra_facil_pro_pacote_08";
+const OldKeys=["obra_facil_pro_pacote_07","obra_facil_pro_pacote_06_2","obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
 const State={
   project:{name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
   rooms:[],
@@ -424,6 +477,7 @@ const State={
   tracking:{stages:{},logs:[]},
   floorplan:{grid:0.5,showGrid:true,scale:40},
   purchases:{items:{},manual:[]},
+  compositions:{tileMortarKgM2:4.5,mortarBagKg:20,groutKgM2:0.25,plasterThicknessCm:2,plasterCementBagsM3:6,plasterSandM3M3:1.15,subfloorThicknessCm:4,subfloorCementBagsM3:5,subfloorSandM3M3:1.1,chapiscoKgM2:1.5},
   audit:[]
 };
 const Formulas=[
@@ -437,7 +491,8 @@ const Formulas=[
   ["report.summary","1.3.0","Relatório da obra","consolida dados técnicos, financeiros e cronograma","Alta"],
   ["tracking.progress","1.4.0","Progresso da obra","média ponderada do avanço informado por etapa","Média"],
   ["floorplan.validation","1.5.0","Validação da planta","verifica cômodos fora do terreno e sobreposições","Alta"],
-  ["purchases.balance","1.6.0","Saldo de materiais","comprado - usado, comparado com quantidade planejada","Média"]
+  ["purchases.balance","1.6.0","Saldo de materiais","comprado - usado, comparado com quantidade planejada","Média"],
+  ["compositions.materials","1.7.0","Composições de serviço","converte áreas e volumes em argamassa, rejunte, cimento e areia","Média"]
 ];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -550,15 +605,74 @@ const Schedule={
 
 
 
+
+const Compositions={
+  defaults(){return{tileMortarKgM2:4.5,mortarBagKg:20,groutKgM2:0.25,plasterThicknessCm:2,plasterCementBagsM3:6,plasterSandM3M3:1.15,subfloorThicknessCm:4,subfloorCementBagsM3:5,subfloorSandM3M3:1.1,chapiscoKgM2:1.5}},
+  calculate(log=false){
+    const t=Calc.totals(false),c=State.compositions,loss=1+Number(State.project.lossProfile||0);
+    const floorArea=Number(t.area)||0,wallArea=Number(t.wallNet)||0;
+    const tileMortarKg=round(floorArea*(Number(c.tileMortarKgM2)||0)*loss,1);
+    const tileMortarBags=Math.ceil(tileMortarKg/(Number(c.mortarBagKg)||20));
+    const groutKg=round(floorArea*(Number(c.groutKgM2)||0)*loss,1);
+    const plasterVolume=round(wallArea*((Number(c.plasterThicknessCm)||0)/100)*loss,3);
+    const plasterCementBags=Math.ceil(plasterVolume*(Number(c.plasterCementBagsM3)||0));
+    const plasterSandM3=round(plasterVolume*(Number(c.plasterSandM3M3)||0),2);
+    const subfloorVolume=round(floorArea*((Number(c.subfloorThicknessCm)||0)/100)*loss,3);
+    const subfloorCementBags=Math.ceil(subfloorVolume*(Number(c.subfloorCementBagsM3)||0));
+    const subfloorSandM3=round(subfloorVolume*(Number(c.subfloorSandM3M3)||0),2);
+    const chapiscoKg=round(wallArea*(Number(c.chapiscoKgM2)||0)*loss,1);
+    if(log){
+      Audit.add("compositions.materials","Composições",`Piso ${round(floorArea)}m², paredes ${round(wallArea)}m², perda ${round((loss-1)*100)}%. Argamassa piso ${tileMortarBags} sacos, rejunte ${groutKg}kg, reboco ${plasterVolume}m³, contrapiso ${subfloorVolume}m³.`,`Argamassa ${tileMortarBags} sacos`);
+    }
+    return{floorArea,wallArea,tileMortarKg,tileMortarBags,groutKg,plasterVolume,plasterCementBags,plasterSandM3,subfloorVolume,subfloorCementBags,subfloorSandM3,chapiscoKg};
+  },
+  rows(){
+    const c=this.calculate(false);
+    return [
+      {service:"Piso/revestimento",base:`${round(c.floorArea)} m²`,item:"Argamassa AC",qty:c.tileMortarBags,unit:"sacos",formula:"área × kg/m² × perda ÷ kg/saco"},
+      {service:"Piso/revestimento",base:`${round(c.floorArea)} m²`,item:"Rejunte",qty:c.groutKg,unit:"kg",formula:"área × kg/m² × perda"},
+      {service:"Chapisco",base:`${round(c.wallArea)} m²`,item:"Material de chapisco",qty:c.chapiscoKg,unit:"kg",formula:"parede útil × kg/m² × perda"},
+      {service:"Reboco",base:`${round(c.wallArea)} m²`,item:"Volume de argamassa",qty:c.plasterVolume,unit:"m³",formula:"parede útil × espessura × perda"},
+      {service:"Reboco",base:`${round(c.plasterVolume,3)} m³`,item:"Cimento",qty:c.plasterCementBags,unit:"sacos",formula:"volume × sacos/m³"},
+      {service:"Reboco",base:`${round(c.plasterVolume,3)} m³`,item:"Areia",qty:c.plasterSandM3,unit:"m³",formula:"volume × fator de areia"},
+      {service:"Contrapiso",base:`${round(c.floorArea)} m²`,item:"Volume de argamassa",qty:c.subfloorVolume,unit:"m³",formula:"área piso × espessura × perda"},
+      {service:"Contrapiso",base:`${round(c.subfloorVolume,3)} m³`,item:"Cimento",qty:c.subfloorCementBags,unit:"sacos",formula:"volume × sacos/m³"},
+      {service:"Contrapiso",base:`${round(c.subfloorVolume,3)} m³`,item:"Areia",qty:c.subfloorSandM3,unit:"m³",formula:"volume × fator de areia"}
+    ];
+  },
+  purchaseItems(){
+    const c=this.calculate(false);
+    return [
+      {id:"tile_mortar_bags",name:"Argamassa para piso/revestimento",unit:"sacos",planned:c.tileMortarBags,defaultPrice:0,source:"Composição de piso"},
+      {id:"grout_kg",name:"Rejunte",unit:"kg",planned:c.groutKg,defaultPrice:0,source:"Composição de piso"},
+      {id:"chapisco_kg",name:"Material para chapisco",unit:"kg",planned:c.chapiscoKg,defaultPrice:0,source:"Composição de parede"},
+      {id:"plaster_cement_bags",name:"Cimento para reboco",unit:"sacos",planned:c.plasterCementBags,defaultPrice:0,source:"Composição de reboco"},
+      {id:"plaster_sand_m3",name:"Areia para reboco",unit:"m³",planned:c.plasterSandM3,defaultPrice:0,source:"Composição de reboco"},
+      {id:"subfloor_cement_bags",name:"Cimento para contrapiso",unit:"sacos",planned:c.subfloorCementBags,defaultPrice:0,source:"Composição de contrapiso"},
+      {id:"subfloor_sand_m3",name:"Areia para contrapiso",unit:"m³",planned:c.subfloorSandM3,defaultPrice:0,source:"Composição de contrapiso"}
+    ].filter(x=>Number(x.planned)>0);
+  },
+  warnings(){
+    const w=[],c=State.compositions;
+    if(!State.rooms.length)w.push(["warn","Cadastre cômodos para calcular composições."]);
+    if((Number(c.plasterThicknessCm)||0)>4)w.push(["warn","Espessura de reboco alta. Confira se esse valor está correto."]);
+    if((Number(c.subfloorThicknessCm)||0)>8)w.push(["warn","Espessura de contrapiso alta. Confira se esse valor está correto."]);
+    if(!w.length)w.push(["ok","Composições calculadas sem alertas importantes."]);
+    return w;
+  }
+};
+
+
 const Purchases={
   estimatedItems(){
     const t=Calc.totals(false),b=State.budget;
-    return [
+    const base=[
       {id:"floor_boxes",name:"Piso / revestimento",unit:"caixas",planned:t.floorBoxes,defaultPrice:b.priceFloorBox,source:"Cálculo de piso"},
       {id:"paint_liters",name:"Tinta",unit:"litros",planned:round(t.paintLiters,1),defaultPrice:b.pricePaintLiter,source:"Cálculo de pintura"},
       {id:"blocks",name:"Blocos / tijolos",unit:"unidades",planned:Math.round(t.blocks),defaultPrice:b.priceBlock,source:"Cálculo de alvenaria"},
       {id:"baseboard",name:"Rodapé",unit:"metros",planned:round(t.baseboard,1),defaultPrice:0,source:"Perímetro dos cômodos"}
     ];
+    return [...base,...Compositions.purchaseItems()];
   },
   get(id){
     if(!State.purchases.items[id])State.purchases.items[id]={bought:0,used:0,actualPrice:null,supplier:"",status:"pendente",note:""};
@@ -724,10 +838,11 @@ const Storage={
     State.purchases={...State.purchases,...(d.purchases||{})};
     if(!State.purchases.items)State.purchases.items={};
     if(!Array.isArray(State.purchases.manual))State.purchases.manual=[];
+    State.compositions={...State.compositions,...(d.compositions||{})};
   },
   exportJSON(){
     const blob=new Blob([JSON.stringify({app:App,exportedAt:new Date().toISOString(),...State},null,2)],{type:"application/json"});
-    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-07.json";a.click();URL.revokeObjectURL(a.href);
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-08.json";a.click();URL.revokeObjectURL(a.href);
   },
   importJSON(e){
     const f=e.target.files[0];if(!f)return;const rd=new FileReader();
@@ -742,7 +857,7 @@ const UI={
     document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));
     document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
     $(id).classList.add("on");const b=document.querySelector(`[data-tab="${id}"]`);if(b)b.classList.add("on");
-    if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
+    if(id==="composicoes")this.renderCompositions();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
     scrollTo({top:0,behavior:"smooth"});
   },
   toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(this.t);this.t=setTimeout(()=>el.classList.remove("show"),2500)},
@@ -753,6 +868,7 @@ const UI={
     floorYield.value=s.floorYield;blocksPerM2.value=s.blocksPerM2;paintYield.value=s.paintYield;paintCoats.value=s.paintCoats;
     priceFloorBox.value=b.priceFloorBox;pricePaintLiter.value=b.pricePaintLiter;priceBlock.value=b.priceBlock;laborPerM2.value=b.laborPerM2;manualLabor.value=b.manualLabor??"";extraCosts.value=b.extraCosts;safetyMargin.value=b.safetyMargin;profitMargin.value=b.profitMargin;discount.value=b.discount;
     startDate.value=c.startDate||todayISO();workdaysPerWeek.value=c.workdaysPerWeek;masons.value=c.masons;helpers.value=c.helpers;complexity.value=String(c.complexity);scheduleBuffer.value=c.scheduleBuffer;scheduleNotes.value=c.notes||"";
+    if($("tileMortarKgM2")){const cp=State.compositions;tileMortarKgM2.value=cp.tileMortarKgM2;mortarBagKg.value=cp.mortarBagKg;groutKgM2.value=cp.groutKgM2;chapiscoKgM2.value=cp.chapiscoKgM2;plasterThicknessCm.value=cp.plasterThicknessCm;plasterCementBagsM3.value=cp.plasterCementBagsM3;plasterSandM3M3.value=cp.plasterSandM3M3;subfloorThicknessCm.value=cp.subfloorThicknessCm;subfloorCementBagsM3.value=cp.subfloorCementBagsM3;subfloorSandM3M3.value=cp.subfloorSandM3M3;}
   },
   saveProject(){
     State.project={name:projectName.value.trim(),client:clientName.value.trim(),lotWidth:n("lotWidth",6),lotLength:n("lotLength",20),defaultHeight:n("defaultHeight",2.8),lossProfile:n("lossProfile",.10),notes:projectNotes.value.trim()};
@@ -772,7 +888,7 @@ const UI={
     [["Sala","social",3.5,4],["Cozinha","kitchen",3,3],["Quarto 1","bedroom",3,3.2],["Banheiro","bathroom",1.5,2.4],["Área serviço","service",1.8,2.2]].forEach(x=>State.rooms.push({id:cryptoRandom(),name:x[0],type:x[1],width:x[2],length:x[3],height:h,doorCount:1,windowCount:1,doorSize:"0.80x2.10",windowSize:"1.20x1.00",x:null,y:null}));
     Storage.save();this.renderAll();this.toast("Exemplo adicionado.");
   },
-  renderAll(){this.renderHome();this.renderProject();this.renderRooms();this.renderCalculations();this.renderBudget();this.renderSchedule();this.renderPurchases();this.renderTracking();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
+  renderAll(){this.renderHome();this.renderProject();this.renderRooms();this.renderCalculations();this.renderCompositions();this.renderBudget();this.renderSchedule();this.renderPurchases();this.renderTracking();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
   stat(items){return items.map(i=>`<div class="stat"><b>${i[0]}</b><span>${i[1]}</span></div>`).join("")},
   renderHome(){
     const t=Calc.totals(false),b=Calc.budget(false),s=Schedule.stages(false),lot=State.project.lotWidth*State.project.lotLength;
@@ -795,6 +911,34 @@ const UI={
     const t=Calc.totals(false);
     calcTotals.innerHTML=this.stat([[round(t.area)+" m²","Área de piso"],[round(t.wallNet)+" m²","Paredes úteis"],[t.floorBoxes,"Caixas piso"],[round(t.paintLiters,1)+" L","Tinta"],[Math.round(t.blocks),"Blocos"],[round(t.baseboard)+" m","Rodapé"],[round(t.volume)+" m³","Volume"],[round(t.openings)+" m²","Aberturas"]]);
     materialsRows.innerHTML=State.rooms.length?State.rooms.map(r=>{const c=Calc.room(r,false);return`<tr><td><b>${esc(r.name)}</b></td><td>${round(c.area)}m²</td><td>${round(c.wallNet)}m²</td><td>${c.floorBoxes}</td><td>${round(c.paintLiters,1)}L</td><td>${c.blocks}</td><td><span class="badge high">Área alta</span><br><span class="badge mid">Materiais média</span></td></tr>`}).join(""):`<tr><td colspan="7">Cadastre cômodos.</td></tr>`;
+  },
+
+  saveCompositions(){
+    State.compositions={
+      tileMortarKgM2:n("tileMortarKgM2",4.5),
+      mortarBagKg:n("mortarBagKg",20),
+      groutKgM2:n("groutKgM2",0.25),
+      chapiscoKgM2:n("chapiscoKgM2",1.5),
+      plasterThicknessCm:n("plasterThicknessCm",2),
+      plasterCementBagsM3:n("plasterCementBagsM3",6),
+      plasterSandM3M3:n("plasterSandM3M3",1.15),
+      subfloorThicknessCm:n("subfloorThicknessCm",4),
+      subfloorCementBagsM3:n("subfloorCementBagsM3",5),
+      subfloorSandM3M3:n("subfloorSandM3M3",1.1)
+    };
+    Storage.save();this.renderCompositions();this.renderPurchases();this.renderReport();this.toast("Composições salvas.");
+  },
+  resetCompositions(){
+    State.compositions=Compositions.defaults();
+    this.fill();
+    Storage.save();this.renderCompositions();this.renderPurchases();this.renderReport();this.toast("Composições restauradas.");
+  },
+  renderCompositions(){
+    if(!$("compositionRows"))return;
+    const c=Compositions.calculate(false);
+    compositionTotals.innerHTML=this.stat([[c.tileMortarBags+" sacos","Argamassa piso"],[round(c.groutKg,1)+" kg","Rejunte"],[round(c.plasterVolume,3)+" m³","Volume reboco"],[round(c.subfloorVolume,3)+" m³","Volume contrapiso"],[c.plasterCementBags+c.subfloorCementBags+" sacos","Cimento estimado"],[round(c.plasterSandM3+c.subfloorSandM3,2)+" m³","Areia estimada"]]);
+    compositionWarnings.innerHTML=this.warnings(Compositions.warnings());
+    compositionRows.innerHTML=Compositions.rows().map(r=>`<tr><td><b>${esc(r.service)}</b></td><td>${esc(r.base)}</td><td>${esc(r.item)}</td><td><b>${round(r.qty,2)} ${esc(r.unit)}</b></td><td><span class="compFormula">${esc(r.formula)}</span></td></tr>`).join("");
   },
   renderBudget(){
     const t=Calc.totals(false),b=Calc.budget(false),bud=State.budget;
@@ -991,7 +1135,7 @@ const UI={
   },
   renderReport(){
     Floorplan.ensurePositions();
-    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress(),floorWarningsList=Floorplan.validation(),purchaseSummary=Purchases.summary();
+    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress(),floorWarningsList=Floorplan.validation(),purchaseSummary=Purchases.summary(),comp=Compositions.calculate(false);
     const areaTerreno=(p.lotWidth||0)*(p.lotLength||0);
     const rowsMaterials=[
       ["Área de piso",`${round(t.area)} m²`,"Base dos cômodos"],
@@ -1063,6 +1207,19 @@ const UI={
             <tr><td>Custo já comprado</td><td>${money(purchaseSummary.boughtCost)}</td></tr>
             <tr><td>Valor já usado</td><td>${money(purchaseSummary.usedValue)}</td></tr>
             <tr><td>Itens com falta</td><td>${purchaseSummary.missingItems}</td></tr>
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>3.2 Composições de serviço</h3>
+          <table class="reportTable">
+            <tr><th>Insumo</th><th>Quantidade</th></tr>
+            <tr><td>Argamassa para piso/revestimento</td><td>${comp.tileMortarBags} sacos</td></tr>
+            <tr><td>Rejunte</td><td>${round(comp.groutKg,1)} kg</td></tr>
+            <tr><td>Cimento para reboco</td><td>${comp.plasterCementBags} sacos</td></tr>
+            <tr><td>Areia para reboco</td><td>${round(comp.plasterSandM3,2)} m³</td></tr>
+            <tr><td>Cimento para contrapiso</td><td>${comp.subfloorCementBags} sacos</td></tr>
+            <tr><td>Areia para contrapiso</td><td>${round(comp.subfloorSandM3,2)} m³</td></tr>
           </table>
         </div>
 
