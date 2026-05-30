@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Obra Fácil Pro — Pacote 06.1</title>
+<title>Obra Fácil Pro — Pacote 06.2</title>
 <style>
 :root{
   --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--line:rgba(148,163,184,.24);
@@ -35,8 +35,8 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 .row{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.btn,button{border:0;border-radius:13px;padding:11px 13px;min-height:43px;background:var(--ok);color:#04130b;font-weight:850;cursor:pointer}.sec{background:#1f2937;color:var(--txt);border:1px solid var(--line)}.ghost{background:transparent;color:var(--soft);border:1px solid var(--line)}.danger{background:var(--bad);color:white}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0}.stat{background:rgba(2,6,23,.42);border:1px solid var(--line);border-radius:14px;padding:11px}.stat b{font-size:1.08rem;display:block;letter-spacing:-.02em}.stat span{color:var(--mut);font-size:.76rem}
 .page{display:none;animation:f .18s ease-out}.page.on{display:block}@keyframes f{from{opacity:.45;transform:translateY(4px)}to{opacity:1;transform:none}}
-.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(8,1fr);gap:5px;padding:6px;background:rgba(15,23,42,.94);border-top:1px solid var(--line);backdrop-filter:blur(16px)}
-.tabs button{background:transparent;color:var(--mut);border:1px solid transparent;border-radius:13px;min-height:56px;font-size:.66rem;padding:7px 3px}.tabs button span{font-size:1.02rem}.tabs button.on{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.36);color:var(--txt)}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;overflow-x:auto;gap:5px;padding:6px;background:rgba(15,23,42,.94);border-top:1px solid var(--line);backdrop-filter:blur(16px);scroll-snap-type:x proximity}
+.tabs button{background:transparent;color:var(--mut);border:1px solid transparent;border-radius:13px;min-height:56px;font-size:.66rem;padding:7px 6px;flex:0 0 74px;scroll-snap-align:center}.tabs button span{font-size:1.02rem}.tabs button.on{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.36);color:var(--txt)}
 .room{border:1px solid var(--line);border-radius:15px;padding:11px;margin-top:9px;background:rgba(2,6,23,.34)}.roomHead{display:flex;justify-content:space-between;gap:8px}.mini{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}.mini div{border:1px solid rgba(148,163,184,.16);background:rgba(15,23,42,.5);border-radius:12px;padding:8px}.mini span{display:block;color:var(--mut);font-size:.72rem}
 .table{overflow:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:10px;border-bottom:1px solid rgba(148,163,184,.16);font-size:.86rem;text-align:left;vertical-align:top}th{background:rgba(31,41,55,.74);color:var(--soft);font-size:.75rem;text-transform:uppercase;letter-spacing:.04em}tr:last-child td{border-bottom:0}
 .warn{border:1px solid rgba(245,158,11,.38);background:rgba(245,158,11,.08);color:#fde68a;border-radius:13px;padding:9px;margin-top:8px;font-size:.84rem}.warn.bad{border-color:rgba(251,113,133,.35);background:rgba(251,113,133,.08);color:#fecdd3}.warn.ok{border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.08);color:#a7f3d0}
@@ -66,20 +66,20 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   .reportBox{break-inside:avoid}
 }
 
-@media(min-width:760px){.reportGrid{grid-template-columns:1fr 1fr}.signatureArea{grid-template-columns:1fr 1fr}main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(840px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
+@media(min-width:760px){.reportGrid{grid-template-columns:1fr 1fr}.signatureArea{grid-template-columns:1fr 1fr}main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(980px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(9,1fr);overflow:visible}.tabs button{flex:auto}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
 </style>
 </head>
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 06.1 — Correção da Planta 2D</div></div></div>
-    <div class="pill">ObraCalc Engine v1.5.1</div>
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 06.2 — Planta 2D visível</div></div></div>
+    <div class="pill">ObraCalc Engine v1.5.2</div>
   </header>
 
   <section id="inicio" class="page on">
     <div class="hero">
       <h2>Agora o sistema calcula custo e tempo.</h2>
-      <p class="mut">O Pacote 06.1 corrige a planta baixa 2D: organiza automaticamente dados antigos, reduz alertas repetidos no relatório e melhora a validação de sobreposição.</p>
+      <p class="mut">O Pacote 06.2 corrige a navegação: a aba Planta agora aparece na barra inferior e a navegação fica rolável no celular.</p>
       <div class="rules">
         <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
         <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
@@ -353,15 +353,16 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   <button data-tab="orcamento" onclick="UI.go('orcamento')"><span>💰</span><br>Orçamento</button>
   <button data-tab="cronograma" onclick="UI.go('cronograma')"><span>📅</span><br>Prazo</button>
   <button data-tab="acompanhamento" onclick="UI.go('acompanhamento')"><span>✅</span><br>Execução</button>
+  <button data-tab="planta" onclick="UI.go('planta')"><span>📐</span><br>Planta</button>
   <button data-tab="relatorio" onclick="UI.go('relatorio')"><span>📄</span><br>Relatório</button>
 </nav>
 
 <div id="toast" class="toast"></div>
 
 <script>
-const App={name:"Obra Fácil Pro",package:"Pacote 06.1",engine:"ObraCalc Engine",version:"1.5.1"};
-const StoreKey="obra_facil_pro_pacote_06_1";
-const OldKeys=["obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
+const App={name:"Obra Fácil Pro",package:"Pacote 06.2",engine:"ObraCalc Engine",version:"1.5.2"};
+const StoreKey="obra_facil_pro_pacote_06_2";
+const OldKeys=["obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
 const State={
   project:{name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
   rooms:[],
@@ -623,7 +624,7 @@ const Storage={
   },
   exportJSON(){
     const blob=new Blob([JSON.stringify({app:App,exportedAt:new Date().toISOString(),...State},null,2)],{type:"application/json"});
-    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-06-1.json";a.click();URL.revokeObjectURL(a.href);
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-06-2.json";a.click();URL.revokeObjectURL(a.href);
   },
   importJSON(e){
     const f=e.target.files[0];if(!f)return;const rd=new FileReader();
