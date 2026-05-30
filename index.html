@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Obra Fácil Pro — Pacote 06.2</title>
+<title>Obra Fácil Pro — Pacote 07</title>
 <style>
 :root{
   --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--line:rgba(148,163,184,.24);
@@ -46,7 +46,11 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 .toast{position:fixed;left:14px;right:14px;bottom:84px;display:none;z-index:40;background:#111827;border:1px solid rgba(34,197,94,.36);border-radius:14px;padding:12px;box-shadow:var(--shadow)}.toast.show{display:block}
 .progress{height:8px;border-radius:999px;background:#020617;border:1px solid var(--line);overflow:hidden;min-width:100px}.bar{height:100%;background:linear-gradient(90deg,var(--ok),var(--sky))}
 
-.compactWarn{max-height:260px;overflow:auto}.floorHint{border:1px solid rgba(56,189,248,.35);background:rgba(56,189,248,.08);color:#bae6fd;border-radius:13px;padding:10px;margin-top:8px}.floorLegend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.legendDot{width:12px;height:12px;border-radius:4px;display:inline-block;margin-right:5px}.floorWarnList{display:grid;gap:8px}.coordInput{min-width:82px}.svgbox svg text{user-select:none}
+.compactWarn{max-height:260px;overflow:auto}.floorHint{border:1px solid rgba(56,189,248,.35);background:rgba(56,189,248,.08);color:#bae6fd;border-radius:13px;padding:10px;margin-top:8px}
+.purchaseSummary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.purchaseCell{border:1px solid var(--line);background:rgba(2,6,23,.36);border-radius:14px;padding:10px}.purchaseCell b{display:block}.purchaseCell span{color:var(--mut);font-size:.76rem}.qtyInput{min-width:84px}.wideInput{min-width:160px}.statusPill{white-space:nowrap}
+@media(min-width:760px){.purchaseSummary{grid-template-columns:repeat(4,1fr)}}
+
+.floorLegend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.legendDot{width:12px;height:12px;border-radius:4px;display:inline-block;margin-right:5px}.floorWarnList{display:grid;gap:8px}.coordInput{min-width:82px}.svgbox svg text{user-select:none}
 .trackCard{border:1px solid var(--line);border-radius:15px;padding:11px;margin-top:9px;background:rgba(2,6,23,.34)}
 .statusSelect{min-width:130px}.smallInput{min-width:95px}.logItem{border:1px solid var(--line);border-radius:14px;background:rgba(2,6,23,.35);padding:11px;margin-top:9px}.logItem h4{margin-bottom:4px}
 .compareBox{display:grid;grid-template-columns:1fr;gap:10px}.compareBox .stat{margin:0}
@@ -66,20 +70,20 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   .reportBox{break-inside:avoid}
 }
 
-@media(min-width:760px){.reportGrid{grid-template-columns:1fr 1fr}.signatureArea{grid-template-columns:1fr 1fr}main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(980px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(9,1fr);overflow:visible}.tabs button{flex:auto}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
+@media(min-width:760px){.reportGrid{grid-template-columns:1fr 1fr}.signatureArea{grid-template-columns:1fr 1fr}main{padding:22px 22px 112px}.top{margin:-22px -22px 18px;padding:16px 22px}.pill{display:inline-flex}.hero{padding:24px}.hero h2{font-size:1.8rem}.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.mini{grid-template-columns:repeat(4,1fr)}.tabs{width:min(980px,calc(100% - 24px));left:50%;right:auto;bottom:12px;transform:translateX(-50%);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(10,1fr);overflow:visible}.tabs button{flex:auto}.toast{width:min(520px,calc(100% - 28px));left:50%;right:auto;transform:translateX(-50%)}}
 </style>
 </head>
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 06.2 — Planta 2D visível</div></div></div>
-    <div class="pill">ObraCalc Engine v1.5.2</div>
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 07 — Compras e Materiais</div></div></div>
+    <div class="pill">ObraCalc Engine v1.6.0</div>
   </header>
 
   <section id="inicio" class="page on">
     <div class="hero">
       <h2>Agora o sistema calcula custo e tempo.</h2>
-      <p class="mut">O Pacote 06.2 corrige a navegação: a aba Planta agora aparece na barra inferior e a navegação fica rolável no celular.</p>
+      <p class="mut">O Pacote 07 adiciona lista de compras e controle de materiais: planejado, comprado, usado, saldo, fornecedor e custo real.</p>
       <div class="rules">
         <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
         <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
@@ -229,6 +233,53 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 
 
 
+
+  <section id="compras" class="page">
+    <div class="grid two">
+      <div class="card">
+        <h2>Lista de compras da obra</h2>
+        <p class="mut">O sistema gera uma lista base pelos cálculos e permite controlar o que já foi comprado, usado, saldo e fornecedor.</p>
+        <div id="purchaseTotals" class="purchaseSummary"></div>
+        <div id="purchaseWarnings"></div>
+      </div>
+      <div class="card">
+        <h2>Adicionar material manual</h2>
+        <div class="grid two">
+          <div><label>Material</label><input id="manualMaterialName" placeholder="Ex: Cimento, areia, argamassa"></div>
+          <div><label>Unidade</label><input id="manualMaterialUnit" placeholder="Ex: sacos, m³, kg"></div>
+        </div>
+        <div class="grid two">
+          <div><label>Quantidade planejada</label><input id="manualMaterialPlanned" type="number" step=".01"></div>
+          <div><label>Preço unitário real (R$)</label><input id="manualMaterialPrice" type="number" step=".01"></div>
+        </div>
+        <label>Fornecedor</label><input id="manualMaterialSupplier" placeholder="Ex: Loja de material X">
+        <button onclick="UI.addManualMaterial()">Adicionar material</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Materiais calculados e controlados</h2>
+      <div class="table">
+        <table>
+          <thead>
+            <tr>
+              <th>Material</th>
+              <th>Planejado</th>
+              <th>Comprado</th>
+              <th>Usado</th>
+              <th>Saldo</th>
+              <th>Preço real</th>
+              <th>Fornecedor</th>
+              <th>Status</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="purchaseRows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <section id="acompanhamento" class="page">
     <div class="grid two">
       <div class="card">
@@ -351,6 +402,7 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
   <button data-tab="comodos" onclick="UI.go('comodos')"><span>🚪</span><br>Cômodos</button>
   <button data-tab="calculos" onclick="UI.go('calculos')"><span>🧮</span><br>Cálculos</button>
   <button data-tab="orcamento" onclick="UI.go('orcamento')"><span>💰</span><br>Orçamento</button>
+  <button data-tab="compras" onclick="UI.go('compras')"><span>🧾</span><br>Compras</button>
   <button data-tab="cronograma" onclick="UI.go('cronograma')"><span>📅</span><br>Prazo</button>
   <button data-tab="acompanhamento" onclick="UI.go('acompanhamento')"><span>✅</span><br>Execução</button>
   <button data-tab="planta" onclick="UI.go('planta')"><span>📐</span><br>Planta</button>
@@ -360,9 +412,9 @@ textarea{min-height:78px;resize:vertical}input:focus,select:focus,textarea:focus
 <div id="toast" class="toast"></div>
 
 <script>
-const App={name:"Obra Fácil Pro",package:"Pacote 06.2",engine:"ObraCalc Engine",version:"1.5.2"};
-const StoreKey="obra_facil_pro_pacote_06_2";
-const OldKeys=["obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
+const App={name:"Obra Fácil Pro",package:"Pacote 07",engine:"ObraCalc Engine",version:"1.6.0"};
+const StoreKey="obra_facil_pro_pacote_07";
+const OldKeys=["obra_facil_pro_pacote_06_2","obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
 const State={
   project:{name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
   rooms:[],
@@ -371,6 +423,7 @@ const State={
   schedule:{startDate:"",workdaysPerWeek:6,masons:1,helpers:1,complexity:1,scheduleBuffer:10,notes:""},
   tracking:{stages:{},logs:[]},
   floorplan:{grid:0.5,showGrid:true,scale:40},
+  purchases:{items:{},manual:[]},
   audit:[]
 };
 const Formulas=[
@@ -383,7 +436,8 @@ const Formulas=[
   ["schedule.duration","1.2.0","Prazo por etapa","quantidade ÷ produtividade ajustada por equipe e complexidade","Média"],
   ["report.summary","1.3.0","Relatório da obra","consolida dados técnicos, financeiros e cronograma","Alta"],
   ["tracking.progress","1.4.0","Progresso da obra","média ponderada do avanço informado por etapa","Média"],
-  ["floorplan.validation","1.5.0","Validação da planta","verifica cômodos fora do terreno e sobreposições","Alta"]
+  ["floorplan.validation","1.5.0","Validação da planta","verifica cômodos fora do terreno e sobreposições","Alta"],
+  ["purchases.balance","1.6.0","Saldo de materiais","comprado - usado, comparado com quantidade planejada","Média"]
 ];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -493,6 +547,52 @@ const Schedule={
   }
 };
 
+
+
+
+const Purchases={
+  estimatedItems(){
+    const t=Calc.totals(false),b=State.budget;
+    return [
+      {id:"floor_boxes",name:"Piso / revestimento",unit:"caixas",planned:t.floorBoxes,defaultPrice:b.priceFloorBox,source:"Cálculo de piso"},
+      {id:"paint_liters",name:"Tinta",unit:"litros",planned:round(t.paintLiters,1),defaultPrice:b.pricePaintLiter,source:"Cálculo de pintura"},
+      {id:"blocks",name:"Blocos / tijolos",unit:"unidades",planned:Math.round(t.blocks),defaultPrice:b.priceBlock,source:"Cálculo de alvenaria"},
+      {id:"baseboard",name:"Rodapé",unit:"metros",planned:round(t.baseboard,1),defaultPrice:0,source:"Perímetro dos cômodos"}
+    ];
+  },
+  get(id){
+    if(!State.purchases.items[id])State.purchases.items[id]={bought:0,used:0,actualPrice:null,supplier:"",status:"pendente",note:""};
+    return State.purchases.items[id];
+  },
+  allItems(){
+    const estimated=this.estimatedItems().map(item=>({...item,type:"estimated"}));
+    const manual=State.purchases.manual.map(item=>({...item,type:"manual"}));
+    return [...estimated,...manual];
+  },
+  summary(){
+    let plannedCost=0,boughtCost=0,usedValue=0,missingItems=0;
+    this.allItems().forEach(item=>{
+      const data=item.type==="estimated"?this.get(item.id):item;
+      const planned=Number(item.planned)||0;
+      const bought=Number(data.bought)||0;
+      const used=Number(data.used)||0;
+      const price=Number(data.actualPrice ?? item.defaultPrice ?? item.price ?? 0)||0;
+      plannedCost+=planned*price;
+      boughtCost+=bought*price;
+      usedValue+=used*price;
+      if(bought<planned)missingItems++;
+    });
+    return{plannedCost,boughtCost,usedValue,missingItems,totalItems:this.allItems().length};
+  },
+  warnings(){
+    const s=this.summary(),w=[];
+    if(!State.rooms.length)w.push(["warn","Cadastre cômodos para gerar uma lista de compras real."]);
+    if(s.missingItems>0)w.push(["warn",`${s.missingItems} item(ns) ainda têm compra menor que o planejado.`]);
+    if(s.boughtCost>Calc.budget(false).materials && Calc.budget(false).materials>0)w.push(["bad","O custo comprado já passou do custo de materiais previsto no orçamento."]);
+    if(!w.length)w.push(["ok","Lista de compras sem alertas importantes."]);
+    return w;
+  }
+};
 
 
 const Floorplan={
@@ -621,10 +721,13 @@ const Storage={
     if(!State.tracking.stages)State.tracking.stages={};
     if(!Array.isArray(State.tracking.logs))State.tracking.logs=[];
     State.floorplan={...State.floorplan,...(d.floorplan||{})};
+    State.purchases={...State.purchases,...(d.purchases||{})};
+    if(!State.purchases.items)State.purchases.items={};
+    if(!Array.isArray(State.purchases.manual))State.purchases.manual=[];
   },
   exportJSON(){
     const blob=new Blob([JSON.stringify({app:App,exportedAt:new Date().toISOString(),...State},null,2)],{type:"application/json"});
-    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-06-2.json";a.click();URL.revokeObjectURL(a.href);
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-07.json";a.click();URL.revokeObjectURL(a.href);
   },
   importJSON(e){
     const f=e.target.files[0];if(!f)return;const rd=new FileReader();
@@ -639,7 +742,7 @@ const UI={
     document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));
     document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
     $(id).classList.add("on");const b=document.querySelector(`[data-tab="${id}"]`);if(b)b.classList.add("on");
-    if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
+    if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
     scrollTo({top:0,behavior:"smooth"});
   },
   toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(this.t);this.t=setTimeout(()=>el.classList.remove("show"),2500)},
@@ -669,7 +772,7 @@ const UI={
     [["Sala","social",3.5,4],["Cozinha","kitchen",3,3],["Quarto 1","bedroom",3,3.2],["Banheiro","bathroom",1.5,2.4],["Área serviço","service",1.8,2.2]].forEach(x=>State.rooms.push({id:cryptoRandom(),name:x[0],type:x[1],width:x[2],length:x[3],height:h,doorCount:1,windowCount:1,doorSize:"0.80x2.10",windowSize:"1.20x1.00",x:null,y:null}));
     Storage.save();this.renderAll();this.toast("Exemplo adicionado.");
   },
-  renderAll(){this.renderHome();this.renderProject();this.renderRooms();this.renderCalculations();this.renderBudget();this.renderSchedule();this.renderTracking();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
+  renderAll(){this.renderHome();this.renderProject();this.renderRooms();this.renderCalculations();this.renderBudget();this.renderSchedule();this.renderPurchases();this.renderTracking();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
   stat(items){return items.map(i=>`<div class="stat"><b>${i[0]}</b><span>${i[1]}</span></div>`).join("")},
   renderHome(){
     const t=Calc.totals(false),b=Calc.budget(false),s=Schedule.stages(false),lot=State.project.lotWidth*State.project.lotLength;
@@ -716,6 +819,103 @@ const UI={
   },
 
 
+
+  renderPurchases(){
+    if(!$("purchaseRows"))return;
+    const sum=Purchases.summary();
+    purchaseTotals.innerHTML=[
+      ["Custo planejado",money(sum.plannedCost)],
+      ["Custo comprado",money(sum.boughtCost)],
+      ["Valor usado",money(sum.usedValue)],
+      ["Itens com falta",sum.missingItems]
+    ].map(x=>`<div class="purchaseCell"><b>${x[1]}</b><span>${x[0]}</span></div>`).join("");
+    purchaseWarnings.innerHTML=this.warnings(Purchases.warnings());
+
+    const rows=[];
+    Purchases.estimatedItems().forEach(item=>{
+      const data=Purchases.get(item.id);
+      rows.push(this.purchaseRow(item,data,false));
+    });
+    State.purchases.manual.forEach((item,index)=>{
+      rows.push(this.purchaseRow(item,item,true,index));
+    });
+    purchaseRows.innerHTML=rows.join("")||`<tr><td colspan="9">Nenhum material encontrado.</td></tr>`;
+  },
+  purchaseRow(item,data,isManual,index=null){
+    const planned=Number(item.planned)||0;
+    const bought=Number(data.bought)||0;
+    const used=Number(data.used)||0;
+    const price=Number(data.actualPrice ?? item.defaultPrice ?? item.price ?? 0)||0;
+    const balance=round(bought-used,2);
+    const missing=Math.max(0,round(planned-bought,2));
+    const rowId=isManual?`manual:${index}`:item.id;
+    return `<tr>
+      <td><b>${esc(item.name)}</b><br><span class="mut">${esc(item.source||"Material manual")}</span></td>
+      <td>${round(planned,2)} ${esc(item.unit)}</td>
+      <td><input class="qtyInput" type="number" step=".01" value="${bought}" onchange="UI.updatePurchase('${rowId}','bought',this.value)"></td>
+      <td><input class="qtyInput" type="number" step=".01" value="${used}" onchange="UI.updatePurchase('${rowId}','used',this.value)"></td>
+      <td><span class="badge ${missing>0?'mid':'high'}">${balance} ${esc(item.unit)}</span><br><small>${missing>0?`faltam ${missing}`:"planejado ok"}</small></td>
+      <td><input class="qtyInput" type="number" step=".01" value="${price}" onchange="UI.updatePurchase('${rowId}','actualPrice',this.value)"></td>
+      <td><input class="wideInput" value="${esc(data.supplier||item.supplier||"")}" onchange="UI.updatePurchase('${rowId}','supplier',this.value)"></td>
+      <td>
+        <select onchange="UI.updatePurchase('${rowId}','status',this.value)">
+          <option value="pendente" ${(data.status||"pendente")==="pendente"?"selected":""}>Pendente</option>
+          <option value="comprar" ${data.status==="comprar"?"selected":""}>Comprar</option>
+          <option value="comprado" ${data.status==="comprado"?"selected":""}>Comprado</option>
+          <option value="entregue" ${data.status==="entregue"?"selected":""}>Entregue</option>
+          <option value="usado" ${data.status==="usado"?"selected":""}>Usado</option>
+        </select>
+      </td>
+      <td>${isManual?`<button class="danger" onclick="UI.removeManualMaterial(${index})">Remover</button>`:`<span class="badge statusPill">Calculado</span>`}</td>
+    </tr>`;
+  },
+  updatePurchase(rowId,field,value){
+    let target;
+    if(rowId.startsWith("manual:")){
+      const index=Number(rowId.split(":")[1]);
+      target=State.purchases.manual[index];
+      if(!target)return;
+    }else{
+      target=Purchases.get(rowId);
+    }
+    if(["bought","used","actualPrice"].includes(field))value=Number(value)||0;
+    target[field]=value;
+    Storage.save();
+    this.renderPurchases();
+    this.renderReport();
+  },
+  addManualMaterial(){
+    const name=manualMaterialName.value.trim();
+    if(!name){this.toast("Informe o nome do material.");return}
+    State.purchases.manual.push({
+      id:cryptoRandom(),
+      name,
+      unit:manualMaterialUnit.value.trim()||"un.",
+      planned:n("manualMaterialPlanned",0),
+      bought:0,
+      used:0,
+      actualPrice:n("manualMaterialPrice",0),
+      supplier:manualMaterialSupplier.value.trim(),
+      status:"comprar",
+      source:"Material manual"
+    });
+    manualMaterialName.value="";
+    manualMaterialUnit.value="";
+    manualMaterialPlanned.value="";
+    manualMaterialPrice.value="";
+    manualMaterialSupplier.value="";
+    Storage.save();
+    this.renderPurchases();
+    this.renderReport();
+    this.toast("Material manual adicionado.");
+  },
+  removeManualMaterial(index){
+    State.purchases.manual.splice(index,1);
+    Storage.save();
+    this.renderPurchases();
+    this.renderReport();
+    this.toast("Material removido.");
+  },
   renderTracking(){
     Tracking.ensure();
     const sc=Schedule.stages(false),sum=Tracking.summary(),expected=Tracking.expectedProgress();
@@ -791,7 +991,7 @@ const UI={
   },
   renderReport(){
     Floorplan.ensurePositions();
-    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress(),floorWarningsList=Floorplan.validation();
+    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress(),floorWarningsList=Floorplan.validation(),purchaseSummary=Purchases.summary();
     const areaTerreno=(p.lotWidth||0)*(p.lotLength||0);
     const rowsMaterials=[
       ["Área de piso",`${round(t.area)} m²`,"Base dos cômodos"],
@@ -852,6 +1052,17 @@ const UI={
           <table class="reportTable">
             <tr><th>Item</th><th>Quantidade</th><th>Origem</th></tr>
             ${materialRows}
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>3.1 Controle de compras</h3>
+          <table class="reportTable">
+            <tr><th>Indicador</th><th>Resultado</th></tr>
+            <tr><td>Custo planejado de compra</td><td>${money(purchaseSummary.plannedCost)}</td></tr>
+            <tr><td>Custo já comprado</td><td>${money(purchaseSummary.boughtCost)}</td></tr>
+            <tr><td>Valor já usado</td><td>${money(purchaseSummary.usedValue)}</td></tr>
+            <tr><td>Itens com falta</td><td>${purchaseSummary.missingItems}</td></tr>
           </table>
         </div>
 
