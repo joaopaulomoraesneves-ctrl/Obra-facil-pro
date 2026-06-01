@@ -4,38 +4,36 @@ Sistema web mobile-first para apoio em obras, do levantamento ao acabamento.
 
 ## Pacote atual
 
-**Pacote 15 — Módulos Reais**
+**Pacote 16 — Vite + Supabase Ready**
 
-Neste pacote, a lógica JavaScript foi separada em arquivos reais por responsabilidade.
+Este pacote mantém o sistema funcionando no GitHub Pages e adiciona preparação para desenvolvimento moderno com Vite e futura integração Supabase.
 
-## Estrutura principal
+## Rodar como site estático
 
-```txt
-index.html
-src/
-  styles.css
-  core/
-    config.js
-    audit.js
-    calc-engine.js
-    compositions.js
-    installations.js
-    purchases.js
-    floorplan.js
-    tracking.js
-    system-health.js
-  storage/
-    project-manager.js
-    storage.js
-  backend/
-    backend-prep.js
-  ui/
-    app-ui.js
+Basta abrir `index.html` ou publicar no GitHub Pages.
+
+## Rodar com Vite
+
+```bash
+npm install
+npm run dev
 ```
 
-## Publicação
+## Verificar JavaScript
 
-Suba todos os arquivos para a raiz do repositório. O GitHub Pages continuará usando `index.html`.
+```bash
+npm run check
+```
+
+## Preparação Supabase
+
+Veja:
+
+```txt
+docs/SUPABASE_SETUP.md
+backend/schema-inicial.sql
+.env.example
+```
 
 ## Aviso
 

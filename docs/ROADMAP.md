@@ -1,22 +1,34 @@
 # Roadmap — Obra Fácil Pro
 
-## Concluído no Pacote 15
+## Concluído no Pacote 16
 
-- Separação real do JavaScript.
-- Arquivos por responsabilidade.
-- Base mais segura para backend.
+- Preparação Vite.
+- `package.json`.
+- `vite.config.js`.
+- `.env.example`.
+- Cliente Supabase futuro.
+- Plano de sincronização em nuvem.
+- Documentação Supabase.
 
 ## Próximo passo recomendado
 
-### Pacote 16 — Preparação Vite/Supabase
+### Pacote 17 — Autenticação e Supabase real
 
-Criar estrutura moderna com:
+Adicionar:
 
-```txt
-package.json
-vite.config.js
-src/main.js
-src/modules/
-```
+- Projeto Supabase.
+- Login.
+- Tabelas reais.
+- Row Level Security.
+- Sincronização inicial de obras.
+- Botão salvar na nuvem.
+- Botão restaurar da nuvem.
 
-Ou seguir mantendo HTML/JS puro e iniciar conexão Supabase manual.
+## Depois
+
+### Pacote 18 — SaaS inicial
+
+- Planos.
+- Controle de acesso.
+- Painel admin.
+- Bloqueio de cliente.
