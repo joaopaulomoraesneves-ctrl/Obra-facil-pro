@@ -4,15 +4,16 @@ Sistema web mobile-first para apoio em obras, do levantamento ao acabamento.
 
 ## Pacote atual
 
-**Pacote 19 — Campo, Medições e Alterações**
+**Pacote 20 — Financeiro Real da Obra**
 
-Este pacote adiciona gestão operacional de campo:
+Este pacote adiciona:
 
-- Documentos/fotos/referências.
-- Medições de serviço.
-- Alterações/aditivos.
-- Checklist de qualidade.
-- Integração com modo cliente e relatório.
+- Recebimentos.
+- Despesas reais.
+- Parcelas.
+- Contas a pagar.
+- Fluxo de caixa.
+- Lucro previsto vs lucro real.
 
 ## Rodar local
 
@@ -29,4 +30,4 @@ npm run production:check
 
 ## Aviso
 
-O sistema auxilia levantamento, orçamento e planejamento, mas não substitui engenheiro, arquiteto ou profissional habilitado.
+O sistema auxilia levantamento, orçamento e planejamento, mas não substitui engenheiro, arquiteto, contador ou profissional habilitado.

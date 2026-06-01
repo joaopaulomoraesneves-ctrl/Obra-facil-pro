@@ -3,7 +3,7 @@ const UI={
     document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));
     document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
     $(id).classList.add("on");const b=document.querySelector(`[data-tab="${id}"]`);if(b)b.classList.add("on");
-    if(id==="campo")this.renderFieldManagement();if(id==="primeiroUso")this.renderOnboarding();if(id==="cliente")this.renderClientMode();if(id==="prebackend")this.renderPreBackend();if(id==="backend")this.renderBackend();if(id==="sistema")this.renderSystemHealth();if(id==="obras")this.renderProjects();if(id==="composicoes")this.renderCompositions();if(id==="instalacoes")this.renderInstallations();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
+    if(id==="financeiro")this.renderFinance();if(id==="campo")this.renderFieldManagement();if(id==="primeiroUso")this.renderOnboarding();if(id==="cliente")this.renderClientMode();if(id==="prebackend")this.renderPreBackend();if(id==="backend")this.renderBackend();if(id==="sistema")this.renderSystemHealth();if(id==="obras")this.renderProjects();if(id==="composicoes")this.renderCompositions();if(id==="instalacoes")this.renderInstallations();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
     scrollTo({top:0,behavior:"smooth"});
   },
   toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(this.t);this.t=setTimeout(()=>el.classList.remove("show"),2500)},
@@ -442,7 +442,7 @@ const UI={
   },
   renderReport(){
     Floorplan.ensurePositions();
-    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress(),floorWarningsList=Floorplan.validation(),purchaseSummary=Purchases.summary(),comp=Compositions.calculate(false),inst=Installations.calculate(false),health=SystemHealth.collect(),backendReady=BackendPrep.readiness().filter(x=>x[1]).length,backendTotal=BackendPrep.readiness().length,fieldSummary=FieldManagement.summary();
+    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress(),floorWarningsList=Floorplan.validation(),purchaseSummary=Purchases.summary(),comp=Compositions.calculate(false),inst=Installations.calculate(false),health=SystemHealth.collect(),backendReady=BackendPrep.readiness().filter(x=>x[1]).length,backendTotal=BackendPrep.readiness().length,fieldSummary=FieldManagement.summary(),financeSummary=Finance.summary();
     const areaTerreno=(p.lotWidth||0)*(p.lotLength||0);
     const rowsMaterials=[
       ["Área de piso",`${round(t.area)} m²`,"Base dos cômodos"],
@@ -577,6 +577,19 @@ const UI={
             <tr><td>Alterações pendentes</td><td>${fieldSummary.pendingChanges}</td></tr>
             <tr><td>Aditivos aprovados</td><td>${money(fieldSummary.approvedCost)} / ${fieldSummary.approvedDays} dia(s)</td></tr>
             <tr><td>Checklist de qualidade</td><td>${fieldSummary.qualityPercent}%</td></tr>
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>5.2 Financeiro real</h3>
+          <table class="reportTable">
+            <tr><th>Indicador</th><th>Resultado</th></tr>
+            <tr><td>Total recebido</td><td>${money(financeSummary.totalReceived)}</td></tr>
+            <tr><td>Total pago</td><td>${money(financeSummary.paidExpenses)}</td></tr>
+            <tr><td>A pagar</td><td>${money(financeSummary.pendingExpenses)}</td></tr>
+            <tr><td>A receber</td><td>${money(financeSummary.pendingInstallments)}</td></tr>
+            <tr><td>Lucro previsto</td><td>${money(financeSummary.forecastProfit)}</td></tr>
+            <tr><td>Lucro real atual</td><td>${money(financeSummary.realProfit)}</td></tr>
           </table>
         </div>
         <div class="reportBox">

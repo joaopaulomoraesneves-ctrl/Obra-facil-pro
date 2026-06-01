@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Obra Fácil Pro — Pacote 19</title>
+<title>Obra Fácil Pro — Pacote 20</title>
 <link rel="stylesheet" href="src/styles.css">
 
 </head>
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 19 — Campo, Medições e Alterações</div></div></div>
-    <div><div class="pill">ObraCalc Engine v2.8.0</div><span class="navHint">Arraste a barra inferior para ver todas as abas</span></div>
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 20 — Financeiro Real da Obra</div></div></div>
+    <div><div class="pill">ObraCalc Engine v2.9.0</div><span class="navHint">Arraste a barra inferior para ver todas as abas</span></div>
   </header>
 
   <section id="inicio" class="page on">
     <div class="hero">
       <h2>Agora o sistema calcula custo e tempo.</h2>
-      <p class="mut">O Pacote 19 adiciona controle de campo: documentos, fotos/referências, medições de serviço, alterações/aditivos e checklist de qualidade por etapa.</p>
+      <p class="mut">O Pacote 20 adiciona financeiro real da obra: recebimentos, despesas, parcelas, contas a pagar, saldo, fluxo de caixa e lucro previsto versus lucro real.</p>
       <div class="rules">
         <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
         <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
@@ -498,6 +498,85 @@
 
 
 
+
+  <section id="financeiro" class="page">
+    <div class="card">
+      <h2>Financeiro Real da Obra</h2>
+      <p class="mut">Controle recebimentos, despesas reais, parcelas, contas a pagar e compare lucro previsto com lucro real.</p>
+      <div id="financeTotals" class="stats"></div>
+      <div id="financeWarnings"></div>
+      <div class="financeTabs">
+        <button class="active" data-finance-tab="recebimentos" onclick="UI.switchFinanceTab('recebimentos')">💵 Recebimentos</button>
+        <button data-finance-tab="despesas" onclick="UI.switchFinanceTab('despesas')">🧾 Despesas</button>
+        <button data-finance-tab="parcelas" onclick="UI.switchFinanceTab('parcelas')">📆 Parcelas</button>
+        <button data-finance-tab="fluxo" onclick="UI.switchFinanceTab('fluxo')">📊 Fluxo</button>
+      </div>
+    </div>
+
+    <div id="financePanelRecebimentos" class="financePanel on">
+      <div class="grid two">
+        <div class="card">
+          <h3>Novo recebimento</h3>
+          <label>Descrição</label><input id="incomeDesc" placeholder="Ex: Entrada do cliente">
+          <div class="grid two">
+            <div><label>Valor recebido (R$)</label><input id="incomeValue" type="number" step=".01"></div>
+            <div><label>Data</label><input id="incomeDate" type="date"></div>
+          </div>
+          <label>Forma</label><select id="incomeMethod"><option>Pix</option><option>Dinheiro</option><option>Cartão</option><option>Transferência</option><option>Boleto</option><option>Outro</option></select>
+          <label>Observação</label><textarea id="incomeNote"></textarea>
+          <button onclick="UI.addIncome()">Adicionar recebimento</button>
+        </div>
+        <div class="card"><h3>Recebimentos</h3><div id="incomeList"></div></div>
+      </div>
+    </div>
+
+    <div id="financePanelDespesas" class="financePanel">
+      <div class="grid two">
+        <div class="card">
+          <h3>Nova despesa / conta a pagar</h3>
+          <label>Descrição</label><input id="expenseDesc" placeholder="Ex: Compra de cimento">
+          <div class="grid two">
+            <div><label>Valor (R$)</label><input id="expenseValue" type="number" step=".01"></div>
+            <div><label>Vencimento</label><input id="expenseDueDate" type="date"></div>
+          </div>
+          <div class="grid two">
+            <div><label>Categoria</label><select id="expenseCategory"><option>Material</option><option>Mão de obra</option><option>Equipamento</option><option>Transporte</option><option>Alimentação</option><option>Imprevisto</option><option>Outro</option></select></div>
+            <div><label>Status</label><select id="expenseStatus"><option value="pendente">Pendente</option><option value="pago">Pago</option></select></div>
+          </div>
+          <label>Fornecedor / responsável</label><input id="expenseSupplier" placeholder="Ex: Loja de material">
+          <button onclick="UI.addExpense()">Adicionar despesa</button>
+        </div>
+        <div class="card"><h3>Despesas e contas</h3><div id="expenseList"></div></div>
+      </div>
+    </div>
+
+    <div id="financePanelParcelas" class="financePanel">
+      <div class="grid two">
+        <div class="card">
+          <h3>Gerar parcelas do cliente</h3>
+          <p class="mut">Use o valor final do orçamento ou informe um valor manual.</p>
+          <div class="grid two">
+            <div><label>Valor total (R$)</label><input id="installmentTotal" type="number" step=".01"></div>
+            <div><label>Número de parcelas</label><input id="installmentCount" type="number" step="1" value="3"></div>
+          </div>
+          <div class="grid two">
+            <div><label>Primeiro vencimento</label><input id="installmentFirstDate" type="date"></div>
+            <div><label>Intervalo em dias</label><input id="installmentInterval" type="number" step="1" value="30"></div>
+          </div>
+          <button onclick="UI.generateInstallments()">Gerar parcelas</button>
+        </div>
+        <div class="card"><h3>Parcelas geradas</h3><div id="installmentList"></div></div>
+      </div>
+    </div>
+
+    <div id="financePanelFluxo" class="financePanel">
+      <div class="grid two">
+        <div class="card"><h3>Fluxo de caixa</h3><div id="cashFlowList"></div></div>
+        <div class="card"><h3>Lucro previsto vs real</h3><div id="profitComparison"></div></div>
+      </div>
+    </div>
+  </section>
+
   <section id="campo" class="page">
     <div class="card">
       <h2>Campo da Obra</h2>
@@ -721,6 +800,7 @@
   <button data-tab="acompanhamento" onclick="UI.go('acompanhamento')"><span>✅</span><br>Execução</button>
   <button data-tab="planta" onclick="UI.go('planta')"><span>📐</span><br>Planta</button>
   <button data-tab="primeiroUso" onclick="UI.go('primeiroUso')"><span>🧭</span><br>Guia</button>
+  <button data-tab="financeiro" onclick="UI.go('financeiro')"><span>🏦</span><br>Financeiro</button>
   <button data-tab="campo" onclick="UI.go('campo')"><span>🧰</span><br>Campo</button>
   <button data-tab="cliente" onclick="UI.go('cliente')"><span>👤</span><br>Cliente</button>
   <button data-tab="prebackend" onclick="UI.go('prebackend')"><span>🧪</span><br>Pré-Backend</button>
@@ -746,6 +826,7 @@
 <script src="src/core/system-health.js"></script>
 <script src="src/storage/project-manager.js"></script>
 <script src="src/storage/storage.js"></script>
+<script src="src/core/finance.js"></script>
 <script src="src/core/field-management.js"></script>
 <script src="src/ui/polish-tools.js"></script>
 <script src="src/ui/app-ui.js"></script>

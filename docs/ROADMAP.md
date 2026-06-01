@@ -1,28 +1,28 @@
 # Roadmap — Obra Fácil Pro
 
-## Concluído no Pacote 19
+## Concluído no Pacote 20
 
-- Documentos/fotos/referências.
-- Medições de serviço.
-- Alterações/aditivos.
-- Checklist de qualidade.
-- Integração com relatório e modo cliente.
-- Testes de campo.
+- Recebimentos.
+- Despesas reais.
+- Parcelas.
+- Contas a pagar.
+- Fluxo de caixa.
+- Lucro previsto vs lucro real.
+- Testes financeiros.
 
 ## Próximo passo recomendado
 
-### Pacote 20 — Financeiro real da obra
+### Pacote 21 — PWA/offline instalável
 
 Adicionar:
 
-- Recebimentos.
-- Parcelas.
-- Contas a pagar.
-- Despesas reais.
-- Lucro previsto vs lucro real.
-- Fluxo de caixa da obra.
+- manifest.json.
+- service worker.
+- botão instalar.
+- cache básico.
+- aviso offline.
+- estratégia de sincronização futura.
 
 ## Depois
 
-### Pacote 21 — PWA/offline instalável
 ### Pacote 22 — Supabase real + autenticação

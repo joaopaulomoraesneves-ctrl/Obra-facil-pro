@@ -56,6 +56,11 @@ const AppState = {
 
     if (!State.audit || !Array.isArray(State.audit)) State.audit = [];
 
+    if (!State.finance) State.finance = { incomes: [], expenses: [], installments: [] };
+    if (!Array.isArray(State.finance.incomes)) State.finance.incomes = [];
+    if (!Array.isArray(State.finance.expenses)) State.finance.expenses = [];
+    if (!Array.isArray(State.finance.installments)) State.finance.installments = [];
+
     if (!State.field) State.field = { documents: [], measurements: [], changes: [], quality: {} };
     if (!Array.isArray(State.field.documents)) State.field.documents = [];
     if (!Array.isArray(State.field.measurements)) State.field.measurements = [];
