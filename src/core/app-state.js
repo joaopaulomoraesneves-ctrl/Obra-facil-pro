@@ -56,6 +56,12 @@ const AppState = {
 
     if (!State.audit || !Array.isArray(State.audit)) State.audit = [];
 
+    if (!State.field) State.field = { documents: [], measurements: [], changes: [], quality: {} };
+    if (!Array.isArray(State.field.documents)) State.field.documents = [];
+    if (!Array.isArray(State.field.measurements)) State.field.measurements = [];
+    if (!Array.isArray(State.field.changes)) State.field.changes = [];
+    if (!State.field.quality) State.field.quality = {};
+
     return State;
   },
 

@@ -1,22 +1,28 @@
 # Roadmap — Obra Fácil Pro
 
-## Concluído no Pacote 18
+## Concluído no Pacote 19
 
-- Painel inicial com atalhos rápidos.
-- Modo Cliente.
-- Guia de primeiro uso.
-- Backup preventivo.
-- Testes estendidos.
-- Documentação comercial e técnica.
+- Documentos/fotos/referências.
+- Medições de serviço.
+- Alterações/aditivos.
+- Checklist de qualidade.
+- Integração com relatório e modo cliente.
+- Testes de campo.
 
 ## Próximo passo recomendado
 
-### Pacote 19 — Supabase real + autenticação
+### Pacote 20 — Financeiro real da obra
 
 Adicionar:
 
-- Login.
-- Tenant/empresa.
-- Salvamento de obras no banco.
-- Sincronização local/nuvem.
-- Segurança RLS.
+- Recebimentos.
+- Parcelas.
+- Contas a pagar.
+- Despesas reais.
+- Lucro previsto vs lucro real.
+- Fluxo de caixa da obra.
+
+## Depois
+
+### Pacote 21 — PWA/offline instalável
+### Pacote 22 — Supabase real + autenticação

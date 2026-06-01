@@ -4,9 +4,15 @@ Sistema web mobile-first para apoio em obras, do levantamento ao acabamento.
 
 ## Pacote atual
 
-**Pacote 18 — Polimento Final Pré-Produção**
+**Pacote 19 — Campo, Medições e Alterações**
 
-Este pacote melhora usabilidade, apresentação para cliente, onboarding, backup preventivo, testes e documentação antes do backend real.
+Este pacote adiciona gestão operacional de campo:
+
+- Documentos/fotos/referências.
+- Medições de serviço.
+- Alterações/aditivos.
+- Checklist de qualidade.
+- Integração com modo cliente e relatório.
 
 ## Rodar local
 
@@ -20,10 +26,6 @@ npm run dev
 ```bash
 npm run production:check
 ```
-
-## Publicar no GitHub Pages
-
-Envie todos os arquivos para a raiz do repositório. O `index.html` continua funcionando como site estático.
 
 ## Aviso
 

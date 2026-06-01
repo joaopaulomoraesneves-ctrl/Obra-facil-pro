@@ -4,21 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Obra Fácil Pro — Pacote 18</title>
+<title>Obra Fácil Pro — Pacote 19</title>
 <link rel="stylesheet" href="src/styles.css">
 
 </head>
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 18 — Polimento Final Pré-Produção</div></div></div>
-    <div><div class="pill">ObraCalc Engine v2.7.0</div><span class="navHint">Arraste a barra inferior para ver todas as abas</span></div>
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 19 — Campo, Medições e Alterações</div></div></div>
+    <div><div class="pill">ObraCalc Engine v2.8.0</div><span class="navHint">Arraste a barra inferior para ver todas as abas</span></div>
   </header>
 
   <section id="inicio" class="page on">
     <div class="hero">
       <h2>Agora o sistema calcula custo e tempo.</h2>
-      <p class="mut">O Pacote 18 faz o polimento final antes do backend: painel inicial mais claro, modo cliente, onboarding, backup preventivo, testes ampliados e documentação comercial.</p>
+      <p class="mut">O Pacote 19 adiciona controle de campo: documentos, fotos/referências, medições de serviço, alterações/aditivos e checklist de qualidade por etapa.</p>
       <div class="rules">
         <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
         <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
@@ -497,6 +497,80 @@
   </section>
 
 
+
+  <section id="campo" class="page">
+    <div class="card">
+      <h2>Campo da Obra</h2>
+      <p class="mut">Controle documentos, fotos/referências, medições, alterações e qualidade da execução. Este módulo aproxima o sistema de uma gestão de obra mais profissional.</p>
+      <div id="fieldTotals" class="stats"></div>
+      <div class="fieldTabs">
+        <button class="active" data-field-tab="documentos" onclick="UI.switchFieldTab('documentos')">📎 Documentos</button>
+        <button data-field-tab="medicoes" onclick="UI.switchFieldTab('medicoes')">📏 Medições</button>
+        <button data-field-tab="alteracoes" onclick="UI.switchFieldTab('alteracoes')">🔁 Alterações</button>
+        <button data-field-tab="qualidade" onclick="UI.switchFieldTab('qualidade')">✅ Qualidade</button>
+      </div>
+    </div>
+
+    <div id="fieldPanelDocumentos" class="fieldPanel on">
+      <div class="grid two">
+        <div class="card">
+          <h3>Novo documento / foto / referência</h3>
+          <label>Tipo</label><select id="docType"><option>Foto da obra</option><option>Contrato</option><option>Comprovante de compra</option><option>Recibo</option><option>Documento técnico</option><option>Antes/depois</option><option>Observação geral</option></select>
+          <label>Título</label><input id="docTitle" placeholder="Ex: Foto da alvenaria da sala">
+          <label>Referência do arquivo ou link</label><input id="docRef" placeholder="Ex: nome do arquivo, link, pasta no celular">
+          <label>Observação</label><textarea id="docNote" placeholder="Detalhes, contexto, pendências..."></textarea>
+          <button onclick="UI.addFieldDocument()">Adicionar documento</button>
+        </div>
+        <div class="card"><h3>Documentos registrados</h3><div id="fieldDocumentsList"></div></div>
+      </div>
+    </div>
+
+    <div id="fieldPanelMedicoes" class="fieldPanel">
+      <div class="grid two">
+        <div class="card">
+          <h3>Nova medição</h3>
+          <label>Serviço</label><input id="measureService" placeholder="Ex: Reboco, contrapiso, pintura">
+          <div class="grid two">
+            <div><label>Quantidade prevista</label><input id="measurePlannedQty" type="number" step=".01"></div>
+            <div><label>Quantidade executada</label><input id="measureDoneQty" type="number" step=".01"></div>
+          </div>
+          <div class="grid two">
+            <div><label>Unidade</label><input id="measureUnit" placeholder="m², m³, un."></div>
+            <div><label>Valor previsto (R$)</label><input id="measurePlannedValue" type="number" step=".01"></div>
+          </div>
+          <label>Observação</label><textarea id="measureNote"></textarea>
+          <button onclick="UI.addMeasurement()">Adicionar medição</button>
+        </div>
+        <div class="card"><h3>Medições registradas</h3><div id="measurementsList"></div></div>
+      </div>
+    </div>
+
+    <div id="fieldPanelAlteracoes" class="fieldPanel">
+      <div class="grid two">
+        <div class="card">
+          <h3>Nova alteração / aditivo</h3>
+          <label>Descrição</label><input id="changeTitle" placeholder="Ex: Cliente pediu trocar piso da cozinha">
+          <label>Motivo</label><textarea id="changeReason"></textarea>
+          <div class="grid two">
+            <div><label>Impacto no custo (R$)</label><input id="changeCost" type="number" step=".01"></div>
+            <div><label>Impacto no prazo (dias)</label><input id="changeDays" type="number" step="1"></div>
+          </div>
+          <label>Status</label><select id="changeStatus"><option value="pendente">Pendente</option><option value="aprovado">Aprovado</option><option value="recusado">Recusado</option></select>
+          <button onclick="UI.addChangeOrder()">Adicionar alteração</button>
+        </div>
+        <div class="card"><h3>Alterações registradas</h3><div id="changesList"></div></div>
+      </div>
+    </div>
+
+    <div id="fieldPanelQualidade" class="fieldPanel">
+      <div class="card">
+        <h3>Checklist de qualidade por etapa</h3>
+        <p class="mut">Marque as etapas conferidas. Isso não substitui validação técnica, mas ajuda a evitar esquecimentos.</p>
+        <div id="qualityChecklist" class="qualityGrid"></div>
+      </div>
+    </div>
+  </section>
+
   <section id="cliente" class="page">
     <div class="card noPrint">
       <h2>Modo Cliente</h2>
@@ -647,6 +721,7 @@
   <button data-tab="acompanhamento" onclick="UI.go('acompanhamento')"><span>✅</span><br>Execução</button>
   <button data-tab="planta" onclick="UI.go('planta')"><span>📐</span><br>Planta</button>
   <button data-tab="primeiroUso" onclick="UI.go('primeiroUso')"><span>🧭</span><br>Guia</button>
+  <button data-tab="campo" onclick="UI.go('campo')"><span>🧰</span><br>Campo</button>
   <button data-tab="cliente" onclick="UI.go('cliente')"><span>👤</span><br>Cliente</button>
   <button data-tab="prebackend" onclick="UI.go('prebackend')"><span>🧪</span><br>Pré-Backend</button>
   <button data-tab="backend" onclick="UI.go('backend')"><span>☁️</span><br>Backend</button>
@@ -671,6 +746,7 @@
 <script src="src/core/system-health.js"></script>
 <script src="src/storage/project-manager.js"></script>
 <script src="src/storage/storage.js"></script>
+<script src="src/core/field-management.js"></script>
 <script src="src/ui/polish-tools.js"></script>
 <script src="src/ui/app-ui.js"></script>
 
