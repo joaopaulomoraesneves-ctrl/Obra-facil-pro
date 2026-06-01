@@ -4,38 +4,39 @@ Sistema web mobile-first para apoio em obras, do levantamento ao acabamento.
 
 ## Pacote atual
 
-**Pacote 14 — Estrutura Modular**
+**Pacote 15 — Módulos Reais**
 
-Este pacote inicia a separação do projeto em arquivos e pastas mais profissionais.
+Neste pacote, a lógica JavaScript foi separada em arquivos reais por responsabilidade.
 
-## Estrutura
+## Estrutura principal
 
 ```txt
 index.html
 src/
-  app.js
   styles.css
   core/
-  ui/
-  data/
+    config.js
+    audit.js
+    calc-engine.js
+    compositions.js
+    installations.js
+    purchases.js
+    floorplan.js
+    tracking.js
+    system-health.js
   storage/
-  reports/
+    project-manager.js
+    storage.js
   backend/
-backend/
-docs/
+    backend-prep.js
+  ui/
+    app-ui.js
 ```
-
-## O que mudou
-
-- `index.html` contém a estrutura da página.
-- `src/styles.css` contém o visual.
-- `src/app.js` contém a lógica JavaScript.
-- Pastas em `src/` preparam a separação futura por módulos.
 
 ## Publicação
 
 Suba todos os arquivos para a raiz do repositório. O GitHub Pages continuará usando `index.html`.
 
-## Observação
+## Aviso
 
-O sistema auxilia levantamento, orçamento e planejamento, mas não substitui profissional habilitado para cálculos estruturais, instalações definitivas, aprovação legal ou responsabilidade técnica.
+O sistema auxilia levantamento, orçamento e planejamento, mas não substitui engenheiro, arquiteto ou profissional habilitado.
