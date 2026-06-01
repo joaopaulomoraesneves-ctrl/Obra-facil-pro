@@ -21,7 +21,8 @@ const SystemHealth={
     const warn=all.filter(w=>w[1]==="warn").length;
     const ok=all.filter(w=>w[1]==="ok").length;
     const lastBackup=localStorage.getItem("obra_facil_pro_last_backup")||"";
-    return{t,b,sc,track,purchase,all,bad,warn,ok,lastBackup};
+    const preBackendAlerts=(typeof DataValidator!=="undefined")?DataValidator.validate():[];
+    return{t,b,sc,track,purchase,all,bad,warn,ok,lastBackup,preBackendAlerts};
   },
   readiness(){
     const h=this.collect();

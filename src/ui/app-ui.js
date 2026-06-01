@@ -3,7 +3,7 @@ const UI={
     document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));
     document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
     $(id).classList.add("on");const b=document.querySelector(`[data-tab="${id}"]`);if(b)b.classList.add("on");
-    if(id==="backend")this.renderBackend();if(id==="sistema")this.renderSystemHealth();if(id==="obras")this.renderProjects();if(id==="composicoes")this.renderCompositions();if(id==="instalacoes")this.renderInstallations();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
+    if(id==="prebackend")this.renderPreBackend();if(id==="backend")this.renderBackend();if(id==="sistema")this.renderSystemHealth();if(id==="obras")this.renderProjects();if(id==="composicoes")this.renderCompositions();if(id==="instalacoes")this.renderInstallations();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
     scrollTo({top:0,behavior:"smooth"});
   },
   toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(this.t);this.t=setTimeout(()=>el.classList.remove("show"),2500)},

@@ -1,34 +1,23 @@
 # Roadmap — Obra Fácil Pro
 
-## Concluído no Pacote 16
+## Concluído no Pacote 17
 
-- Preparação Vite.
-- `package.json`.
-- `vite.config.js`.
-- `.env.example`.
-- Cliente Supabase futuro.
-- Plano de sincronização em nuvem.
-- Documentação Supabase.
+- AppState.
+- Migrações locais.
+- Validador pré-backend.
+- Classificação de alertas.
+- Testes básicos.
+- Documentação da matriz matemática.
 
 ## Próximo passo recomendado
 
-### Pacote 17 — Autenticação e Supabase real
+### Pacote 18 — Supabase real + autenticação
 
 Adicionar:
 
-- Projeto Supabase.
 - Login.
-- Tabelas reais.
-- Row Level Security.
+- Projeto Supabase.
+- RLS inicial.
+- Tabela tenants.
+- Tabela projects.
 - Sincronização inicial de obras.
-- Botão salvar na nuvem.
-- Botão restaurar da nuvem.
-
-## Depois
-
-### Pacote 18 — SaaS inicial
-
-- Planos.
-- Controle de acesso.
-- Painel admin.
-- Bloqueio de cliente.

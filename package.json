@@ -1,6 +1,6 @@
 {
   "name": "obra-facil-pro",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "private": true,
   "description": "Sistema mobile-first para levantamento, orçamento e acompanhamento de obras.",
   "type": "module",
@@ -8,7 +8,9 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "check": "node scripts/check-syntax.cjs"
+    "check": "node scripts/check-syntax.cjs",
+    "test:basic": "node tests/calc-smoke-tests.cjs",
+    "prebackend:check": "npm run check && npm run test:basic"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0"

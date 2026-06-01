@@ -1,6 +1,6 @@
-const App={name:"Obra Fácil Pro",package:"Pacote 16",engine:"ObraCalc Engine",version:"2.5.0"};
-const StoreKey="obra_facil_pro_pacote_16";
-const OldKeys=["obra_facil_pro_pacote_15","obra_facil_pro_pacote_14","obra_facil_pro_pacote_13","obra_facil_pro_pacote_12","obra_facil_pro_pacote_11","obra_facil_pro_pacote_10","obra_facil_pro_pacote_09","obra_facil_pro_pacote_08","obra_facil_pro_pacote_07","obra_facil_pro_pacote_06_2","obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
+const App={name:"Obra Fácil Pro",package:"Pacote 17",engine:"ObraCalc Engine",version:"2.6.0"};
+const StoreKey="obra_facil_pro_pacote_17";
+const OldKeys=["obra_facil_pro_pacote_16","obra_facil_pro_pacote_15","obra_facil_pro_pacote_14","obra_facil_pro_pacote_13","obra_facil_pro_pacote_12","obra_facil_pro_pacote_11","obra_facil_pro_pacote_10","obra_facil_pro_pacote_09","obra_facil_pro_pacote_08","obra_facil_pro_pacote_07","obra_facil_pro_pacote_06_2","obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
 const State={
   meta:{id:"",status:"orcamento",createdAt:"",updatedAt:""},
   project:{name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},

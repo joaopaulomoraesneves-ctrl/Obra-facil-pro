@@ -4,35 +4,30 @@ Sistema web mobile-first para apoio em obras, do levantamento ao acabamento.
 
 ## Pacote atual
 
-**Pacote 16 — Vite + Supabase Ready**
+**Pacote 17 — Refinamento Pré-Backend**
 
-Este pacote mantém o sistema funcionando no GitHub Pages e adiciona preparação para desenvolvimento moderno com Vite e futura integração Supabase.
+Este pacote fortalece a base antes do Supabase real.
 
-## Rodar como site estático
+## Adicionado
 
-Basta abrir `index.html` ou publicar no GitHub Pages.
+- AppState.
+- Migrações locais.
+- Validação pré-backend.
+- Classificação de alertas.
+- Testes básicos de cálculo.
+- Documentação da matriz matemática.
 
-## Rodar com Vite
+## Rodar local
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Verificar JavaScript
+## Verificar
 
 ```bash
-npm run check
-```
-
-## Preparação Supabase
-
-Veja:
-
-```txt
-docs/SUPABASE_SETUP.md
-backend/schema-inicial.sql
-.env.example
+npm run prebackend:check
 ```
 
 ## Aviso
