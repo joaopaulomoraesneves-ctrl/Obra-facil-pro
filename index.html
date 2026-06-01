@@ -4,28 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>Obra Fácil Pro — Pacote 17</title>
+<title>Obra Fácil Pro — Pacote 18</title>
 <link rel="stylesheet" href="src/styles.css">
 
 </head>
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 17 — Refinamento Pré-Backend</div></div></div>
-    <div><div class="pill">ObraCalc Engine v2.6.0</div><span class="navHint">Arraste a barra inferior para ver todas as abas</span></div>
+    <div class="brand"><div class="logo">OF</div><div><h1>Obra Fácil Pro</h1><div class="mut">Pacote 18 — Polimento Final Pré-Produção</div></div></div>
+    <div><div class="pill">ObraCalc Engine v2.7.0</div><span class="navHint">Arraste a barra inferior para ver todas as abas</span></div>
   </header>
 
   <section id="inicio" class="page on">
     <div class="hero">
       <h2>Agora o sistema calcula custo e tempo.</h2>
-      <p class="mut">O Pacote 17 fortalece a base antes do backend real: validação de dados, migração local, AppState, alertas classificados, testes básicos e documentação da matriz matemática.</p>
+      <p class="mut">O Pacote 18 faz o polimento final antes do backend: painel inicial mais claro, modo cliente, onboarding, backup preventivo, testes ampliados e documentação comercial.</p>
       <div class="rules">
         <div class="rule">🧮 A matriz matemática calcula materiais, custos e prazo.</div>
         <div class="rule">📅 O cronograma usa produtividade por etapa e tamanho da equipe.</div>
         <div class="rule">⚠️ Fundação, vigas, pilares e lajes ainda exigem validação técnica profissional.</div>
       </div>
     </div>
-    <div class="card"><h3>Resumo geral</h3><div id="dash" class="stats"></div><div id="homeWarns"></div></div>
+    <div class="card"><h3>Resumo geral</h3><div id="dash" class="stats"></div><div id="homeWarns"></div><div id="homeQuickActions" class="quickActions"></div></div>
   </section>
 
 
@@ -496,6 +496,42 @@
     </div>
   </section>
 
+
+  <section id="cliente" class="page">
+    <div class="card noPrint">
+      <h2>Modo Cliente</h2>
+      <p class="mut">Uma visão limpa e apresentável para mostrar ao cliente sem expor todas as telas técnicas do sistema.</p>
+      <div class="row">
+        <button onclick="UI.renderClientMode()">Atualizar visão</button>
+        <button class="sec" onclick="UI.printClientMode()">Imprimir / Salvar PDF</button>
+        <button class="ghost" onclick="UI.go('relatorio')">Abrir relatório completo</button>
+      </div>
+    </div>
+    <div class="card">
+      <div id="clientDocument" class="clientDoc"></div>
+    </div>
+  </section>
+
+  <section id="primeiroUso" class="page">
+    <div class="grid two">
+      <div class="card">
+        <h2>Primeiro uso</h2>
+        <p class="mut">Siga este roteiro para montar uma obra do zero com segurança.</p>
+        <div id="onboardingSteps" class="stepList"></div>
+      </div>
+      <div class="card">
+        <h2>Atalhos rápidos</h2>
+        <div class="quickActions">
+          <button class="quickAction" onclick="UI.go('obras')"><b>📁 Obras</b><span>Criar ou abrir obra</span></button>
+          <button class="quickAction" onclick="UI.go('comodos')"><b>🚪 Cômodos</b><span>Cadastrar medidas</span></button>
+          <button class="quickAction" onclick="UI.go('orcamento')"><b>💰 Orçamento</b><span>Preços e valor final</span></button>
+          <button class="quickAction" onclick="ProjectManager.quickBackup()"><b>💾 Backup</b><span>Salvar cópia geral</span></button>
+        </div>
+        <div id="backupReminderBox"></div>
+      </div>
+    </div>
+  </section>
+
   <section id="backend" class="page">
     <div class="grid two">
       <div class="card">
@@ -610,6 +646,8 @@
   <button data-tab="cronograma" onclick="UI.go('cronograma')"><span>📅</span><br>Prazo</button>
   <button data-tab="acompanhamento" onclick="UI.go('acompanhamento')"><span>✅</span><br>Execução</button>
   <button data-tab="planta" onclick="UI.go('planta')"><span>📐</span><br>Planta</button>
+  <button data-tab="primeiroUso" onclick="UI.go('primeiroUso')"><span>🧭</span><br>Guia</button>
+  <button data-tab="cliente" onclick="UI.go('cliente')"><span>👤</span><br>Cliente</button>
   <button data-tab="prebackend" onclick="UI.go('prebackend')"><span>🧪</span><br>Pré-Backend</button>
   <button data-tab="backend" onclick="UI.go('backend')"><span>☁️</span><br>Backend</button>
   <button data-tab="sistema" onclick="UI.go('sistema')"><span>🛡️</span><br>Sistema</button>
@@ -633,6 +671,7 @@
 <script src="src/core/system-health.js"></script>
 <script src="src/storage/project-manager.js"></script>
 <script src="src/storage/storage.js"></script>
+<script src="src/ui/polish-tools.js"></script>
 <script src="src/ui/app-ui.js"></script>
 
 </html>

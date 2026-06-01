@@ -1,23 +1,22 @@
 # Roadmap — Obra Fácil Pro
 
-## Concluído no Pacote 17
+## Concluído no Pacote 18
 
-- AppState.
-- Migrações locais.
-- Validador pré-backend.
-- Classificação de alertas.
-- Testes básicos.
-- Documentação da matriz matemática.
+- Painel inicial com atalhos rápidos.
+- Modo Cliente.
+- Guia de primeiro uso.
+- Backup preventivo.
+- Testes estendidos.
+- Documentação comercial e técnica.
 
 ## Próximo passo recomendado
 
-### Pacote 18 — Supabase real + autenticação
+### Pacote 19 — Supabase real + autenticação
 
 Adicionar:
 
 - Login.
-- Projeto Supabase.
-- RLS inicial.
-- Tabela tenants.
-- Tabela projects.
-- Sincronização inicial de obras.
+- Tenant/empresa.
+- Salvamento de obras no banco.
+- Sincronização local/nuvem.
+- Segurança RLS.

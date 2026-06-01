@@ -4,18 +4,9 @@ Sistema web mobile-first para apoio em obras, do levantamento ao acabamento.
 
 ## Pacote atual
 
-**Pacote 17 — Refinamento Pré-Backend**
+**Pacote 18 — Polimento Final Pré-Produção**
 
-Este pacote fortalece a base antes do Supabase real.
-
-## Adicionado
-
-- AppState.
-- Migrações locais.
-- Validação pré-backend.
-- Classificação de alertas.
-- Testes básicos de cálculo.
-- Documentação da matriz matemática.
+Este pacote melhora usabilidade, apresentação para cliente, onboarding, backup preventivo, testes e documentação antes do backend real.
 
 ## Rodar local
 
@@ -27,8 +18,12 @@ npm run dev
 ## Verificar
 
 ```bash
-npm run prebackend:check
+npm run production:check
 ```
+
+## Publicar no GitHub Pages
+
+Envie todos os arquivos para a raiz do repositório. O `index.html` continua funcionando como site estático.
 
 ## Aviso
 

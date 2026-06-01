@@ -3,7 +3,7 @@ const UI={
     document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));
     document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
     $(id).classList.add("on");const b=document.querySelector(`[data-tab="${id}"]`);if(b)b.classList.add("on");
-    if(id==="prebackend")this.renderPreBackend();if(id==="backend")this.renderBackend();if(id==="sistema")this.renderSystemHealth();if(id==="obras")this.renderProjects();if(id==="composicoes")this.renderCompositions();if(id==="instalacoes")this.renderInstallations();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
+    if(id==="primeiroUso")this.renderOnboarding();if(id==="cliente")this.renderClientMode();if(id==="prebackend")this.renderPreBackend();if(id==="backend")this.renderBackend();if(id==="sistema")this.renderSystemHealth();if(id==="obras")this.renderProjects();if(id==="composicoes")this.renderCompositions();if(id==="instalacoes")this.renderInstallations();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
     scrollTo({top:0,behavior:"smooth"});
   },
   toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(this.t);this.t=setTimeout(()=>el.classList.remove("show"),2500)},
@@ -152,6 +152,7 @@ const UI={
     const t=Calc.totals(false),b=Calc.budget(false),s=Schedule.stages(false),lot=State.project.lotWidth*State.project.lotLength;
     dash.innerHTML=this.stat([[State.rooms.length,"Cômodos"],[round(t.area)+" m²","Área construída"],[money(b.final),"Valor sugerido"],[s.totalDays+" dias","Prazo estimado"],[fmtDate(s.start),"Início"],[fmtDate(s.end),"Término"],[round(lot)+" m²","Terreno"],[Math.round(t.blocks),"Blocos"]]);
     homeWarns.innerHTML=this.warnings([...this.projectWarnings(),...Schedule.warnings()]);
+    if($("homeQuickActions"))homeQuickActions.innerHTML=`<button class="quickAction" onclick="UI.go('cliente')"><b>👤 Modo Cliente</b><span>Resumo apresentável</span></button><button class="quickAction" onclick="UI.go('relatorio')"><b>📄 Relatório</b><span>PDF completo</span></button><button class="quickAction" onclick="UI.go('compras')"><b>🧾 Compras</b><span>Materiais e fornecedores</span></button><button class="quickAction" onclick="ProjectManager.quickBackup()"><b>💾 Backup</b><span>Salvar cópia geral</span></button>`;
   },
   projectWarnings(){
     const w=[],lot=State.project.lotWidth*State.project.lotLength,t=Calc.totals(false);
