@@ -1,0 +1,1631 @@
+const App={name:"Obra Fácil Pro",package:"Pacote 14",engine:"ObraCalc Engine",version:"2.3.0"};
+const StoreKey="obra_facil_pro_pacote_14";
+const OldKeys=["obra_facil_pro_pacote_13","obra_facil_pro_pacote_12","obra_facil_pro_pacote_11","obra_facil_pro_pacote_10","obra_facil_pro_pacote_09","obra_facil_pro_pacote_08","obra_facil_pro_pacote_07","obra_facil_pro_pacote_06_2","obra_facil_pro_pacote_06_1","obra_facil_pro_pacote_06","obra_facil_pro_pacote_05","obra_facil_pro_pacote_04","obra_facil_pro_pacote_03","obra_facil_pro_pacote_02","obra_facil_pro_pacote_01"];
+const State={
+  meta:{id:"",status:"orcamento",createdAt:"",updatedAt:""},
+  project:{name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
+  rooms:[],
+  settings:{floorYield:2.5,blocksPerM2:12.5,paintYield:12,paintCoats:2},
+  budget:{priceFloorBox:0,pricePaintLiter:0,priceBlock:0,laborPerM2:0,manualLabor:null,extraCosts:0,safetyMargin:10,profitMargin:20,discount:0},
+  schedule:{startDate:"",workdaysPerWeek:6,masons:1,helpers:1,complexity:1,scheduleBuffer:10,notes:""},
+  tracking:{stages:{},logs:[]},
+  floorplan:{grid:0.5,showGrid:true,scale:40},
+  purchases:{items:{},manual:[]},
+  compositions:{tileMortarKgM2:4.5,mortarBagKg:20,groutKgM2:0.25,plasterThicknessCm:2,plasterCementBagsM3:6,plasterSandM3M3:1.15,subfloorThicknessCm:4,subfloorCementBagsM3:5,subfloorSandM3M3:1.1,chapiscoKgM2:1.5},
+  installations:{rooms:{},settings:{wireMultiplier:2.8,conduitFactor:1.25,pipeFactor:1.15,defaultOutletWireM:8,defaultLightWireM:10,defaultSwitchWireM:6,hydraulicPointPipeM:4,sewerPointPipeM:3}},
+  backend:{tenantName:"Minha Empresa",ownerName:"",ownerEmail:"",plan:"local",cloudReady:false},
+  audit:[]
+};
+const Formulas=[
+  ["geometry.area","1.0.0","Área do cômodo","largura × comprimento","Alta"],
+  ["geometry.wallNet","1.0.0","Paredes úteis","perímetro × altura - portas - janelas","Alta"],
+  ["materials.floor","1.0.0","Caixas de piso","arredondar((área × perda) ÷ rendimento)","Alta"],
+  ["materials.paint","1.0.0","Litros de tinta","(parede útil × demãos ÷ rendimento) × perda","Média"],
+  ["materials.blocks","1.0.0","Quantidade de blocos","parede útil × blocos/m² × perda","Média"],
+  ["budget.total","1.1.0","Valor final","materiais + mão de obra + despesas + segurança + lucro - desconto","Média"],
+  ["schedule.duration","1.2.0","Prazo por etapa","quantidade ÷ produtividade ajustada por equipe e complexidade","Média"],
+  ["report.summary","1.3.0","Relatório da obra","consolida dados técnicos, financeiros e cronograma","Alta"],
+  ["tracking.progress","1.4.0","Progresso da obra","média ponderada do avanço informado por etapa","Média"],
+  ["floorplan.validation","1.5.0","Validação da planta","verifica cômodos fora do terreno e sobreposições","Alta"],
+  ["purchases.balance","1.6.0","Saldo de materiais","comprado - usado, comparado com quantidade planejada","Média"],
+  ["compositions.materials","1.7.0","Composições de serviço","converte áreas e volumes em argamassa, rejunte, cimento e areia","Média"],
+  ["installations.basic","1.8.0","Instalações básicas","estima pontos elétricos, hidráulicos, conduíte, fios e tubos","Requer validação técnica"],
+  ["projects.manager","1.9.0","Gerenciador de obras","salva múltiplas obras com backup, duplicação e restauração","Alta"],
+  ["system.health","2.0.0","Saúde do sistema","verifica dados, alertas, backup e consistência geral","Alta"],
+  ["backend.schema","2.1.0","Preparação backend","normaliza dados locais para futura migração PostgreSQL/Supabase","Alta"]
+];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+const n=(id,d=0)=>{const v=Number($(id).value);return Number.isFinite(v)?v:d};
+const round=(v,d=2)=>Math.round(((Number(v)||0)+Number.EPSILON)*10**d)/10**d;
+const money=v=>(Number(v)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const fmtDate=iso=>{if(!iso)return "-";const [y,m,d]=iso.split("-");return `${d}/${m}/${y}`};
+function parseSize(text){const parts=String(text||"").toLowerCase().replace(",",".").split("x").map(Number);return [parts[0]||0,parts[1]||0]}
+function todayISO(){const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+function addWorkDays(iso,days,workdaysPerWeek){let d=new Date(iso+"T12:00:00");let added=0;if(days<=0)return iso;while(added<days-1){d.setDate(d.getDate()+1);const day=d.getDay();const works=workdaysPerWeek>=7||(workdaysPerWeek==6&&day!==0)||(workdaysPerWeek==5&&day!==0&&day!==6);if(works)added++}return d.toISOString().slice(0,10)}
+function nextWorkDay(iso,workdaysPerWeek){let d=new Date(iso+"T12:00:00");do{d.setDate(d.getDate()+1);const day=d.getDay();if(workdaysPerWeek>=7||(workdaysPerWeek==6&&day!==0)||(workdaysPerWeek==5&&day!==0&&day!==6))break}while(true);return d.toISOString().slice(0,10)}
+
+const Audit={
+  add(formula,context,steps,result){State.audit.unshift({at:new Date().toISOString(),formula,context,steps,result});State.audit=State.audit.slice(0,160)},
+  clear(){State.audit=[];Storage.save();UI.renderAudit(false);UI.toast("Auditoria limpa.")}
+};
+
+const Calc={
+  room(room,log=false){
+    const area=room.width*room.length;
+    const perimeter=2*(room.width+room.length);
+    const [dw,dh]=parseSize(room.doorSize),[ww,wh]=parseSize(room.windowSize);
+    const openings=room.doorCount*dw*dh+room.windowCount*ww*wh;
+    const wallGross=perimeter*room.height;
+    const wallNet=Math.max(0,wallGross-openings);
+    const floorBoxes=Math.ceil((area*(1+Number(State.project.lossProfile)))/(State.settings.floorYield||1));
+    const paintLiters=round((wallNet*State.settings.paintCoats/(State.settings.paintYield||1))*(1+Number(State.project.lossProfile)),1);
+    const blocks=Math.ceil(wallNet*State.settings.blocksPerM2*(1+Number(State.project.lossProfile)));
+    const baseboard=Math.max(0,perimeter-room.doorCount*dw);
+    if(log){
+      Audit.add("geometry.area",room.name,`${room.width}m × ${room.length}m = ${round(area)}m²`,`${round(area)}m²`);
+      Audit.add("geometry.wallNet",room.name,`${round(perimeter)}m perímetro × ${room.height}m - ${round(openings)}m² aberturas = ${round(wallNet)}m²`,`${round(wallNet)}m²`);
+      Audit.add("materials.floor",room.name,`${round(area)}m² × ${(1+Number(State.project.lossProfile)).toFixed(2)} ÷ ${State.settings.floorYield}m²/caixa = ${floorBoxes} caixas`,`${floorBoxes} caixas`);
+      Audit.add("materials.paint",room.name,`${round(wallNet)}m² × ${State.settings.paintCoats} demãos ÷ ${State.settings.paintYield} × perda = ${paintLiters}L`,`${paintLiters}L`);
+      Audit.add("materials.blocks",room.name,`${round(wallNet)}m² × ${State.settings.blocksPerM2} blocos/m² × perda = ${blocks} blocos`,`${blocks} blocos`);
+    }
+    return{area,perimeter,openings,wallGross,wallNet,floorBoxes,paintLiters,blocks,baseboard,volume:area*room.height};
+  },
+  totals(log=false){
+    if(log)State.audit=[];
+    return State.rooms.map(r=>this.room(r,log)).reduce((a,c)=>{for(const k of ["area","wallNet","wallGross","openings","floorBoxes","paintLiters","blocks","baseboard","volume"])a[k]+=c[k]||0;return a},{area:0,wallNet:0,wallGross:0,openings:0,floorBoxes:0,paintLiters:0,blocks:0,baseboard:0,volume:0});
+  },
+  budget(log=false){
+    const t=this.totals(false),b=State.budget;
+    const floorCost=t.floorBoxes*b.priceFloorBox;
+    const paintCost=t.paintLiters*b.pricePaintLiter;
+    const blockCost=t.blocks*b.priceBlock;
+    const materials=floorCost+paintCost+blockCost;
+    const labor=b.manualLabor!==null&&b.manualLabor!==""?Number(b.manualLabor):t.area*b.laborPerM2;
+    const base=materials+labor+b.extraCosts;
+    const safety=base*b.safetyMargin/100;
+    const minimum=base+safety;
+    const profit=minimum*b.profitMargin/100;
+    const final=Math.max(0,minimum+profit-b.discount);
+    if(log){
+      Audit.add("budget.total","Orçamento",`Materiais ${money(materials)} + mão de obra ${money(labor)} + despesas ${money(b.extraCosts)} + segurança ${money(safety)} + lucro ${money(profit)} - desconto ${money(b.discount)}`,money(final));
+    }
+    return{floorCost,paintCost,blockCost,materials,labor,base,safety,minimum,profit,final,pricePerM2:t.area?final/t.area:0};
+  }
+};
+
+const Schedule={
+  crewFactor(){
+    const s=State.schedule;
+    return Math.max(0.5,Number(s.masons||0)+Number(s.helpers||0)*0.45);
+  },
+  stages(log=false){
+    const t=Calc.totals(false);
+    const lot=State.project.lotWidth*State.project.lotLength;
+    const s=State.schedule;
+    const crew=this.crewFactor();
+    const complexity=Number(s.complexity)||1;
+    const buffer=(1+(Number(s.scheduleBuffer)||0)/100);
+    const data=[
+      {name:"Preparação e marcação",metric:`Terreno ${round(lot)}m²`,qty:Math.max(lot,1),rate:80,dep:"Início"},
+      {name:"Fundação / baldrame",metric:`Área construída ${round(t.area)}m²`,qty:Math.max(t.area,1),rate:18,dep:"Preparação"},
+      {name:"Alvenaria",metric:`${Math.round(t.blocks)} blocos`,qty:Math.max(t.blocks,1),rate:280,dep:"Fundação"},
+      {name:"Laje ou telhado",metric:`Cobertura ${round(t.area)}m²`,qty:Math.max(t.area,1),rate:22,dep:"Alvenaria"},
+      {name:"Elétrica e hidráulica básica",metric:`${State.rooms.length} cômodos`,qty:Math.max(State.rooms.length,1),rate:1.4,dep:"Alvenaria"},
+      {name:"Chapisco/reboco",metric:`Paredes ${round(t.wallNet)}m²`,qty:Math.max(t.wallNet,1),rate:32,dep:"Instalações"},
+      {name:"Contrapiso",metric:`Piso ${round(t.area)}m²`,qty:Math.max(t.area,1),rate:38,dep:"Reboco"},
+      {name:"Piso e revestimento",metric:`Piso ${round(t.area)}m²`,qty:Math.max(t.area,1),rate:18,dep:"Contrapiso"},
+      {name:"Pintura",metric:`Paredes ${round(t.wallNet)}m²`,qty:Math.max(t.wallNet,1),rate:55,dep:"Reboco/piso"},
+      {name:"Acabamentos finais",metric:`${State.rooms.length} cômodos`,qty:Math.max(State.rooms.length,1),rate:0.85,dep:"Piso e pintura"}
+    ];
+    let cursor=s.startDate||todayISO();
+    const rows=data.map((x,i)=>{
+      const adjustedRate=x.rate*crew/complexity;
+      const raw=x.qty/adjustedRate;
+      const days=Math.max(1,Math.ceil(raw*buffer));
+      const start=i===0?cursor:nextWorkDay(cursor,Number(s.workdaysPerWeek)||6);
+      const end=addWorkDays(start,days,Number(s.workdaysPerWeek)||6);
+      cursor=end;
+      if(log)Audit.add("schedule.duration",x.name,`${x.metric}; produtividade base ${x.rate}; equipe ajustada ${round(crew,2)}; complexidade ${complexity}; folga ${round((buffer-1)*100)}%; resultado ${days} dia(s)`,`${days} dia(s)`);
+      return{...x,days,start,end,raw};
+    });
+    const totalDays=rows.reduce((a,r)=>a+r.days,0);
+    return{rows,totalDays,start:rows[0]?.start||s.startDate,end:rows.at(-1)?.end||s.startDate,crew};
+  },
+  warnings(){
+    const w=[];
+    if(!State.rooms.length)w.push(["bad","Cadastre cômodos para o prazo ficar mais realista."]);
+    if((State.schedule.masons||0)+(State.schedule.helpers||0)<=0)w.push(["bad","Informe pelo menos um profissional na equipe."]);
+    if(Calc.totals(false).area<=0)w.push(["bad","A área construída está zerada."]);
+    if(!State.schedule.startDate)w.push(["warn","Defina uma data de início para gerar datas previstas."]);
+    return w;
+  }
+};
+
+
+
+
+
+const Compositions={
+  defaults(){return{tileMortarKgM2:4.5,mortarBagKg:20,groutKgM2:0.25,plasterThicknessCm:2,plasterCementBagsM3:6,plasterSandM3M3:1.15,subfloorThicknessCm:4,subfloorCementBagsM3:5,subfloorSandM3M3:1.1,chapiscoKgM2:1.5}},
+  calculate(log=false){
+    const t=Calc.totals(false),c=State.compositions,loss=1+Number(State.project.lossProfile||0);
+    const floorArea=Number(t.area)||0,wallArea=Number(t.wallNet)||0;
+    const tileMortarKg=round(floorArea*(Number(c.tileMortarKgM2)||0)*loss,1);
+    const tileMortarBags=Math.ceil(tileMortarKg/(Number(c.mortarBagKg)||20));
+    const groutKg=round(floorArea*(Number(c.groutKgM2)||0)*loss,1);
+    const plasterVolume=round(wallArea*((Number(c.plasterThicknessCm)||0)/100)*loss,3);
+    const plasterCementBags=Math.ceil(plasterVolume*(Number(c.plasterCementBagsM3)||0));
+    const plasterSandM3=round(plasterVolume*(Number(c.plasterSandM3M3)||0),2);
+    const subfloorVolume=round(floorArea*((Number(c.subfloorThicknessCm)||0)/100)*loss,3);
+    const subfloorCementBags=Math.ceil(subfloorVolume*(Number(c.subfloorCementBagsM3)||0));
+    const subfloorSandM3=round(subfloorVolume*(Number(c.subfloorSandM3M3)||0),2);
+    const chapiscoKg=round(wallArea*(Number(c.chapiscoKgM2)||0)*loss,1);
+    if(log){
+      Audit.add("compositions.materials","Composições",`Piso ${round(floorArea)}m², paredes ${round(wallArea)}m², perda ${round((loss-1)*100)}%. Argamassa piso ${tileMortarBags} sacos, rejunte ${groutKg}kg, reboco ${plasterVolume}m³, contrapiso ${subfloorVolume}m³.`,`Argamassa ${tileMortarBags} sacos`);
+    }
+    return{floorArea,wallArea,tileMortarKg,tileMortarBags,groutKg,plasterVolume,plasterCementBags,plasterSandM3,subfloorVolume,subfloorCementBags,subfloorSandM3,chapiscoKg};
+  },
+  rows(){
+    const c=this.calculate(false);
+    return [
+      {service:"Piso/revestimento",base:`${round(c.floorArea)} m²`,item:"Argamassa AC",qty:c.tileMortarBags,unit:"sacos",formula:"área × kg/m² × perda ÷ kg/saco"},
+      {service:"Piso/revestimento",base:`${round(c.floorArea)} m²`,item:"Rejunte",qty:c.groutKg,unit:"kg",formula:"área × kg/m² × perda"},
+      {service:"Chapisco",base:`${round(c.wallArea)} m²`,item:"Material de chapisco",qty:c.chapiscoKg,unit:"kg",formula:"parede útil × kg/m² × perda"},
+      {service:"Reboco",base:`${round(c.wallArea)} m²`,item:"Volume de argamassa",qty:c.plasterVolume,unit:"m³",formula:"parede útil × espessura × perda"},
+      {service:"Reboco",base:`${round(c.plasterVolume,3)} m³`,item:"Cimento",qty:c.plasterCementBags,unit:"sacos",formula:"volume × sacos/m³"},
+      {service:"Reboco",base:`${round(c.plasterVolume,3)} m³`,item:"Areia",qty:c.plasterSandM3,unit:"m³",formula:"volume × fator de areia"},
+      {service:"Contrapiso",base:`${round(c.floorArea)} m²`,item:"Volume de argamassa",qty:c.subfloorVolume,unit:"m³",formula:"área piso × espessura × perda"},
+      {service:"Contrapiso",base:`${round(c.subfloorVolume,3)} m³`,item:"Cimento",qty:c.subfloorCementBags,unit:"sacos",formula:"volume × sacos/m³"},
+      {service:"Contrapiso",base:`${round(c.subfloorVolume,3)} m³`,item:"Areia",qty:c.subfloorSandM3,unit:"m³",formula:"volume × fator de areia"}
+    ];
+  },
+  purchaseItems(){
+    const c=this.calculate(false);
+    return [
+      {id:"tile_mortar_bags",name:"Argamassa para piso/revestimento",unit:"sacos",planned:c.tileMortarBags,defaultPrice:0,source:"Composição de piso"},
+      {id:"grout_kg",name:"Rejunte",unit:"kg",planned:c.groutKg,defaultPrice:0,source:"Composição de piso"},
+      {id:"chapisco_kg",name:"Material para chapisco",unit:"kg",planned:c.chapiscoKg,defaultPrice:0,source:"Composição de parede"},
+      {id:"plaster_cement_bags",name:"Cimento para reboco",unit:"sacos",planned:c.plasterCementBags,defaultPrice:0,source:"Composição de reboco"},
+      {id:"plaster_sand_m3",name:"Areia para reboco",unit:"m³",planned:c.plasterSandM3,defaultPrice:0,source:"Composição de reboco"},
+      {id:"subfloor_cement_bags",name:"Cimento para contrapiso",unit:"sacos",planned:c.subfloorCementBags,defaultPrice:0,source:"Composição de contrapiso"},
+      {id:"subfloor_sand_m3",name:"Areia para contrapiso",unit:"m³",planned:c.subfloorSandM3,defaultPrice:0,source:"Composição de contrapiso"}
+    ].filter(x=>Number(x.planned)>0);
+  },
+  warnings(){
+    const w=[],c=State.compositions;
+    if(!State.rooms.length)w.push(["warn","Cadastre cômodos para calcular composições."]);
+    if((Number(c.plasterThicknessCm)||0)>4)w.push(["warn","Espessura de reboco alta. Confira se esse valor está correto."]);
+    if((Number(c.subfloorThicknessCm)||0)>8)w.push(["warn","Espessura de contrapiso alta. Confira se esse valor está correto."]);
+    if(!w.length)w.push(["ok","Composições calculadas sem alertas importantes."]);
+    return w;
+  }
+};
+
+
+
+const Installations={
+  defaultsForRoom(room){
+    const type=room.type||"social";
+    const base={outlets:2,switches:1,lights:1,coldWater:0,sewer:0,shower:0,toilet:0,sink:0,tank:0};
+    if(type==="kitchen")return{...base,outlets:4,coldWater:2,sewer:1,sink:1};
+    if(type==="bathroom")return{...base,outlets:1,coldWater:3,sewer:2,shower:1,toilet:1,sink:1};
+    if(type==="service")return{...base,outlets:2,coldWater:2,sewer:1,tank:1};
+    if(type==="bedroom")return{...base,outlets:3};
+    if(type==="external")return{...base,outlets:1,lights:1};
+    return base;
+  },
+  ensure(){
+    State.rooms.forEach(room=>{
+      if(!State.installations.rooms[room.id]){
+        State.installations.rooms[room.id]=this.defaultsForRoom(room);
+      }
+    });
+    Object.keys(State.installations.rooms).forEach(id=>{
+      if(!State.rooms.some(r=>r.id===id))delete State.installations.rooms[id];
+    });
+  },
+  calculate(log=false){
+    this.ensure();
+    const s=State.installations.settings;
+    let outlets=0,switches=0,lights=0,coldWater=0,sewer=0,shower=0,toilet=0,sink=0,tank=0;
+    State.rooms.forEach(room=>{
+      const r=State.installations.rooms[room.id]||this.defaultsForRoom(room);
+      outlets+=Number(r.outlets)||0;
+      switches+=Number(r.switches)||0;
+      lights+=Number(r.lights)||0;
+      coldWater+=Number(r.coldWater)||0;
+      sewer+=Number(r.sewer)||0;
+      shower+=Number(r.shower)||0;
+      toilet+=Number(r.toilet)||0;
+      sink+=Number(r.sink)||0;
+      tank+=Number(r.tank)||0;
+    });
+    const totalElectricalPoints=outlets+switches+lights;
+    const conduitM=round((outlets*s.defaultOutletWireM+lights*s.defaultLightWireM+switches*s.defaultSwitchWireM)*s.conduitFactor,1);
+    const wire15M=round((lights*s.defaultLightWireM+switches*s.defaultSwitchWireM)*s.wireMultiplier,1);
+    const wire25M=round(outlets*s.defaultOutletWireM*s.wireMultiplier,1);
+    const boxes4x2=Math.ceil(outlets+switches);
+    const ceilingBoxes=Math.ceil(lights);
+    const breakers=Math.max(1,Math.ceil(totalElectricalPoints/8));
+    const hydraulicPoints=coldWater+shower+sink+tank+toilet;
+    const sewerPoints=sewer+toilet+sink+tank;
+    const waterPipeM=round(hydraulicPoints*s.hydraulicPointPipeM*s.pipeFactor,1);
+    const sewerPipeM=round(sewerPoints*s.sewerPointPipeM*s.pipeFactor,1);
+    const elbows=Math.ceil((hydraulicPoints+sewerPoints)*2.2);
+    const tees=Math.ceil((hydraulicPoints+sewerPoints)*0.8);
+    const registers=Math.ceil(Math.max(1,shower+sink+tank));
+    if(log){
+      Audit.add("installations.basic","Instalações",`Pontos elétricos: ${totalElectricalPoints}; conduíte ${conduitM}m; fio 1,5mm ${wire15M}m; fio 2,5mm ${wire25M}m. Pontos hidráulicos: ${hydraulicPoints}; tubo água ${waterPipeM}m; esgoto ${sewerPipeM}m.`,`${totalElectricalPoints} pontos elétricos e ${hydraulicPoints} pontos hidráulicos`);
+    }
+    return{outlets,switches,lights,coldWater,sewer,shower,toilet,sink,tank,totalElectricalPoints,conduitM,wire15M,wire25M,boxes4x2,ceilingBoxes,breakers,hydraulicPoints,sewerPoints,waterPipeM,sewerPipeM,elbows,tees,registers};
+  },
+  purchaseItems(){
+    const c=this.calculate(false);
+    return [
+      {id:"electrical_conduit_m",name:"Conduíte elétrico",unit:"m",planned:c.conduitM,defaultPrice:0,source:"Instalações elétricas"},
+      {id:"wire_15_m",name:"Fio 1,5mm²",unit:"m",planned:c.wire15M,defaultPrice:0,source:"Iluminação/interruptores"},
+      {id:"wire_25_m",name:"Fio 2,5mm²",unit:"m",planned:c.wire25M,defaultPrice:0,source:"Tomadas"},
+      {id:"box_4x2",name:"Caixa elétrica 4x2",unit:"un.",planned:c.boxes4x2,defaultPrice:0,source:"Tomadas/interruptores"},
+      {id:"ceiling_box",name:"Caixa de teto/ponto de luz",unit:"un.",planned:c.ceilingBoxes,defaultPrice:0,source:"Pontos de luz"},
+      {id:"breakers",name:"Disjuntores estimados",unit:"un.",planned:c.breakers,defaultPrice:0,source:"Quadro elétrico básico"},
+      {id:"water_pipe_m",name:"Tubo água fria",unit:"m",planned:c.waterPipeM,defaultPrice:0,source:"Instalação hidráulica"},
+      {id:"sewer_pipe_m",name:"Tubo esgoto",unit:"m",planned:c.sewerPipeM,defaultPrice:0,source:"Instalação sanitária"},
+      {id:"hydraulic_elbows",name:"Joelhos/conexões",unit:"un.",planned:c.elbows,defaultPrice:0,source:"Instalações hidráulicas"},
+      {id:"hydraulic_tees",name:"Tês/conexões",unit:"un.",planned:c.tees,defaultPrice:0,source:"Instalações hidráulicas"},
+      {id:"registers",name:"Registros hidráulicos",unit:"un.",planned:c.registers,defaultPrice:0,source:"Água fria"}
+    ].filter(x=>Number(x.planned)>0);
+  },
+  warnings(){
+    const c=this.calculate(false),w=[];
+    if(!State.rooms.length)w.push(["warn","Cadastre cômodos para estimar instalações."]);
+    if(c.totalElectricalPoints>0)w.push(["bad","Elétrica é estimativa básica. Dimensionamento de circuitos, disjuntores, bitolas e carga deve ser validado por profissional habilitado."]);
+    if(c.hydraulicPoints>0)w.push(["bad","Hidráulica é estimativa básica. Diâmetros, pressão, queda, esgoto e normas devem ser validados tecnicamente."]);
+    if(c.outlets<Math.max(1,State.rooms.length))w.push(["warn","Quantidade de tomadas pode estar baixa para a quantidade de cômodos."]);
+    if(!w.length)w.push(["ok","Sem alertas importantes de instalações."]);
+    return w;
+  }
+};
+
+
+const Purchases={
+  estimatedItems(){
+    const t=Calc.totals(false),b=State.budget;
+    const base=[
+      {id:"floor_boxes",name:"Piso / revestimento",unit:"caixas",planned:t.floorBoxes,defaultPrice:b.priceFloorBox,source:"Cálculo de piso"},
+      {id:"paint_liters",name:"Tinta",unit:"litros",planned:round(t.paintLiters,1),defaultPrice:b.pricePaintLiter,source:"Cálculo de pintura"},
+      {id:"blocks",name:"Blocos / tijolos",unit:"unidades",planned:Math.round(t.blocks),defaultPrice:b.priceBlock,source:"Cálculo de alvenaria"},
+      {id:"baseboard",name:"Rodapé",unit:"metros",planned:round(t.baseboard,1),defaultPrice:0,source:"Perímetro dos cômodos"}
+    ];
+    return [...base,...Compositions.purchaseItems(),...Installations.purchaseItems()];
+  },
+  get(id){
+    if(!State.purchases.items[id])State.purchases.items[id]={bought:0,used:0,actualPrice:null,supplier:"",status:"pendente",note:""};
+    return State.purchases.items[id];
+  },
+  allItems(){
+    const estimated=this.estimatedItems().map(item=>({...item,type:"estimated"}));
+    const manual=State.purchases.manual.map(item=>({...item,type:"manual"}));
+    return [...estimated,...manual];
+  },
+  summary(){
+    let plannedCost=0,boughtCost=0,usedValue=0,missingItems=0;
+    this.allItems().forEach(item=>{
+      const data=item.type==="estimated"?this.get(item.id):item;
+      const planned=Number(item.planned)||0;
+      const bought=Number(data.bought)||0;
+      const used=Number(data.used)||0;
+      const price=Number(data.actualPrice ?? item.defaultPrice ?? item.price ?? 0)||0;
+      plannedCost+=planned*price;
+      boughtCost+=bought*price;
+      usedValue+=used*price;
+      if(bought<planned)missingItems++;
+    });
+    return{plannedCost,boughtCost,usedValue,missingItems,totalItems:this.allItems().length};
+  },
+  warnings(){
+    const s=this.summary(),w=[];
+    if(!State.rooms.length)w.push(["warn","Cadastre cômodos para gerar uma lista de compras real."]);
+    if(s.missingItems>0)w.push(["warn",`${s.missingItems} item(ns) ainda têm compra menor que o planejado.`]);
+    if(s.boughtCost>Calc.budget(false).materials && Calc.budget(false).materials>0)w.push(["bad","O custo comprado já passou do custo de materiais previsto no orçamento."]);
+    if(!w.length)w.push(["ok","Lista de compras sem alertas importantes."]);
+    return w;
+  }
+};
+
+
+const Floorplan={
+  snap(value){const grid=Number(State.floorplan.grid)||0.5;return round(Math.round((Number(value)||0)/grid)*grid,2)},
+  ensurePositions(){
+    const lotW=Number(State.project.lotWidth)||6,rooms=State.rooms||[];
+    if(!rooms.length)return;
+    const missing=rooms.some(room=>!Number.isFinite(Number(room.x))||!Number.isFinite(Number(room.y)));
+    const allZero=rooms.length>1&&rooms.every(room=>(Number(room.x)||0)===0&&(Number(room.y)||0)===0);
+    const keys=rooms.map(room=>`${Number(room.x)||0},${Number(room.y)||0}`);
+    const repeated=keys.length!==new Set(keys).size;
+    if(missing||allZero||repeated){this.autoLayout();return;}
+    let cursorX=0,cursorY=0,rowH=0;rooms.forEach(room=>{if(Number.isFinite(Number(room.x))&&Number.isFinite(Number(room.y)))return;if(cursorX+room.width>lotW&&cursorX>0){cursorX=0;cursorY+=rowH;rowH=0}room.x=this.snap(cursorX);room.y=this.snap(cursorY);cursorX+=room.width;rowH=Math.max(rowH,room.length)})
+  },
+  autoLayout(){let cursorX=0,cursorY=0,rowH=0;const lotW=Number(State.project.lotWidth)||6;State.rooms.forEach(room=>{if(cursorX+room.width>lotW&&cursorX>0){cursorX=0;cursorY+=rowH;rowH=0}room.x=this.snap(cursorX);room.y=this.snap(cursorY);cursorX+=room.width;rowH=Math.max(rowH,room.length)})},
+  rect(room){return{x:Number(room.x)||0,y:Number(room.y)||0,w:Number(room.width)||0,h:Number(room.length)||0}},
+  overlaps(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y},
+  validation(){
+    this.ensurePositions();const lotW=Number(State.project.lotWidth)||0,lotL=Number(State.project.lotLength)||0,warnings=[],seen=new Set();
+    const add=(type,text)=>{const key=type+"|"+text;if(!seen.has(key)){warnings.push([type,text]);seen.add(key)}};
+    if(!State.rooms.length)add("warn","Cadastre cômodos para gerar a planta.");
+    State.rooms.forEach(room=>{const r=this.rect(room);if(r.x<0||r.y<0||r.x+r.w>lotW||r.y+r.h>lotL)add("bad",`${room.name} está fora dos limites do terreno.`)});
+    let overlapCount=0;
+    for(let i=0;i<State.rooms.length;i++){for(let j=i+1;j<State.rooms.length;j++){if(this.overlaps(this.rect(State.rooms[i]),this.rect(State.rooms[j]))){overlapCount++;if(overlapCount<=6)add("bad",`${State.rooms[i].name} está sobreposto com ${State.rooms[j].name}.`)}}}
+    if(overlapCount>6)add("bad",`Existem ${overlapCount} sobreposições no total. Use “Organizar automaticamente” para corrigir a distribuição inicial.`);
+    const totalArea=Calc.totals(false).area,lotArea=lotW*lotL;if(lotArea>0&&totalArea>lotArea)add("bad",`A soma dos cômodos (${round(totalArea)}m²) ultrapassa o terreno (${round(lotArea)}m²).`);
+    if(!warnings.length)add("ok","Planta sem sobreposição e dentro do terreno.");return warnings
+  },
+  invalidRooms(){const invalid=new Set(),lotW=Number(State.project.lotWidth)||0,lotL=Number(State.project.lotLength)||0;State.rooms.forEach(room=>{const r=this.rect(room);if(r.x<0||r.y<0||r.x+r.w>lotW||r.y+r.h>lotL)invalid.add(room.id)});for(let i=0;i<State.rooms.length;i++){for(let j=i+1;j<State.rooms.length;j++){if(this.overlaps(this.rect(State.rooms[i]),this.rect(State.rooms[j]))){invalid.add(State.rooms[i].id);invalid.add(State.rooms[j].id)}}}return invalid}
+};
+
+const Tracking={
+  ensure(){
+    const sc=Schedule.stages(false);
+    sc.rows.forEach(row=>{
+      if(!State.tracking.stages[row.name]){
+        State.tracking.stages[row.name]={status:"pendente",percent:0,actualStart:"",actualEnd:"",note:""};
+      }
+    });
+    Object.keys(State.tracking.stages).forEach(name=>{
+      if(!sc.rows.some(r=>r.name===name))delete State.tracking.stages[name];
+    });
+  },
+  summary(){
+    this.ensure();
+    const sc=Schedule.stages(false);
+    const stages=sc.rows;
+    const totalPlannedDays=sc.totalDays||1;
+    let weighted=0,done=0,inProgress=0,pending=0;
+    stages.forEach(row=>{
+      const data=State.tracking.stages[row.name]||{};
+      const percent=Math.max(0,Math.min(100,Number(data.percent)||0));
+      weighted+=percent*row.days;
+      if(data.status==="concluido")done++;
+      else if(data.status==="andamento")inProgress++;
+      else pending++;
+    });
+    const progress=round(weighted/totalPlannedDays,1);
+    const extraCosts=State.tracking.logs.reduce((a,l)=>a+(Number(l.extraCost)||0),0);
+    const hours=State.tracking.logs.reduce((a,l)=>a+(Number(l.hours)||0),0);
+    return{progress,done,inProgress,pending,total:stages.length,extraCosts,hours};
+  },
+  expectedProgress(){
+    const sc=Schedule.stages(false);
+    if(!sc.start||!sc.end)return 0;
+    const start=new Date(sc.start+"T12:00:00");
+    const now=new Date();
+    const total=Math.max(1,sc.totalDays||1);
+    const elapsed=Math.max(0,Math.ceil((now-start)/(1000*60*60*24)));
+    return Math.max(0,Math.min(100,round((elapsed/total)*100,1)));
+  },
+  warnings(){
+    const s=this.summary(),expected=this.expectedProgress(),w=[];
+    if(!State.rooms.length)w.push(["bad","Cadastre cômodos para acompanhar uma obra real."]);
+    if(s.progress+15<expected)w.push(["bad",`O progresso informado (${s.progress}%) está abaixo do esperado pelo cronograma (${expected}%).`]);
+    if(s.extraCosts>0)w.push(["warn",`Existem custos extras registrados no diário: ${money(s.extraCosts)}.`]);
+    if(!w.length)w.push(["ok","Acompanhamento sem alertas importantes."]);
+    return w;
+  }
+};
+
+
+
+
+
+const BackendPrep={
+  tables(){
+    return [
+      ["tenants","Empresa/cliente dono das obras"],
+      ["profiles","Usuários e permissões futuras"],
+      ["projects","Obras principais"],
+      ["rooms","Cômodos e medidas"],
+      ["floorplan_rooms","Posição X/Y dos cômodos na planta"],
+      ["material_settings","Configurações de rendimento"],
+      ["budget_settings","Preços, mão de obra, lucro e descontos"],
+      ["composition_settings","Índices de argamassa, reboco e contrapiso"],
+      ["installation_points","Pontos hidráulicos e elétricos por cômodo"],
+      ["purchase_items","Lista de compras e controle de materiais"],
+      ["schedule_settings","Equipe, data de início e produtividade"],
+      ["tracking_stages","Execução por etapa"],
+      ["daily_logs","Diário de obra"],
+      ["reports","Relatórios gerados no futuro"],
+      ["audit_logs","Auditoria de cálculo"]
+    ];
+  },
+  normalized(){
+    ProjectManager.saveCurrent();
+    const manager=ProjectManager.data;
+    const current=this.normalizeState(State);
+    const projects=(manager.projects||[]).map(p=>this.normalizeState(p.state));
+    return {
+      schemaVersion:"2.1.0",
+      exportedAt:new Date().toISOString(),
+      app:App,
+      tenant:{
+        id:"local_tenant",
+        name:State.backend?.tenantName||"Minha Empresa",
+        ownerName:State.backend?.ownerName||"",
+        ownerEmail:State.backend?.ownerEmail||"",
+        plan:State.backend?.plan||"local"
+      },
+      currentProjectId:State.meta.id,
+      current,
+      projects
+    };
+  },
+  normalizeState(state){
+    return {
+      meta:state.meta,
+      project:state.project,
+      rooms:state.rooms||[],
+      settings:state.settings,
+      budget:state.budget,
+      schedule:state.schedule,
+      tracking:state.tracking,
+      floorplan:state.floorplan,
+      purchases:state.purchases,
+      compositions:state.compositions,
+      installations:state.installations,
+      audit:state.audit||[]
+    };
+  },
+  readiness(){
+    const h=SystemHealth.collect();
+    const checks=[
+      ["Obras com ID",ProjectManager.data.projects.every(p=>p.id&&p.state?.meta?.id),"Alguma obra está sem ID interno."],
+      ["Obra atual salva",!!State.meta.id,"Salve a obra atual."],
+      ["Nome da empresa",!!(State.backend?.tenantName),"Informe nome da empresa/tenant."],
+      ["Backup geral",!!localStorage.getItem("obra_facil_pro_last_backup"),"Faça backup geral antes da migração."],
+      ["Dados consistentes",h.bad===0,"Resolva alertas graves na aba Sistema."],
+      ["Múltiplas obras prontas",ProjectManager.data.projects.length>=1,"Crie ou importe obras."],
+      ["Exportação estruturada",true,"Disponível neste pacote."],
+      ["SQL inicial",true,"Disponível neste pacote."]
+    ];
+    return checks;
+  },
+  warnings(){
+    const checks=this.readiness();
+    const w=[];
+    checks.forEach(c=>{if(!c[1])w.push(["warn",c[2]])});
+    if(SystemHealth.collect().bad>0)w.push(["bad","Existem alertas graves no sistema. Corrija antes de migrar para backend."]);
+    if(!w.length)w.push(["ok","Base pronta para uma primeira migração técnica."]);
+    return w;
+  },
+  sql(){
+    return `-- Obra Fácil Pro — SQL inicial PostgreSQL/Supabase
+-- Versão de modelo: 2.1.0
+-- Observação: antes de produção, adicionar RLS, autenticação e políticas de acesso.
+
+create table if not exists tenants (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  owner_name text,
+  owner_email text,
+  plan text default 'local',
+  created_at timestamptz default now()
+);
+
+create table if not exists projects (
+  id uuid primary key default gen_random_uuid(),
+  tenant_id uuid references tenants(id) on delete cascade,
+  local_id text,
+  name text not null,
+  client text,
+  status text default 'orcamento',
+  lot_width numeric default 0,
+  lot_length numeric default 0,
+  default_height numeric default 2.8,
+  loss_profile numeric default 0.10,
+  notes text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists rooms (
+  id uuid primary key default gen_random_uuid(),
+  project_id uuid references projects(id) on delete cascade,
+  local_id text,
+  name text not null,
+  type text,
+  width numeric default 0,
+  length numeric default 0,
+  height numeric default 0,
+  door_count numeric default 0,
+  window_count numeric default 0,
+  door_size text,
+  window_size text,
+  position_x numeric,
+  position_y numeric,
+  created_at timestamptz default now()
+);
+
+create table if not exists purchase_items (
+  id uuid primary key default gen_random_uuid(),
+  project_id uuid references projects(id) on delete cascade,
+  source_id text,
+  name text not null,
+  unit text,
+  planned_qty numeric default 0,
+  bought_qty numeric default 0,
+  used_qty numeric default 0,
+  actual_price numeric default 0,
+  supplier text,
+  status text default 'pendente',
+  source text,
+  created_at timestamptz default now()
+);
+
+create table if not exists daily_logs (
+  id uuid primary key default gen_random_uuid(),
+  project_id uuid references projects(id) on delete cascade,
+  log_date date,
+  stage text,
+  text text,
+  extra_cost numeric default 0,
+  hours numeric default 0,
+  created_at timestamptz default now()
+);
+
+create table if not exists audit_logs (
+  id uuid primary key default gen_random_uuid(),
+  project_id uuid references projects(id) on delete cascade,
+  formula text,
+  context text,
+  steps text,
+  result text,
+  created_at timestamptz default now()
+);
+
+create table if not exists project_snapshots (
+  id uuid primary key default gen_random_uuid(),
+  project_id uuid references projects(id) on delete cascade,
+  schema_version text,
+  snapshot jsonb not null,
+  created_at timestamptz default now()
+);
+
+-- Próximas tabelas recomendadas:
+-- budget_settings, schedule_settings, tracking_stages, installation_points,
+-- composition_settings, material_settings, reports, profiles.
+`;
+  },
+  exportNormalized(){
+    const data=this.normalized();
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="obra-facil-pro-dados-estruturados-backend.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    UI.toast("Dados estruturados exportados.");
+  },
+  exportSQL(){
+    const blob=new Blob([this.sql()],{type:"text/sql"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="obra-facil-pro-schema-inicial.sql";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    UI.toast("SQL inicial exportado.");
+  }
+};
+
+
+const SystemHealth={
+  collect(){
+    const t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),purchase=Purchases.summary();
+    const floorWarnings=Floorplan.validation();
+    const projectWarnings=UI.projectWarnings?UI.projectWarnings():[];
+    const scheduleWarnings=Schedule.warnings();
+    const purchaseWarnings=Purchases.warnings();
+    const compositionWarnings=Compositions.warnings();
+    const installationWarnings=Installations.warnings();
+    const trackingWarnings=Tracking.warnings();
+    const all=[
+      ...projectWarnings.map(w=>["Projeto",...w]),
+      ...floorWarnings.map(w=>["Planta",...w]),
+      ...scheduleWarnings.map(w=>["Cronograma",...w]),
+      ...purchaseWarnings.map(w=>["Compras",...w]),
+      ...compositionWarnings.map(w=>["Composições",...w]),
+      ...installationWarnings.map(w=>["Instalações",...w]),
+      ...trackingWarnings.map(w=>["Execução",...w])
+    ];
+    const bad=all.filter(w=>w[1]==="bad").length;
+    const warn=all.filter(w=>w[1]==="warn").length;
+    const ok=all.filter(w=>w[1]==="ok").length;
+    const lastBackup=localStorage.getItem("obra_facil_pro_last_backup")||"";
+    return{t,b,sc,track,purchase,all,bad,warn,ok,lastBackup};
+  },
+  readiness(){
+    const h=this.collect();
+    const checks=[
+      ["Obra cadastrada",!!State.project.name,"Defina nome da obra na aba Obra."],
+      ["Tem cômodos",State.rooms.length>0,"Cadastre pelo menos um cômodo."],
+      ["Área calculada",h.t.area>0,"Verifique largura e comprimento dos cômodos."],
+      ["Orçamento configurado",h.b.final>0,"Informe preços e mão de obra."],
+      ["Cronograma configurado",h.sc.totalDays>0,"Verifique equipe e data de início."],
+      ["Planta válida",!Floorplan.validation().some(w=>w[0]==="bad"),"Use Organizar automaticamente na aba Planta."],
+      ["Backup geral disponível",!!h.lastBackup,"Clique em Fazer backup geral."],
+      ["Compras revisadas",h.purchase.totalItems>0,"Revise a aba Compras."]
+    ];
+    return checks;
+  },
+  runFixes(){
+    try{
+      Floorplan.autoLayout();
+      Tracking.ensure();
+      Installations.ensure();
+      if(!State.meta.status)State.meta.status="orcamento";
+      State.audit=Array.isArray(State.audit)?State.audit:[];
+      if(!State.purchases.items)State.purchases.items={};
+      if(!Array.isArray(State.purchases.manual))State.purchases.manual=[];
+      Storage.save();
+      UI.fill();
+      UI.renderAll();
+      UI.toast("Correções seguras aplicadas.");
+    }catch(e){
+      UI.toast("Não foi possível aplicar todas as correções.");
+    }
+  },
+  clearCurrentAudit(){
+    if(!confirm("Limpar auditoria da obra atual? Faça backup antes se precisar do histórico."))return;
+    State.audit=[];
+    Storage.save();
+    UI.renderAll();
+    UI.toast("Auditoria limpa.");
+  },
+  resetCurrentTracking(){
+    if(!confirm("Zerar acompanhamento da execução desta obra? Isso apaga status das etapas e diário."))return;
+    State.tracking={stages:{},logs:[]};
+    Storage.save();
+    UI.renderAll();
+    UI.toast("Execução zerada.");
+  }
+};
+
+
+const ProjectManagerKey="obra_facil_pro_manager_v1";
+const ProjectManager={
+  data:{currentId:null,projects:[]},
+  emptyState(name="Nova obra",status="orcamento"){
+    const id=cryptoRandom();
+    const now=new Date().toISOString();
+    return {
+      meta:{id,status,createdAt:now,updatedAt:now},
+      project:{name,client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""},
+      rooms:[],
+      settings:{floorYield:2.5,blocksPerM2:12.5,paintYield:12,paintCoats:2},
+      budget:{priceFloorBox:0,pricePaintLiter:0,priceBlock:0,laborPerM2:0,manualLabor:null,extraCosts:0,safetyMargin:10,profitMargin:20,discount:0},
+      schedule:{startDate:todayISO(),workdaysPerWeek:6,masons:1,helpers:1,complexity:1,scheduleBuffer:10,notes:""},
+      tracking:{stages:{},logs:[]},
+      floorplan:{grid:0.5,showGrid:true,scale:40},
+      purchases:{items:{},manual:[]},
+      compositions:Compositions.defaults(),
+      installations:{rooms:{},settings:{wireMultiplier:2.8,conduitFactor:1.25,pipeFactor:1.15,defaultOutletWireM:8,defaultLightWireM:10,defaultSwitchWireM:6,hydraulicPointPipeM:4,sewerPointPipeM:3}},
+      audit:[]
+    };
+  },
+  compact(state){
+    const t=Calc.totals(false);
+    const b=Calc.budget(false);
+    const sc=Schedule.stages(false);
+    return {
+      id:state.meta.id,
+      name:state.project.name||"Obra sem nome",
+      client:state.project.client||"",
+      status:state.meta.status||"orcamento",
+      updatedAt:state.meta.updatedAt||new Date().toISOString(),
+      createdAt:state.meta.createdAt||new Date().toISOString(),
+      rooms:state.rooms.length,
+      area:round(t.area),
+      value:round(b.final,2),
+      deadlineDays:sc.totalDays||0
+    };
+  },
+  snapshot(){
+    State.meta.updatedAt=new Date().toISOString();
+    return JSON.parse(JSON.stringify(State));
+  },
+  apply(state){
+    const clean=JSON.parse(JSON.stringify(state));
+    Object.keys(State).forEach(k=>delete State[k]);
+    Object.assign(State,clean);
+    if(!State.meta)State.meta={id:cryptoRandom(),status:"orcamento",createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
+    if(!State.project)State.project={name:"",client:"",lotWidth:6,lotLength:20,defaultHeight:2.8,lossProfile:0.10,notes:""};
+    if(!Array.isArray(State.rooms))State.rooms=[];
+    if(!State.purchases)State.purchases={items:{},manual:[]};
+    if(!State.compositions)State.compositions=Compositions.defaults();
+    if(!State.installations)State.installations={rooms:{},settings:{wireMultiplier:2.8,conduitFactor:1.25,pipeFactor:1.15,defaultOutletWireM:8,defaultLightWireM:10,defaultSwitchWireM:6,hydraulicPointPipeM:4,sewerPointPipeM:3}};
+  },
+  load(){
+    try{
+      const raw=localStorage.getItem(ProjectManagerKey);
+      if(raw){
+        this.data=JSON.parse(raw);
+        if(!Array.isArray(this.data.projects))this.data.projects=[];
+      }
+    }catch(e){this.data={currentId:null,projects:[]};}
+  },
+  save(){
+    localStorage.setItem(ProjectManagerKey,JSON.stringify(this.data));
+  },
+  initAfterStorageLoad(){
+    this.load();
+    if(!State.meta)State.meta={};
+    if(!State.meta.id)State.meta.id=cryptoRandom();
+    if(!State.meta.createdAt)State.meta.createdAt=new Date().toISOString();
+    if(!State.meta.updatedAt)State.meta.updatedAt=new Date().toISOString();
+    if(!State.meta.status)State.meta.status="orcamento";
+
+    if(!this.data.projects.length){
+      const snap=this.snapshot();
+      this.data.currentId=snap.meta.id;
+      this.data.projects=[{id:snap.meta.id,summary:this.compact(snap),state:snap}];
+      this.save();
+      return;
+    }
+
+    if(this.data.currentId){
+      const found=this.data.projects.find(p=>p.id===this.data.currentId);
+      if(found&&found.state){
+        this.apply(found.state);
+      }
+    }
+  },
+  saveCurrent(){
+    if(!State.meta.id)State.meta.id=cryptoRandom();
+    State.meta.updatedAt=new Date().toISOString();
+    const snap=this.snapshot();
+    const index=this.data.projects.findIndex(p=>p.id===snap.meta.id);
+    const entry={id:snap.meta.id,summary:this.compact(snap),state:snap};
+    if(index>=0)this.data.projects[index]=entry;
+    else this.data.projects.unshift(entry);
+    this.data.currentId=snap.meta.id;
+    this.save();
+  },
+  create(name,status){
+    this.saveCurrent();
+    const next=this.emptyState(name||"Nova obra",status||"orcamento");
+    this.apply(next);
+    this.data.currentId=State.meta.id;
+    this.saveCurrent();
+    Storage.save();
+    UI.fill();
+    UI.renderAll();
+    UI.go("obra");
+    UI.toast("Nova obra criada.");
+  },
+  open(id){
+    this.saveCurrent();
+    const found=this.data.projects.find(p=>p.id===id);
+    if(!found)return;
+    this.apply(found.state);
+    this.data.currentId=id;
+    this.save();
+    Storage.save();
+    UI.fill();
+    UI.renderAll();
+    UI.go("inicio");
+    UI.toast("Obra aberta.");
+  },
+  duplicateCurrent(){
+    this.saveCurrent();
+    const copy=this.snapshot();
+    copy.meta.id=cryptoRandom();
+    copy.meta.createdAt=new Date().toISOString();
+    copy.meta.updatedAt=new Date().toISOString();
+    copy.project.name=(copy.project.name||"Obra")+" — cópia";
+    this.apply(copy);
+    this.data.currentId=copy.meta.id;
+    this.saveCurrent();
+    Storage.save();
+    UI.fill();
+    UI.renderAll();
+    UI.go("obra");
+    UI.toast("Obra duplicada.");
+  },
+  remove(id){
+    if(this.data.projects.length<=1){UI.toast("Mantenha pelo menos uma obra cadastrada.");return;}
+    const project=this.data.projects.find(p=>p.id===id);
+    const name=project?.summary?.name||"esta obra";
+    if(!confirm(`Excluir ${name}? Faça backup antes se precisar desses dados.`))return;
+    this.data.projects=this.data.projects.filter(p=>p.id!==id);
+    if(this.data.currentId===id){
+      const first=this.data.projects[0];
+      this.apply(first.state);
+      this.data.currentId=first.id;
+    }
+    this.save();
+    Storage.save();
+    UI.fill();
+    UI.renderAll();
+    UI.toast("Obra excluída.");
+  },
+  setStatus(id,status){
+    const p=this.data.projects.find(x=>x.id===id);
+    if(!p)return;
+    p.state.meta.status=status;
+    p.summary.status=status;
+    p.state.meta.updatedAt=new Date().toISOString();
+    if(State.meta.id===id)State.meta.status=status;
+    this.save();
+    Storage.save();
+    UI.renderProjects();
+    UI.renderHome();
+  },
+  exportAll(){
+    this.saveCurrent();
+    const file={app:App,kind:"backup_geral_obras",exportedAt:new Date().toISOString(),manager:this.data};
+    const blob=new Blob([JSON.stringify(file,null,2)],{type:"application/json"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="obra-facil-pro-backup-geral-pacote-10.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    localStorage.setItem("obra_facil_pro_last_backup",new Date().toISOString());
+  },
+  quickBackup(){
+    this.exportAll();
+    UI.toast("Backup geral exportado.");
+  },
+  importAll(event){
+    const file=event.target.files[0];
+    if(!file)return;
+    const rd=new FileReader();
+    rd.onload=()=>{
+      try{
+        const data=JSON.parse(rd.result);
+        const incoming=data.manager||data;
+        if(!incoming.projects||!Array.isArray(incoming.projects))throw new Error("backup inválido");
+        if(!confirm("Importar backup geral? Isso substituirá a lista atual de obras neste navegador."))return;
+        this.data=incoming;
+        this.save();
+        const current=this.data.projects.find(p=>p.id===this.data.currentId)||this.data.projects[0];
+        this.data.currentId=current.id;
+        this.apply(current.state);
+        this.save();
+        Storage.save();
+        UI.fill();
+        UI.renderAll();
+        UI.go("obras");
+        UI.toast("Backup geral importado.");
+      }catch(e){UI.toast("Não foi possível importar o backup geral.");}
+    };
+    rd.readAsText(file);
+    event.target.value="";
+  }
+};
+
+
+const Storage={
+  save(){localStorage.setItem(StoreKey,JSON.stringify(State)); if(window.ProjectManager&&!Storage._savingManager){Storage._savingManager=true;try{ProjectManager.saveCurrent()}finally{Storage._savingManager=false;}}},
+  load(){
+    let raw=localStorage.getItem(StoreKey);
+    if(!raw){for(const k of OldKeys){raw=localStorage.getItem(k);if(raw)break}}
+    if(raw){try{const d=JSON.parse(raw);this.merge(d)}catch(e){}}
+    if(!State.schedule.startDate)State.schedule.startDate=todayISO();
+  },
+  merge(d){
+    const p=d.project||d.p||{};
+    State.project={...State.project,
+      name:p.name||p.n||State.project.name,client:p.client||p.c||State.project.client,
+      lotWidth:Number(p.lotWidth??p.lw??State.project.lotWidth),lotLength:Number(p.lotLength??p.ll??State.project.lotLength),
+      defaultHeight:Number(p.defaultHeight??p.h??State.project.defaultHeight),lossProfile:Number(p.lossProfile??p.loss??State.project.lossProfile),
+      notes:p.notes||State.project.notes
+    };
+    State.rooms=Array.isArray(d.rooms)?d.rooms.map(x=>({
+      id:String(x.id||cryptoRandom()),name:x.name||x.n||"Cômodo",type:x.type||"social",
+      width:Number(x.width??x.w??0),length:Number(x.length??x.l??0),height:Number(x.height??x.h??State.project.defaultHeight),
+      doorCount:Number(x.doorCount??x.dc??1),windowCount:Number(x.windowCount??x.wc??1),
+      doorSize:x.doorSize||x.ds||"0.80x2.10",windowSize:x.windowSize||x.ws||"1.20x1.00",
+      x:Number.isFinite(Number(x.x))?Number(x.x):null,y:Number.isFinite(Number(x.y))?Number(x.y):null
+    })):State.rooms;
+    const set=d.settings||d.set||d.materialSettings||{};
+    State.settings={...State.settings,
+      floorYield:Number(set.floorYield??set.fy??set.floorBoxYield??State.settings.floorYield),
+      blocksPerM2:Number(set.blocksPerM2??set.bm??State.settings.blocksPerM2),
+      paintYield:Number(set.paintYield??set.py??State.settings.paintYield),
+      paintCoats:Number(set.paintCoats??set.co??State.settings.paintCoats)
+    };
+    const b=d.budget||d.b||{};
+    State.budget={...State.budget,
+      priceFloorBox:Number(b.priceFloorBox??b.pf??State.budget.priceFloorBox),
+      pricePaintLiter:Number(b.pricePaintLiter??b.pp??State.budget.pricePaintLiter),
+      priceBlock:Number(b.priceBlock??b.pb??State.budget.priceBlock),
+      laborPerM2:Number(b.laborPerM2??b.lm??State.budget.laborPerM2),
+      manualLabor:(b.manualLabor??b.lman??null),extraCosts:Number(b.extraCosts??b.ex??State.budget.extraCosts),
+      safetyMargin:Number(b.safetyMargin??b.sg??State.budget.safetyMargin),
+      profitMargin:Number(b.profitMargin??b.pr??State.budget.profitMargin),
+      discount:Number(b.discount??b.dsct??State.budget.discount)
+    };
+    State.schedule={...State.schedule,...(d.schedule||{})};
+    State.tracking={...State.tracking,...(d.tracking||{})};
+    if(!State.tracking.stages)State.tracking.stages={};
+    if(!Array.isArray(State.tracking.logs))State.tracking.logs=[];
+    State.floorplan={...State.floorplan,...(d.floorplan||{})};
+    State.purchases={...State.purchases,...(d.purchases||{})};
+    if(!State.purchases.items)State.purchases.items={};
+    if(!Array.isArray(State.purchases.manual))State.purchases.manual=[];
+    State.compositions={...State.compositions,...(d.compositions||{})};
+    State.backend={...State.backend,...(d.backend||{})};
+    State.installations={...State.installations,...(d.installations||{})};
+    if(!State.installations.rooms)State.installations.rooms={};
+    State.installations.settings={...{wireMultiplier:2.8,conduitFactor:1.25,pipeFactor:1.15,defaultOutletWireM:8,defaultLightWireM:10,defaultSwitchWireM:6,hydraulicPointPipeM:4,sewerPointPipeM:3},...(State.installations.settings||{})};
+  },
+  exportJSON(){
+    const blob=new Blob([JSON.stringify({app:App,exportedAt:new Date().toISOString(),...State},null,2)],{type:"application/json"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="obra-facil-pro-pacote-14.json";a.click();URL.revokeObjectURL(a.href);
+  },
+  importJSON(e){
+    const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+    rd.onload=()=>{try{this.merge(JSON.parse(rd.result));State.audit=[];this.save();UI.fill();UI.renderAll();UI.toast("Dados importados.");}catch(err){UI.toast("Erro ao importar JSON.")}};
+    rd.readAsText(f);e.target.value="";
+  }
+};
+
+function cryptoRandom(){return Date.now()+"_"+Math.random().toString(16).slice(2)}
+const UI={
+  go(id){
+    document.querySelectorAll(".page").forEach(x=>x.classList.remove("on"));
+    document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("on"));
+    $(id).classList.add("on");const b=document.querySelector(`[data-tab="${id}"]`);if(b)b.classList.add("on");
+    if(id==="backend")this.renderBackend();if(id==="sistema")this.renderSystemHealth();if(id==="obras")this.renderProjects();if(id==="composicoes")this.renderCompositions();if(id==="instalacoes")this.renderInstallations();if(id==="compras")this.renderPurchases();if(id==="planta")this.renderFloorplan();if(id==="acompanhamento")this.renderTracking();if(id==="relatorio")this.renderReport();if(id==="auditoria")this.renderAudit(false);
+    scrollTo({top:0,behavior:"smooth"});
+  },
+  toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(this.t);this.t=setTimeout(()=>el.classList.remove("show"),2500)},
+  createNewProject(){
+    ProjectManager.create(newProjectName.value.trim()||"Nova obra",newProjectStatus.value||"orcamento");
+    newProjectName.value="";
+  },
+  renderProjects(){
+    if(!$("projectsList"))return;
+    ProjectManager.saveCurrent();
+    const projects=ProjectManager.data.projects||[];
+    const totals={
+      all:projects.length,
+      orcamento:projects.filter(p=>p.summary.status==="orcamento").length,
+      andamento:projects.filter(p=>p.summary.status==="andamento").length,
+      finalizada:projects.filter(p=>p.summary.status==="finalizada").length
+    };
+    managerTotals.innerHTML=this.stat([[totals.all,"Obras"],[totals.orcamento,"Em orçamento"],[totals.andamento,"Em andamento"],[totals.finalizada,"Finalizadas"]]);
+    projectsList.innerHTML=projects.length?projects.map(p=>{
+      const s=p.summary||{};
+      const active=p.id===ProjectManager.data.currentId;
+      return `<div class="projectCard ${active?"activeProject":""}">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+          <div>
+            <h3>${esc(s.name||"Obra sem nome")}</h3>
+            <div class="mut">Cliente: ${esc(s.client||"Não informado")}</div>
+            ${active?`<div class="currentProjectPill">Obra aberta agora</div>`:""}
+          </div>
+          <select onchange="ProjectManager.setStatus('${p.id}',this.value)">
+            <option value="orcamento" ${s.status==="orcamento"?"selected":""}>Orçamento</option>
+            <option value="andamento" ${s.status==="andamento"?"selected":""}>Em andamento</option>
+            <option value="pausada" ${s.status==="pausada"?"selected":""}>Pausada</option>
+            <option value="finalizada" ${s.status==="finalizada"?"selected":""}>Finalizada</option>
+          </select>
+        </div>
+        <div class="projectMeta">
+          <div><b>${s.rooms||0}</b><span>Cômodos</span></div>
+          <div><b>${round(s.area||0)}m²</b><span>Área</span></div>
+          <div><b>${money(s.value||0)}</b><span>Valor</span></div>
+          <div><b>${s.deadlineDays||0} dias</b><span>Prazo</span></div>
+        </div>
+        <div class="projectActions">
+          <button onclick="ProjectManager.open('${p.id}')">Abrir</button>
+          <button class="sec" onclick="ProjectManager.open('${p.id}');ProjectManager.duplicateCurrent()">Duplicar</button>
+          <button class="danger" onclick="ProjectManager.remove('${p.id}')">Excluir</button>
+        </div>
+        <p class="mut">Atualizada em ${new Date(s.updatedAt||Date.now()).toLocaleString("pt-BR")}</p>
+      </div>`;
+    }).join(""):`<div class="empty">Nenhuma obra cadastrada.</div>`;
+  },
+
+
+  saveBackendSettings(){
+    State.backend={
+      tenantName:tenantName.value.trim()||"Minha Empresa",
+      ownerName:ownerName.value.trim(),
+      ownerEmail:ownerEmail.value.trim(),
+      plan:backendPlan.value||"local",
+      cloudReady:BackendPrep.readiness().every(x=>x[1])
+    };
+    Storage.save();
+    this.renderBackend();
+    this.renderReport();
+    this.toast("Preparação de backend salva.");
+  },
+  renderBackend(){
+    if(!$("backendReadiness"))return;
+    const checks=BackendPrep.readiness();
+    const ready=checks.filter(x=>x[1]).length;
+    backendReadiness.innerHTML=[
+      ["Prontidão",Math.round((ready/checks.length)*100)+"%",ready===checks.length?"healthOk":"healthWarn"],
+      ["Tabelas sugeridas",BackendPrep.tables().length,"healthOk"],
+      ["Obras no pacote",ProjectManager.data.projects.length,"healthOk"],
+      ["Plano",State.backend?.plan||"local","healthOk"]
+    ].map(x=>`<div class="healthItem ${x[2]}"><b>${x[1]}</b><span>${x[0]}</span></div>`).join("");
+    backendWarnings.innerHTML=this.warnings(BackendPrep.warnings());
+
+    dataModelList.innerHTML=BackendPrep.tables().map(t=>`<div class="backendStep"><b>${esc(t[0])}</b><span class="mut">${esc(t[1])}</span></div>`).join("");
+
+    migrationChecklist.innerHTML=checks.map(c=>`<div class="warn ${c[1]?"ok":"bad"}"><b>${c[1]?"✓":"!"} ${esc(c[0])}</b><br>${c[1]?"Pronto":esc(c[2])}</div>`).join("");
+
+    const normalized=BackendPrep.normalized();
+    normalizedPreview.textContent=JSON.stringify({
+      schemaVersion:normalized.schemaVersion,
+      tenant:normalized.tenant,
+      currentProjectId:normalized.currentProjectId,
+      projectsCount:normalized.projects.length,
+      sampleProject:normalized.current.project,
+      sampleRooms:normalized.current.rooms.slice(0,2)
+    },null,2);
+    sqlPreview.textContent=BackendPrep.sql();
+  },
+  renderSystemHealth(){
+    if(!$("healthTotals"))return;
+    const h=SystemHealth.collect();
+    const readiness=SystemHealth.readiness();
+    const score=Math.round((readiness.filter(x=>x[1]).length/readiness.length)*100);
+    healthTotals.innerHTML=[
+      ["Pontuação",score+"%","healthOk"],
+      ["Alertas graves",h.bad,h.bad?"healthBad":"healthOk"],
+      ["Avisos",h.warn,h.warn?"healthWarn":"healthOk"],
+      ["Obras salvas",ProjectManager.data.projects.length,"healthOk"],
+      ["Área atual",round(h.t.area)+"m²","healthOk"],
+      ["Valor atual",money(h.b.final),h.b.final>0?"healthOk":"healthWarn"],
+      ["Prazo",h.sc.totalDays+" dias",h.sc.totalDays>0?"healthOk":"healthWarn"],
+      ["Backup",h.lastBackup?new Date(h.lastBackup).toLocaleDateString("pt-BR"):"não feito",h.lastBackup?"healthOk":"healthWarn"]
+    ].map(x=>`<div class="healthItem ${x[2]}"><b>${x[1]}</b><span>${x[0]}</span></div>`).join("");
+
+    readinessList.innerHTML=readiness.map(item=>`<div class="warn ${item[1]?"ok":"bad"}"><b>${item[1]?"✓":"!"} ${esc(item[0])}</b><br>${item[1]?"Pronto":esc(item[2])}</div>`).join("");
+
+    allSystemWarnings.innerHTML=h.all.length?h.all.map(w=>`<div class="warn ${w[1]==="bad"?"bad":w[1]==="ok"?"ok":""}"><b>${esc(w[0])}:</b> ${esc(w[2])}</div>`).join(""):`<div class="warn ok">Nenhum alerta encontrado.</div>`;
+  },
+  fill(){
+    const p=State.project,s=State.settings,b=State.budget,c=State.schedule;
+    projectName.value=p.name;clientName.value=p.client;if($("projectStatus"))projectStatus.value=State.meta.status||"orcamento";lotWidth.value=p.lotWidth;lotLength.value=p.lotLength;defaultHeight.value=p.defaultHeight;lossProfile.value=String(p.lossProfile);projectNotes.value=p.notes;
+    roomHeight.value=p.defaultHeight;
+    floorYield.value=s.floorYield;blocksPerM2.value=s.blocksPerM2;paintYield.value=s.paintYield;paintCoats.value=s.paintCoats;
+    priceFloorBox.value=b.priceFloorBox;pricePaintLiter.value=b.pricePaintLiter;priceBlock.value=b.priceBlock;laborPerM2.value=b.laborPerM2;manualLabor.value=b.manualLabor??"";extraCosts.value=b.extraCosts;safetyMargin.value=b.safetyMargin;profitMargin.value=b.profitMargin;discount.value=b.discount;
+    startDate.value=c.startDate||todayISO();workdaysPerWeek.value=c.workdaysPerWeek;masons.value=c.masons;helpers.value=c.helpers;complexity.value=String(c.complexity);scheduleBuffer.value=c.scheduleBuffer;scheduleNotes.value=c.notes||"";
+    if($("tileMortarKgM2")){const cp=State.compositions;tileMortarKgM2.value=cp.tileMortarKgM2;mortarBagKg.value=cp.mortarBagKg;groutKgM2.value=cp.groutKgM2;chapiscoKgM2.value=cp.chapiscoKgM2;plasterThicknessCm.value=cp.plasterThicknessCm;plasterCementBagsM3.value=cp.plasterCementBagsM3;plasterSandM3M3.value=cp.plasterSandM3M3;subfloorThicknessCm.value=cp.subfloorThicknessCm;subfloorCementBagsM3.value=cp.subfloorCementBagsM3;subfloorSandM3M3.value=cp.subfloorSandM3M3;}
+    if($("wireMultiplier")){const is=State.installations.settings;wireMultiplier.value=is.wireMultiplier;conduitFactor.value=is.conduitFactor;pipeFactor.value=is.pipeFactor;hydraulicPointPipeM.value=is.hydraulicPointPipeM;sewerPointPipeM.value=is.sewerPointPipeM;defaultOutletWireM.value=is.defaultOutletWireM;defaultLightWireM.value=is.defaultLightWireM;defaultSwitchWireM.value=is.defaultSwitchWireM;}
+    if($("tenantName")){tenantName.value=State.backend?.tenantName||"";ownerName.value=State.backend?.ownerName||"";ownerEmail.value=State.backend?.ownerEmail||"";backendPlan.value=State.backend?.plan||"local";}
+  },
+  saveProject(){
+    State.project={name:projectName.value.trim(),client:clientName.value.trim(),lotWidth:n("lotWidth",6),lotLength:n("lotLength",20),defaultHeight:n("defaultHeight",2.8),lossProfile:n("lossProfile",.10),notes:projectNotes.value.trim()};
+    State.meta.status=projectStatus.value||State.meta.status||"orcamento";
+    Storage.save();this.renderAll();this.toast("Obra salva.");
+  },
+  saveSettings(){State.settings={floorYield:n("floorYield",2.5),blocksPerM2:n("blocksPerM2",12.5),paintYield:n("paintYield",12),paintCoats:n("paintCoats",2)};Storage.save();this.renderAll();this.toast("Configurações salvas.")},
+  saveBudget(){State.budget={priceFloorBox:n("priceFloorBox"),pricePaintLiter:n("pricePaintLiter"),priceBlock:n("priceBlock"),laborPerM2:n("laborPerM2"),manualLabor:manualLabor.value===""?null:n("manualLabor"),extraCosts:n("extraCosts"),safetyMargin:n("safetyMargin",10),profitMargin:n("profitMargin",20),discount:n("discount")};Storage.save();this.renderAll();this.toast("Orçamento salvo.")},
+  saveSchedule(){State.schedule={startDate:startDate.value||todayISO(),workdaysPerWeek:n("workdaysPerWeek",6),masons:n("masons",1),helpers:n("helpers",1),complexity:n("complexity",1),scheduleBuffer:n("scheduleBuffer",10),notes:scheduleNotes.value.trim()};Storage.save();this.renderAll();this.toast("Cronograma salvo.")},
+  addRoom(){
+    const room={id:cryptoRandom(),name:roomName.value.trim()||`Cômodo ${State.rooms.length+1}`,type:roomType.value,width:n("roomWidth"),length:n("roomLength"),height:n("roomHeight",State.project.defaultHeight),doorCount:n("doorCount"),windowCount:n("windowCount"),doorSize:doorSize.value||"0.80x2.10",windowSize:windowSize.value||"1.20x1.00",x:null,y:null};
+    if(room.width<=0||room.length<=0||room.height<=0){this.toast("Informe medidas válidas.");return}
+    State.rooms.push(room);Storage.save();roomName.value=roomWidth.value=roomLength.value="";roomHeight.value=State.project.defaultHeight;this.renderAll();this.toast("Cômodo adicionado.");
+  },
+  removeRoom(id){State.rooms=State.rooms.filter(r=>r.id!==id);Storage.save();this.renderAll();this.toast("Cômodo removido.")},
+  addSamples(){
+    const h=State.project.defaultHeight||2.8;
+    [["Sala","social",3.5,4],["Cozinha","kitchen",3,3],["Quarto 1","bedroom",3,3.2],["Banheiro","bathroom",1.5,2.4],["Área serviço","service",1.8,2.2]].forEach(x=>State.rooms.push({id:cryptoRandom(),name:x[0],type:x[1],width:x[2],length:x[3],height:h,doorCount:1,windowCount:1,doorSize:"0.80x2.10",windowSize:"1.20x1.00",x:null,y:null}));
+    Storage.save();this.renderAll();this.toast("Exemplo adicionado.");
+  },
+  renderAll(){this.renderHome();this.renderBackend();this.renderSystemHealth();this.renderProjects();this.renderProject();this.renderRooms();this.renderCalculations();this.renderCompositions();this.renderInstallations();this.renderBudget();this.renderSchedule();this.renderPurchases();this.renderTracking();this.renderReport();this.renderFloorplan();this.renderAudit(false)},
+  stat(items){return items.map(i=>`<div class="stat"><b>${i[0]}</b><span>${i[1]}</span></div>`).join("")},
+  renderHome(){
+    const t=Calc.totals(false),b=Calc.budget(false),s=Schedule.stages(false),lot=State.project.lotWidth*State.project.lotLength;
+    dash.innerHTML=this.stat([[State.rooms.length,"Cômodos"],[round(t.area)+" m²","Área construída"],[money(b.final),"Valor sugerido"],[s.totalDays+" dias","Prazo estimado"],[fmtDate(s.start),"Início"],[fmtDate(s.end),"Término"],[round(lot)+" m²","Terreno"],[Math.round(t.blocks),"Blocos"]]);
+    homeWarns.innerHTML=this.warnings([...this.projectWarnings(),...Schedule.warnings()]);
+  },
+  projectWarnings(){
+    const w=[],lot=State.project.lotWidth*State.project.lotLength,t=Calc.totals(false);
+    if(!State.project.name)w.push(["warn","A obra ainda não tem nome."]);
+    if(State.project.lotWidth<=0||State.project.lotLength<=0)w.push(["bad","Medidas do terreno inválidas."]);
+    if(t.area>lot&&lot>0)w.push(["bad",`Área dos cômodos (${round(t.area)}m²) ultrapassa o terreno (${round(lot)}m²).`]);
+    return w;
+  },
+  renderProject(){projectWarnings.innerHTML=this.warnings(this.projectWarnings())},
+  warnings(list){if(!list.length)return`<div class="warn ok">Nenhum alerta importante encontrado.</div>`;return list.map(w=>`<div class="warn ${w[0]==="bad"?"bad":""}">${esc(w[1])}</div>`).join("")},
+  renderRooms(){
+    roomsList.innerHTML=State.rooms.length?State.rooms.map(r=>{const c=Calc.room(r,false);return`<div class="room"><div class="roomHead"><div><b>${esc(r.name)}</b><div class="mut">${r.width}m × ${r.length}m × ${r.height}m</div></div><button class="danger" onclick="UI.removeRoom('${r.id}')">Remover</button></div><div class="mini"><div><span>Área</span><b>${round(c.area)}m²</b></div><div><span>Paredes úteis</span><b>${round(c.wallNet)}m²</b></div><div><span>Caixas piso</span><b>${c.floorBoxes}</b></div><div><span>Blocos</span><b>${c.blocks}</b></div></div></div>`}).join(""):`<div class="empty">Nenhum cômodo cadastrado.</div>`;
+  },
+  renderCalculations(){
+    const t=Calc.totals(false);
+    calcTotals.innerHTML=this.stat([[round(t.area)+" m²","Área de piso"],[round(t.wallNet)+" m²","Paredes úteis"],[t.floorBoxes,"Caixas piso"],[round(t.paintLiters,1)+" L","Tinta"],[Math.round(t.blocks),"Blocos"],[round(t.baseboard)+" m","Rodapé"],[round(t.volume)+" m³","Volume"],[round(t.openings)+" m²","Aberturas"]]);
+    materialsRows.innerHTML=State.rooms.length?State.rooms.map(r=>{const c=Calc.room(r,false);return`<tr><td><b>${esc(r.name)}</b></td><td>${round(c.area)}m²</td><td>${round(c.wallNet)}m²</td><td>${c.floorBoxes}</td><td>${round(c.paintLiters,1)}L</td><td>${c.blocks}</td><td><span class="badge high">Área alta</span><br><span class="badge mid">Materiais média</span></td></tr>`}).join(""):`<tr><td colspan="7">Cadastre cômodos.</td></tr>`;
+  },
+
+  saveCompositions(){
+    State.compositions={
+      tileMortarKgM2:n("tileMortarKgM2",4.5),
+      mortarBagKg:n("mortarBagKg",20),
+      groutKgM2:n("groutKgM2",0.25),
+      chapiscoKgM2:n("chapiscoKgM2",1.5),
+      plasterThicknessCm:n("plasterThicknessCm",2),
+      plasterCementBagsM3:n("plasterCementBagsM3",6),
+      plasterSandM3M3:n("plasterSandM3M3",1.15),
+      subfloorThicknessCm:n("subfloorThicknessCm",4),
+      subfloorCementBagsM3:n("subfloorCementBagsM3",5),
+      subfloorSandM3M3:n("subfloorSandM3M3",1.1)
+    };
+    Storage.save();this.renderCompositions();this.renderPurchases();this.renderReport();this.toast("Composições salvas.");
+  },
+  resetCompositions(){
+    State.compositions=Compositions.defaults();
+    this.fill();
+    Storage.save();this.renderCompositions();this.renderPurchases();this.renderReport();this.toast("Composições restauradas.");
+  },
+  renderCompositions(){
+    if(!$("compositionRows"))return;
+    const c=Compositions.calculate(false);
+    compositionTotals.innerHTML=this.stat([[c.tileMortarBags+" sacos","Argamassa piso"],[round(c.groutKg,1)+" kg","Rejunte"],[round(c.plasterVolume,3)+" m³","Volume reboco"],[round(c.subfloorVolume,3)+" m³","Volume contrapiso"],[c.plasterCementBags+c.subfloorCementBags+" sacos","Cimento estimado"],[round(c.plasterSandM3+c.subfloorSandM3,2)+" m³","Areia estimada"]]);
+    compositionWarnings.innerHTML=this.warnings(Compositions.warnings());
+    compositionRows.innerHTML=Compositions.rows().map(r=>`<tr><td><b>${esc(r.service)}</b></td><td>${esc(r.base)}</td><td>${esc(r.item)}</td><td><b>${round(r.qty,2)} ${esc(r.unit)}</b></td><td><span class="compFormula">${esc(r.formula)}</span></td></tr>`).join("");
+  },
+  renderBudget(){
+    const t=Calc.totals(false),b=Calc.budget(false),bud=State.budget;
+    budgetTotals.innerHTML=this.stat([[money(b.materials),"Materiais"],[money(b.labor),"Mão de obra"],[money(b.safety),"Segurança"],[money(b.profit),"Lucro"],[money(b.final),"Valor final"],[money(b.pricePerM2),"Preço/m²"]]);
+    budgetRows.innerHTML=[
+      ["Piso",`${t.floorBoxes} caixas`,money(bud.priceFloorBox),money(b.floorCost),"Cálculo de materiais"],
+      ["Tinta",`${round(t.paintLiters,1)} L`,money(bud.pricePaintLiter),money(b.paintCost),"Paredes úteis"],
+      ["Blocos",`${Math.round(t.blocks)} un.`,money(bud.priceBlock),money(b.blockCost),"Alvenaria estimada"],
+      ["Mão de obra",bud.manualLabor!==null?"manual":`${round(t.area)}m² × ${money(bud.laborPerM2)}`,"-",money(b.labor),"Orçamento"],
+      ["Outras despesas","manual","-",money(bud.extraCosts),"Orçamento"],
+      ["Margem segurança",`${bud.safetyMargin}%`,"-",money(b.safety),"Risco/perdas"],
+      ["Lucro",`${bud.profitMargin}%`,"-",money(b.profit),"Margem"],
+      ["Desconto","manual","-",`-${money(bud.discount)}`,"Negociação"]
+    ].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join("");
+  },
+  renderSchedule(){
+    const sc=Schedule.stages(false);
+    scheduleTotals.innerHTML=this.stat([[sc.totalDays+" dias","Duração estimada"],[fmtDate(sc.start),"Início"],[fmtDate(sc.end),"Término"],[round(sc.crew,2),"Força de equipe"],[State.schedule.masons,"Pedreiros"],[State.schedule.helpers,"Ajudantes"]]);
+    scheduleWarnings.innerHTML=this.warnings(Schedule.warnings());
+    const total=sc.totalDays||1,work=Number(State.schedule.workdaysPerWeek)||6;
+    scheduleRows.innerHTML=sc.rows.map(r=>{const pct=Math.min(100,round(r.days/total*100,1));return`<tr><td><b>${r.name}</b></td><td>${r.metric}</td><td>${r.days}</td><td>${fmtDate(r.start)}</td><td>${fmtDate(r.end)}</td><td>${r.dep}</td><td><div class="progress"><div class="bar" style="width:${pct}%"></div></div><small>${pct}% do prazo</small></td></tr>`}).join("");
+  },
+
+
+
+
+  saveInstallationSettings(){
+    State.installations.settings={
+      wireMultiplier:n("wireMultiplier",2.8),
+      conduitFactor:n("conduitFactor",1.25),
+      pipeFactor:n("pipeFactor",1.15),
+      hydraulicPointPipeM:n("hydraulicPointPipeM",4),
+      sewerPointPipeM:n("sewerPointPipeM",3),
+      defaultOutletWireM:n("defaultOutletWireM",8),
+      defaultLightWireM:n("defaultLightWireM",10),
+      defaultSwitchWireM:n("defaultSwitchWireM",6)
+    };
+    Storage.save();this.renderInstallations();this.renderPurchases();this.renderReport();this.toast("Parâmetros de instalações salvos.");
+  },
+  renderInstallations(){
+    if(!$("installationRows"))return;
+    Installations.ensure();
+    const c=Installations.calculate(false);
+    installationTotals.innerHTML=this.stat([[c.totalElectricalPoints,"Pontos elétricos"],[c.hydraulicPoints,"Pontos hidráulicos"],[round(c.conduitM,1)+" m","Conduíte"],[round(c.wire15M+c.wire25M,1)+" m","Fios"],[round(c.waterPipeM,1)+" m","Tubo água"],[round(c.sewerPipeM,1)+" m","Tubo esgoto"]]);
+    installationWarnings.innerHTML=this.warnings(Installations.warnings());
+    installationRooms.innerHTML=State.rooms.length?State.rooms.map(room=>{
+      const d=State.installations.rooms[room.id]||Installations.defaultsForRoom(room);
+      return `<div class="installCard">
+        <h3>${esc(room.name)}</h3>
+        <div class="installGrid">
+          <div><label>Tomadas</label><input type="number" min="0" step="1" value="${d.outlets||0}" onchange="UI.updateInstallation('${room.id}','outlets',this.value)"></div>
+          <div><label>Interruptores</label><input type="number" min="0" step="1" value="${d.switches||0}" onchange="UI.updateInstallation('${room.id}','switches',this.value)"></div>
+          <div><label>Pontos de luz</label><input type="number" min="0" step="1" value="${d.lights||0}" onchange="UI.updateInstallation('${room.id}','lights',this.value)"></div>
+          <div><label>Água fria</label><input type="number" min="0" step="1" value="${d.coldWater||0}" onchange="UI.updateInstallation('${room.id}','coldWater',this.value)"></div>
+          <div><label>Esgoto</label><input type="number" min="0" step="1" value="${d.sewer||0}" onchange="UI.updateInstallation('${room.id}','sewer',this.value)"></div>
+          <div><label>Chuveiro</label><input type="number" min="0" step="1" value="${d.shower||0}" onchange="UI.updateInstallation('${room.id}','shower',this.value)"></div>
+          <div><label>Vaso sanitário</label><input type="number" min="0" step="1" value="${d.toilet||0}" onchange="UI.updateInstallation('${room.id}','toilet',this.value)"></div>
+          <div><label>Pia/lavatório</label><input type="number" min="0" step="1" value="${d.sink||0}" onchange="UI.updateInstallation('${room.id}','sink',this.value)"></div>
+          <div><label>Tanque</label><input type="number" min="0" step="1" value="${d.tank||0}" onchange="UI.updateInstallation('${room.id}','tank',this.value)"></div>
+        </div>
+      </div>`;
+    }).join(""):`<div class="empty">Cadastre cômodos para configurar instalações.</div>`;
+    installationRows.innerHTML=Installations.purchaseItems().map(item=>`<tr><td><b>${esc(item.name)}</b></td><td>${round(item.planned,1)} ${esc(item.unit)}</td><td>${esc(item.source)}</td><td><span class="badge tech">Validação técnica</span></td></tr>`).join("")||`<tr><td colspan="4">Nenhum material de instalação calculado.</td></tr>`;
+  },
+  updateInstallation(roomId,field,value){
+    Installations.ensure();
+    if(!State.installations.rooms[roomId])State.installations.rooms[roomId]={};
+    State.installations.rooms[roomId][field]=Math.max(0,Number(value)||0);
+    Storage.save();
+    this.renderInstallations();
+    this.renderPurchases();
+    this.renderReport();
+  },
+  renderPurchases(){
+    if(!$("purchaseRows"))return;
+    const sum=Purchases.summary();
+    purchaseTotals.innerHTML=[
+      ["Custo planejado",money(sum.plannedCost)],
+      ["Custo comprado",money(sum.boughtCost)],
+      ["Valor usado",money(sum.usedValue)],
+      ["Itens com falta",sum.missingItems]
+    ].map(x=>`<div class="purchaseCell"><b>${x[1]}</b><span>${x[0]}</span></div>`).join("");
+    purchaseWarnings.innerHTML=this.warnings(Purchases.warnings());
+
+    const rows=[];
+    Purchases.estimatedItems().forEach(item=>{
+      const data=Purchases.get(item.id);
+      rows.push(this.purchaseRow(item,data,false));
+    });
+    State.purchases.manual.forEach((item,index)=>{
+      rows.push(this.purchaseRow(item,item,true,index));
+    });
+    purchaseRows.innerHTML=rows.join("")||`<tr><td colspan="9">Nenhum material encontrado.</td></tr>`;
+  },
+  purchaseRow(item,data,isManual,index=null){
+    const planned=Number(item.planned)||0;
+    const bought=Number(data.bought)||0;
+    const used=Number(data.used)||0;
+    const price=Number(data.actualPrice ?? item.defaultPrice ?? item.price ?? 0)||0;
+    const balance=round(bought-used,2);
+    const missing=Math.max(0,round(planned-bought,2));
+    const rowId=isManual?`manual:${index}`:item.id;
+    return `<tr>
+      <td><b>${esc(item.name)}</b><br><span class="mut">${esc(item.source||"Material manual")}</span></td>
+      <td>${round(planned,2)} ${esc(item.unit)}</td>
+      <td><input class="qtyInput" type="number" step=".01" value="${bought}" onchange="UI.updatePurchase('${rowId}','bought',this.value)"></td>
+      <td><input class="qtyInput" type="number" step=".01" value="${used}" onchange="UI.updatePurchase('${rowId}','used',this.value)"></td>
+      <td><span class="badge ${missing>0?'mid':'high'}">${balance} ${esc(item.unit)}</span><br><small>${missing>0?`faltam ${missing}`:"planejado ok"}</small></td>
+      <td><input class="qtyInput" type="number" step=".01" value="${price}" onchange="UI.updatePurchase('${rowId}','actualPrice',this.value)"></td>
+      <td><input class="wideInput" value="${esc(data.supplier||item.supplier||"")}" onchange="UI.updatePurchase('${rowId}','supplier',this.value)"></td>
+      <td>
+        <select onchange="UI.updatePurchase('${rowId}','status',this.value)">
+          <option value="pendente" ${(data.status||"pendente")==="pendente"?"selected":""}>Pendente</option>
+          <option value="comprar" ${data.status==="comprar"?"selected":""}>Comprar</option>
+          <option value="comprado" ${data.status==="comprado"?"selected":""}>Comprado</option>
+          <option value="entregue" ${data.status==="entregue"?"selected":""}>Entregue</option>
+          <option value="usado" ${data.status==="usado"?"selected":""}>Usado</option>
+        </select>
+      </td>
+      <td>${isManual?`<button class="danger" onclick="UI.removeManualMaterial(${index})">Remover</button>`:`<span class="badge statusPill">Calculado</span>`}</td>
+    </tr>`;
+  },
+  updatePurchase(rowId,field,value){
+    let target;
+    if(rowId.startsWith("manual:")){
+      const index=Number(rowId.split(":")[1]);
+      target=State.purchases.manual[index];
+      if(!target)return;
+    }else{
+      target=Purchases.get(rowId);
+    }
+    if(["bought","used","actualPrice"].includes(field))value=Number(value)||0;
+    target[field]=value;
+    Storage.save();
+    this.renderPurchases();
+    this.renderReport();
+  },
+  addManualMaterial(){
+    const name=manualMaterialName.value.trim();
+    if(!name){this.toast("Informe o nome do material.");return}
+    State.purchases.manual.push({
+      id:cryptoRandom(),
+      name,
+      unit:manualMaterialUnit.value.trim()||"un.",
+      planned:n("manualMaterialPlanned",0),
+      bought:0,
+      used:0,
+      actualPrice:n("manualMaterialPrice",0),
+      supplier:manualMaterialSupplier.value.trim(),
+      status:"comprar",
+      source:"Material manual"
+    });
+    manualMaterialName.value="";
+    manualMaterialUnit.value="";
+    manualMaterialPlanned.value="";
+    manualMaterialPrice.value="";
+    manualMaterialSupplier.value="";
+    Storage.save();
+    this.renderPurchases();
+    this.renderReport();
+    this.toast("Material manual adicionado.");
+  },
+  removeManualMaterial(index){
+    State.purchases.manual.splice(index,1);
+    Storage.save();
+    this.renderPurchases();
+    this.renderReport();
+    this.toast("Material removido.");
+  },
+  renderTracking(){
+    Tracking.ensure();
+    const sc=Schedule.stages(false),sum=Tracking.summary(),expected=Tracking.expectedProgress();
+    trackingTotals.innerHTML=this.stat([[sum.progress+"%","Progresso real"],[expected+"%","Progresso esperado"],[sum.done+"/"+sum.total,"Etapas concluídas"],[money(sum.extraCosts),"Custos extras"],[round(sum.hours,1)+" h","Horas registradas"],[sum.inProgress,"Em andamento"]]);
+    trackingWarnings.innerHTML=this.warnings(Tracking.warnings());
+
+    if($("floorScale"))floorScale.value=State.floorplan.scale||40;
+    if($("floorGrid"))floorGrid.value=State.floorplan.grid||0.5;
+    logDate.value=logDate.value||todayISO();
+    logStage.innerHTML=sc.rows.map(r=>`<option value="${esc(r.name)}">${esc(r.name)}</option>`).join("");
+
+    trackingRows.innerHTML=sc.rows.map((row,i)=>{
+      const data=State.tracking.stages[row.name]||{status:"pendente",percent:0,actualStart:"",actualEnd:"",note:""};
+      return `<tr>
+        <td><b>${esc(row.name)}</b><br><span class="mut">${esc(row.metric)}</span></td>
+        <td>${fmtDate(row.start)} até ${fmtDate(row.end)}<br><span class="mut">${row.days} dia(s)</span></td>
+        <td>
+          <select class="statusSelect" onchange="UI.updateStage(${i},'status',this.value)">
+            <option value="pendente" ${data.status==="pendente"?"selected":""}>Pendente</option>
+            <option value="andamento" ${data.status==="andamento"?"selected":""}>Em andamento</option>
+            <option value="concluido" ${data.status==="concluido"?"selected":""}>Concluído</option>
+            <option value="pausado" ${data.status==="pausado"?"selected":""}>Pausado</option>
+          </select>
+        </td>
+        <td><input class="smallInput" type="number" min="0" max="100" step="1" value="${Number(data.percent)||0}" onchange="UI.updateStage(${i},'percent',this.value)">%</td>
+        <td><input class="smallInput" type="date" value="${esc(data.actualStart||"")}" onchange="UI.updateStage(${i},'actualStart',this.value)"></td>
+        <td><input class="smallInput" type="date" value="${esc(data.actualEnd||"")}" onchange="UI.updateStage(${i},'actualEnd',this.value)"></td>
+        <td><textarea style="min-width:180px;min-height:54px" onchange="UI.updateStage(${i},'note',this.value)">${esc(data.note||"")}</textarea></td>
+      </tr>`;
+    }).join("");
+
+    logsList.innerHTML=State.tracking.logs.length?State.tracking.logs.map((log,i)=>`<div class="logItem">
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <div><h4>${fmtDate(log.date)} — ${esc(log.stage)}</h4><div class="mut">Custo extra: ${money(log.extraCost)} | Horas: ${round(log.hours,1)}</div></div>
+        <button class="danger" onclick="UI.removeLog(${i})">Remover</button>
+      </div>
+      <p>${esc(log.text)}</p>
+    </div>`).join(""):`<div class="empty">Nenhum registro diário cadastrado.</div>`;
+  },
+  updateStage(index,field,value){
+    const sc=Schedule.stages(false),row=sc.rows[index];
+    if(!row)return;
+    Tracking.ensure();
+    if(field==="percent")value=Math.max(0,Math.min(100,Number(value)||0));
+    State.tracking.stages[row.name][field]=value;
+    if(field==="status"&&value==="concluido"){
+      State.tracking.stages[row.name].percent=100;
+      if(!State.tracking.stages[row.name].actualEnd)State.tracking.stages[row.name].actualEnd=todayISO();
+    }
+    if(field==="status"&&value==="andamento"&&!State.tracking.stages[row.name].actualStart){
+      State.tracking.stages[row.name].actualStart=todayISO();
+    }
+    Storage.save();
+    this.renderTracking();
+  },
+  addLog(){
+    if(!logText.value.trim()){this.toast("Escreva um registro do diário.");return}
+    State.tracking.logs.unshift({
+      id:cryptoRandom(),
+      date:logDate.value||todayISO(),
+      stage:logStage.value||"Geral",
+      text:logText.value.trim(),
+      extraCost:n("logExtraCost",0),
+      hours:n("logHours",0)
+    });
+    State.tracking.logs=State.tracking.logs.slice(0,120);
+    logText.value="";logExtraCost.value=0;logHours.value=0;
+    Storage.save();this.renderTracking();this.renderReport();this.toast("Registro adicionado ao diário.");
+  },
+  removeLog(index){
+    State.tracking.logs.splice(index,1);
+    Storage.save();this.renderTracking();this.renderReport();this.toast("Registro removido.");
+  },
+  renderReport(){
+    Floorplan.ensurePositions();
+    const p=State.project,t=Calc.totals(false),b=Calc.budget(false),sc=Schedule.stages(false),track=Tracking.summary(),expected=Tracking.expectedProgress(),floorWarningsList=Floorplan.validation(),purchaseSummary=Purchases.summary(),comp=Compositions.calculate(false),inst=Installations.calculate(false),health=SystemHealth.collect(),backendReady=BackendPrep.readiness().filter(x=>x[1]).length,backendTotal=BackendPrep.readiness().length;
+    const areaTerreno=(p.lotWidth||0)*(p.lotLength||0);
+    const rowsMaterials=[
+      ["Área de piso",`${round(t.area)} m²`,"Base dos cômodos"],
+      ["Paredes úteis",`${round(t.wallNet)} m²`,"Desconta portas e janelas"],
+      ["Caixas de piso",`${t.floorBoxes} caixas`,"Inclui perda configurada"],
+      ["Tinta",`${round(t.paintLiters,1)} L`,"Considera demãos e perda"],
+      ["Blocos/tijolos",`${Math.round(t.blocks)} un.`,"Estimativa inicial"],
+      ["Rodapé",`${round(t.baseboard)} m`,"Perímetro menos portas"]
+    ];
+    const rowsBudget=[
+      ["Materiais",money(b.materials)],
+      ["Mão de obra",money(b.labor)],
+      ["Outras despesas",money(State.budget.extraCosts)],
+      ["Margem de segurança",money(b.safety)],
+      ["Lucro estimado",money(b.profit)],
+      ["Desconto",`- ${money(State.budget.discount)}`],
+      ["Valor final sugerido",money(b.final)],
+      ["Preço por m²",money(b.pricePerM2)]
+    ];
+    const scheduleRows=sc.rows.map(r=>`<tr><td>${esc(r.name)}</td><td>${r.days} dia(s)</td><td>${fmtDate(r.start)}</td><td>${fmtDate(r.end)}</td></tr>`).join("");
+    const materialRows=rowsMaterials.map(r=>`<tr><td>${r[0]}</td><td><b>${r[1]}</b></td><td>${r[2]}</td></tr>`).join("");
+    const budgetRows=rowsBudget.map(r=>`<tr><td>${r[0]}</td><td><b>${r[1]}</b></td></tr>`).join("");
+    $("reportDocument").innerHTML=`
+      <div class="reportHead">
+        <div>
+          <h2>Relatório da Obra</h2>
+          <p>Gerado pelo ${App.name} — ${App.package} — ${new Date().toLocaleDateString("pt-BR")}</p>
+        </div>
+        <div style="text-align:right">
+          <b>${esc(p.name||"Obra sem nome")}</b><br>
+          <span class="mut">Cliente: ${esc(p.client||"Não informado")}</span>
+        </div>
+      </div>
+
+      <div class="reportGrid">
+        <div class="reportBox">
+          <h3>1. Dados gerais</h3>
+          <table class="reportTable">
+            <tr><th>Campo</th><th>Informação</th></tr>
+            <tr><td>Obra</td><td>${esc(p.name||"Não informado")}</td></tr>
+            <tr><td>Cliente</td><td>${esc(p.client||"Não informado")}</td></tr><tr><td>Status</td><td>${esc(State.meta.status||"Orçamento")}</td></tr><tr><td>Saúde do sistema</td><td>${health.bad} alerta(s) grave(s), ${health.warn} aviso(s)</td></tr><tr><td>Prontidão backend</td><td>${backendReady}/${backendTotal} itens prontos</td></tr>
+            <tr><td>Terreno</td><td>${round(p.lotWidth)}m × ${round(p.lotLength)}m = ${round(areaTerreno)}m²</td></tr>
+            <tr><td>Área cadastrada</td><td>${round(t.area)}m²</td></tr>
+            <tr><td>Altura padrão</td><td>${round(p.defaultHeight)}m</td></tr>
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>2. Resumo financeiro</h3>
+          <table class="reportTable">
+            <tr><th>Item</th><th>Valor</th></tr>
+            ${budgetRows}
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>3. Levantamento de materiais</h3>
+          <table class="reportTable">
+            <tr><th>Item</th><th>Quantidade</th><th>Origem</th></tr>
+            ${materialRows}
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>3.1 Controle de compras</h3>
+          <table class="reportTable">
+            <tr><th>Indicador</th><th>Resultado</th></tr>
+            <tr><td>Custo planejado de compra</td><td>${money(purchaseSummary.plannedCost)}</td></tr>
+            <tr><td>Custo já comprado</td><td>${money(purchaseSummary.boughtCost)}</td></tr>
+            <tr><td>Valor já usado</td><td>${money(purchaseSummary.usedValue)}</td></tr>
+            <tr><td>Itens com falta</td><td>${purchaseSummary.missingItems}</td></tr>
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>3.2 Composições de serviço</h3>
+          <table class="reportTable">
+            <tr><th>Insumo</th><th>Quantidade</th></tr>
+            <tr><td>Argamassa para piso/revestimento</td><td>${comp.tileMortarBags} sacos</td></tr>
+            <tr><td>Rejunte</td><td>${round(comp.groutKg,1)} kg</td></tr>
+            <tr><td>Cimento para reboco</td><td>${comp.plasterCementBags} sacos</td></tr>
+            <tr><td>Areia para reboco</td><td>${round(comp.plasterSandM3,2)} m³</td></tr>
+            <tr><td>Cimento para contrapiso</td><td>${comp.subfloorCementBags} sacos</td></tr>
+            <tr><td>Areia para contrapiso</td><td>${round(comp.subfloorSandM3,2)} m³</td></tr>
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>3.3 Instalações básicas</h3>
+          <table class="reportTable">
+            <tr><th>Item</th><th>Quantidade</th></tr>
+            <tr><td>Pontos elétricos</td><td>${inst.totalElectricalPoints}</td></tr>
+            <tr><td>Conduíte estimado</td><td>${round(inst.conduitM,1)} m</td></tr>
+            <tr><td>Fio 1,5mm²</td><td>${round(inst.wire15M,1)} m</td></tr>
+            <tr><td>Fio 2,5mm²</td><td>${round(inst.wire25M,1)} m</td></tr>
+            <tr><td>Pontos hidráulicos</td><td>${inst.hydraulicPoints}</td></tr>
+            <tr><td>Tubo água fria</td><td>${round(inst.waterPipeM,1)} m</td></tr>
+            <tr><td>Tubo esgoto</td><td>${round(inst.sewerPipeM,1)} m</td></tr>
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>4. Prazo estimado</h3>
+          <table class="reportTable">
+            <tr><th>Resumo</th><th>Informação</th></tr>
+            <tr><td>Início previsto</td><td>${fmtDate(sc.start)}</td></tr>
+            <tr><td>Término previsto</td><td>${fmtDate(sc.end)}</td></tr>
+            <tr><td>Duração estimada</td><td>${sc.totalDays} dia(s) úteis/trabalhados</td></tr>
+            <tr><td>Equipe</td><td>${State.schedule.masons} pedreiro(s) e ${State.schedule.helpers} ajudante(s)</td></tr>
+          </table>
+        </div>
+
+        <div class="reportBox">
+          <h3>5. Acompanhamento</h3>
+          <table class="reportTable">
+            <tr><th>Indicador</th><th>Resultado</th></tr>
+            <tr><td>Progresso informado</td><td>${track.progress}%</td></tr>
+            <tr><td>Progresso esperado</td><td>${expected}%</td></tr>
+            <tr><td>Etapas concluídas</td><td>${track.done} de ${track.total}</td></tr>
+            <tr><td>Custos extras registrados</td><td>${money(track.extraCosts)}</td></tr>
+            <tr><td>Horas registradas</td><td>${round(track.hours,1)} h</td></tr>
+          </table>
+        </div>
+        <div class="reportBox">
+          <h3>6. Planta baixa 2D</h3>
+          <table class="reportTable">
+            <tr><th>Validação</th><th>Resultado</th></tr>
+            ${floorWarningsList.slice(0,5).map(w=>`<tr><td>${w[0]==="bad"?"Alerta":w[0]==="ok"?"OK":"Aviso"}</td><td>${esc(w[1])}</td></tr>`).join("")}
+            ${floorWarningsList.length>5?`<tr><td>Resumo</td><td>Há mais ${floorWarningsList.length-5} alerta(s). Corrija na aba Planta antes de enviar o relatório final.</td></tr>`:""}
+          </table>
+        </div>
+      </div>
+
+      <div class="reportBox" style="margin-top:12px">
+        <h3>7. Etapas da obra</h3>
+        <table class="reportTable">
+          <tr><th>Etapa</th><th>Duração</th><th>Início</th><th>Término</th></tr>
+          ${scheduleRows}
+        </table>
+      </div>
+
+
+      <div class="reportBox" style="margin-top:12px">
+        <h3>8. Últimos registros do diário</h3>
+        <table class="reportTable">
+          <tr><th>Data</th><th>Etapa</th><th>Registro</th><th>Custo extra</th></tr>
+          ${State.tracking.logs.slice(0,6).map(l=>`<tr><td>${fmtDate(l.date)}</td><td>${esc(l.stage)}</td><td>${esc(l.text)}</td><td>${money(l.extraCost)}</td></tr>`).join("")||`<tr><td colspan="4">Nenhum registro diário cadastrado.</td></tr>`}
+        </table>
+      </div>
+
+      <div class="reportBox" style="margin-top:12px">
+        <h3>9. Observações</h3>
+        <p>${esc(p.notes||"Nenhuma observação cadastrada.")}</p>
+        <p>${esc(State.schedule.notes||"Nenhuma observação específica de cronograma cadastrada.")}</p>
+        <div class="reportNote">
+          Este relatório é uma estimativa de apoio para levantamento, orçamento e planejamento. Cálculos estruturais, fundação, vigas, pilares, lajes, regularização legal e responsabilidade técnica devem ser validados por profissional habilitado.
+        </div>
+      </div>
+
+      <div class="signatureArea">
+        <div class="signatureLine">Responsável pela obra</div>
+        <div class="signatureLine">Cliente</div>
+      </div>
+    `;
+  },
+  printReport(){
+    this.renderReport();
+    this.toast("Abrindo impressão. Escolha Salvar como PDF no navegador.");
+    setTimeout(()=>window.print(),250);
+  },
+  exportReportHTML(){
+    this.renderReport();
+    const content=$("reportDocument").innerHTML;
+    const file=`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Relatório Obra Fácil Pro</title><style>body{font-family:Arial,sans-serif;background:#f8fafc;color:#0f172a;padding:24px}.reportDoc{max-width:980px;margin:auto}.reportHead{display:flex;justify-content:space-between;border-bottom:2px solid #0f172a;padding-bottom:12px;margin-bottom:14px}.reportGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.reportBox{background:white;border:1px solid #cbd5e1;border-radius:14px;padding:12px;margin-bottom:12px}.reportTable{width:100%;border-collapse:collapse}.reportTable th,.reportTable td{border-bottom:1px solid #e2e8f0;padding:8px;text-align:left}.reportTable th{background:#e2e8f0}.reportNote{border-left:4px solid #f59e0b;background:#fffbeb;padding:10px;border-radius:10px}.signatureArea{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}.signatureLine{border-top:1px solid #334155;padding-top:8px;text-align:center}</style></head><body><div class="reportDoc">${content}</div></body></html>`;
+    const blob=new Blob([file],{type:"text/html"});
+    const a=document.createElement("a");
+    const safe=(State.project.name||"relatorio-obra-facil-pro").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
+    a.href=URL.createObjectURL(blob);a.download=`${safe||"relatorio-obra-facil-pro"}.html`;a.click();URL.revokeObjectURL(a.href);
+  },
+  renderFloorplan(){
+    if(!$("floorSvg"))return;
+    Floorplan.ensurePositions();
+    if($("floorScale"))floorScale.value=State.floorplan.scale||40;
+    if($("floorGrid"))floorGrid.value=State.floorplan.grid||0.5;
+    const svg=$("floorSvg"),lotW=State.project.lotWidth||6,lotL=State.project.lotLength||20;
+    const scale=Number(State.floorplan.scale)||40,x0=45,y0=55,lotPxW=lotW*scale,lotPxH=lotL*scale;
+    const invalid=Floorplan.invalidRooms();
+    const colors={social:"#38bdf8",bedroom:"#a78bfa",kitchen:"#f59e0b",bathroom:"#22c55e",service:"#14b8a6",external:"#94a3b8"};
+    let htmlSvg=`<rect width="900" height="560" fill="transparent"/>`;
+    for(let gx=0;gx<=lotW;gx+=Number(State.floorplan.grid)||0.5){const x=x0+gx*scale;htmlSvg+=`<line x1="${x}" y1="${y0}" x2="${x}" y2="${y0+lotPxH}" stroke="rgba(148,163,184,.12)" stroke-width="1"/>`}
+    for(let gy=0;gy<=lotL;gy+=Number(State.floorplan.grid)||0.5){const y=y0+gy*scale;htmlSvg+=`<line x1="${x0}" y1="${y}" x2="${x0+lotPxW}" y2="${y}" stroke="rgba(148,163,184,.12)" stroke-width="1"/>`}
+    htmlSvg+=`<rect x="${x0}" y="${y0}" width="${lotPxW}" height="${lotPxH}" fill="rgba(15,23,42,.35)" stroke="rgba(34,197,94,.90)" stroke-width="3" rx="8"/><text x="${x0+8}" y="${y0-18}" fill="#cbd5e1" font-size="15" font-weight="800">Terreno ${round(lotW)}m × ${round(lotL)}m</text>`;
+    if(!State.rooms.length)htmlSvg+=`<text x="450" y="285" text-anchor="middle" fill="#94a3b8" font-size="18">Adicione cômodos para gerar a planta</text>`;
+    State.rooms.forEach(room=>{const x=x0+(Number(room.x)||0)*scale,y=y0+(Number(room.y)||0)*scale,w=room.width*scale,h=room.length*scale;const bad=invalid.has(room.id),stroke=bad?"#fb7185":(colors[room.type]||"#38bdf8");htmlSvg+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${bad?'rgba(251,113,133,.20)':'rgba(56,189,248,.14)'}" stroke="${stroke}" stroke-width="2.5" rx="5"/><text x="${x+w/2}" y="${y+h/2-10}" text-anchor="middle" fill="#e5e7eb" font-size="12" font-weight="800">${esc(room.name)}</text><text x="${x+w/2}" y="${y+h/2+7}" text-anchor="middle" fill="#cbd5e1" font-size="10">${round(room.width)}m × ${round(room.length)}m</text><text x="${x+w/2}" y="${y+h/2+22}" text-anchor="middle" fill="#94a3b8" font-size="10">X:${round(room.x)} Y:${round(room.y)}</text>`});
+    svg.innerHTML=htmlSvg;
+    if($("floorWarnings"))floorWarnings.innerHTML=`<div class="floorHint">Se aparecer sobreposição, clique em <b>Organizar automaticamente</b>. Depois ajuste X/Y manualmente se necessário.</div><div class="compactWarn">${this.warnings(Floorplan.validation())}</div>`;
+    if($("floorRows"))floorRows.innerHTML=State.rooms.length?State.rooms.map((room,index)=>{const c=Calc.room(room,false),bad=invalid.has(room.id);return`<tr><td><b>${esc(room.name)}</b></td><td>${round(room.width)}m × ${round(room.length)}m</td><td><input class="coordInput" type="number" step="${State.floorplan.grid||0.5}" value="${round(room.x)}" onchange="UI.updateRoomCoord(${index},'x',this.value)"></td><td><input class="coordInput" type="number" step="${State.floorplan.grid||0.5}" value="${round(room.y)}" onchange="UI.updateRoomCoord(${index},'y',this.value)"></td><td>${round(c.area)}m²</td><td><span class="badge ${bad?'tech':'high'}">${bad?'Verificar':'OK'}</span></td></tr>`}).join(""):`<tr><td colspan="6">Cadastre cômodos para editar a planta.</td></tr>`;
+  },
+  cleanDuplicateRooms(){
+    const seen=new Set(),clean=[];
+    State.rooms.forEach(room=>{const key=[room.name,room.width,room.length,room.height].join("|");if(!seen.has(key)){seen.add(key);clean.push(room)}});
+    const removed=State.rooms.length-clean.length;State.rooms=clean;Floorplan.autoLayout();Storage.save();this.renderAll();this.toast(removed?`${removed} cômodo(s) duplicado(s) removido(s).`:"Nenhum cômodo duplicado encontrado.");
+  },
+  saveFloorSettings(){State.floorplan.scale=Math.max(20,Math.min(80,n("floorScale",40)));State.floorplan.grid=Math.max(.1,n("floorGrid",.5));Storage.save();this.renderFloorplan();this.toast("Configurações da planta salvas.")},
+  autoLayoutFloorplan(){Floorplan.autoLayout();Storage.save();this.renderFloorplan();this.renderReport();this.toast("Planta organizada automaticamente.")},
+  updateRoomCoord(index,field,value){const room=State.rooms[index];if(!room)return;room[field]=Floorplan.snap(value);Storage.save();this.renderFloorplan();this.renderReport()},
+  exportFloorplanSVG(){this.renderFloorplan();const svg=$("floorSvg").outerHTML;const file=`<!doctype html><html><head><meta charset="utf-8"><title>Planta baixa - Obra Fácil Pro</title></head><body style="margin:0;background:#0f172a">${svg}</body></html>`;const blob=new Blob([file],{type:"text/html"});const a=document.createElement("a");const safe=(State.project.name||"planta-baixa").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");a.href=URL.createObjectURL(blob);a.download=`${safe||"planta-baixa"}-planta.html`;a.click();URL.revokeObjectURL(a.href)},
+  renderAudit(refresh){
+    if(refresh){Calc.totals(true);Calc.budget(true);Schedule.stages(true);Audit.add("tracking.progress","Acompanhamento",`Progresso informado ${Tracking.summary().progress}% versus esperado ${Tracking.expectedProgress()}%`,`${Tracking.summary().progress}%`);Audit.add("floorplan.validation","Planta baixa",Floorplan.validation().map(w=>w[1]).join("\n"),Floorplan.invalidRooms().size?`${Floorplan.invalidRooms().size} alerta(s)`:"Planta OK");Storage.save()}
+    formulaBox.innerHTML=Formulas.map(f=>`<div class="audit"><b>${f[2]} <span class="badge">v${f[1]}</span></b><p class="mut">${f[3]}</p><span class="badge ${f[4]==='Alta'?'high':f[4]==='Média'?'mid':'tech'}">${f[4]}</span></div>`).join("");
+    auditList.innerHTML=State.audit.length?State.audit.map(a=>`<div class="audit"><h4>${esc(a.formula)}</h4><p><b>Contexto:</b> ${esc(a.context)}</p><p><b>Resultado:</b> ${esc(a.result)}</p><code>${esc(a.steps)}</code></div>`).join(""):`<div class="empty">Clique em “Atualizar auditoria” para gerar o log.</div>`;
+  }
+};
+
+Storage.load();if(typeof Floorplan!=="undefined"){Floorplan.ensurePositions();Storage.save();}UI.fill();UI.renderAll();
+window.UI=UI;window.Storage=Storage;window.Audit=Audit;window.ProjectManager=ProjectManager;window.BackendPrep=BackendPrep;

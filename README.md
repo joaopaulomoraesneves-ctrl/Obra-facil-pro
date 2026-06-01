@@ -4,14 +4,38 @@ Sistema web mobile-first para apoio em obras, do levantamento ao acabamento.
 
 ## Pacote atual
 
-**Pacote 13 — Repositório e Documentação**
+**Pacote 14 — Estrutura Modular**
 
-Inclui gerenciador de obras, cálculo de materiais, planta baixa 2D, composições, instalações, orçamento, cronograma, execução, compras, relatório, backup e preparação para backend/SaaS.
+Este pacote inicia a separação do projeto em arquivos e pastas mais profissionais.
 
-## Publicação no GitHub Pages
+## Estrutura
 
-O arquivo principal é `index.html`.
+```txt
+index.html
+src/
+  app.js
+  styles.css
+  core/
+  ui/
+  data/
+  storage/
+  reports/
+  backend/
+backend/
+docs/
+```
 
-## Observação importante
+## O que mudou
 
-O sistema auxilia levantamento, orçamento e planejamento, mas não substitui engenheiro, arquiteto ou profissional habilitado para cálculos estruturais, instalações definitivas, aprovação legal ou responsabilidade técnica.
+- `index.html` contém a estrutura da página.
+- `src/styles.css` contém o visual.
+- `src/app.js` contém a lógica JavaScript.
+- Pastas em `src/` preparam a separação futura por módulos.
+
+## Publicação
+
+Suba todos os arquivos para a raiz do repositório. O GitHub Pages continuará usando `index.html`.
+
+## Observação
+
+O sistema auxilia levantamento, orçamento e planejamento, mas não substitui profissional habilitado para cálculos estruturais, instalações definitivas, aprovação legal ou responsabilidade técnica.

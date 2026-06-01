@@ -1,10 +1,3 @@
-# Guia de Uso — Obra Fácil Pro
+# Guia de Uso
 
-1. Acesse **Obras** e crie uma obra.
-2. Preencha dados em **Obra**.
-3. Cadastre cômodos em **Cômodos**.
-4. Confira cálculos, composições, instalações, compras e orçamento.
-5. Ajuste cronograma em **Prazo**.
-6. Acompanhe execução e diário de obra.
-7. Gere relatório e salve como PDF pelo navegador.
-8. Faça backup geral pela aba **Obras**.
+Crie uma obra, cadastre cômodos, confira cálculos, compras, orçamento, prazo, execução, planta e relatório. Faça backup geral antes de grandes alterações.
